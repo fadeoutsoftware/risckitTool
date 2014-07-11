@@ -1,0 +1,46 @@
+<div class="container-fluid">
+        <div id="media_map_canvas" class="col-xs-12" style="height: 500px;"></div>
+    <div class="row col-lg-8">
+        <div class="row">
+            <label class="col-xs-offset-1 control-label">Description</label>
+            <textarea class="col-xs-offset-1 col-xs-2 form-control" rows="2" placeholder="Description"></textarea>
+            <div class="col-xs-7"></div>
+        </div>
+        <div class="row">
+            <label class="col-xs-offset-1 control-label">Date</label>
+            <input class="col-xs-offset-1 col-xs-2 form-control" type="date">
+        </div>
+        <div class="row">
+            <label class="col-xs-offset-1 control-label">Attachment</label>
+        </div>
+        <div class="row">
+            <table class="col-xs-offset-1 table table-bordered table-condensed">
+                <tr ng-repeat="oTableRow in m_oController.Files">
+                    <td>
+                        <div>
+                            <label>{{oTableRow.name}}</label>
+                            <img src="img/delete.png" tooltip="Delete">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="row col-lg-offset-1 col-lg-1">
+            <div class="loading" ng-show="false"></div>
+            <div class="project-icon" tooltip-popup-delay="500">
+                <label for="media-input">
+                    <img src="img/upload.png"/>
+                </label>
+                <input id="media-input" type="file" file-Model="m_oController.m_sFilePath" ng-hide="true"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-offset-1 col-lg-1 form-group">
+                <div class="col-sm-2">
+                    <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
