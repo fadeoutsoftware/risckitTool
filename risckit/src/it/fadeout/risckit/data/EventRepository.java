@@ -4,4 +4,6 @@ import it.fadeout.risckit.business.Event;
 
 public class EventRepository extends Repository<Event>{
 
+	
+	
 }

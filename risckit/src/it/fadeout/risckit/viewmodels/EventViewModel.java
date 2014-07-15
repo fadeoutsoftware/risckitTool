@@ -6,14 +6,22 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElements;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 public class EventViewModel {
+	
+	private int id;
 	
 	private String countryCode;
 	
@@ -35,9 +43,9 @@ public class EventViewModel {
 	
 	private BigDecimal waveHeightValue;
 	
-	private String m_sWaveHeightInspire;
+	private String waveHeightInspire;
 	
-	private String m_sWaveHeightTimeSeries;
+	private String waveHeightTimeSeries;
 	
 	private int waveDirectionType;
 	
@@ -45,17 +53,17 @@ public class EventViewModel {
 	
 	private String waveDirectionClustered;
 	
-	private String m_sWaveDirectionInspire;
+	private String waveDirectionInspire;
 	
-	private String m_sWaveDirectionTimeSeries;
+	private String waveDirectionTimeSeries;
 	
 	private int windIntensityType;
 	
 	private BigDecimal windIntensityValue;
 	
-	private String m_sWindIntensityInspire;
+	private String windIntensityInspire;
 	
-	private String m_sWindIntensitySeries;
+	private String windIntensitySeries;
 	
 	private int windDirectionType;
 	
@@ -63,46 +71,50 @@ public class EventViewModel {
 	
 	private String windDirectionClustered;
 	
-	private String m_sWindDirectionInspire;
+	private String windDirectionInspire;
 	
-	private String m_sWindDirectionTimeSeries;
+	private String windDirectionTimeSeries;
 	
 	private BigDecimal peakWaterDischarge;
 	
-	private String m_sPeakWaterInpire;
+	private String peakWaterInpire;
 	
-	private String m_sPeakWaterTimeSeries;
+	private String peakWaterTimeSeries;
 	
 	private BigDecimal floodHeight;
 	
-	private String m_sFloodHeightInspire;
+	private String floodHeightInspire;
 	
-	private String m_sFloodHeightTimeSeries;
+	private String floodHeightTimeSeries;
 	
 	private int reporedCasualtiesNumber;
 	
 	private String reporedCasualtiesDescription;
 	
-	private String m_sReporedCasualtiesInspire;
+	private String reporedCasualtiesInspire;
 	
-	private String m_sReporedCasualtiesTimeSeries;
+	private String reporedCasualtiesTimeSeries;
 	
 	private String damageToBuildingsDescription;
 	
 	private BigDecimal damageToBuildingsCost;
 	
-	private String m_sDamageToBuildingsInspire;
+	private String damageToBuildingsInspire;
 	
-	private String m_sDamageToBuildingsTimeSeries;
+	private String damageToBuildingsTimeSeries;
 	
 	private int costDetail;
 	
 	private String descriptionOfMeasure;
 	
-	private GisViewModel GIS;
-	
-	private ArrayList<MediaViewModel> Media;
-	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getCountryCode() {
 		return countryCode;
 	}
@@ -122,7 +134,8 @@ public class EventViewModel {
 	public Date getStartDate() {
 		
 		try {
-			return new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+			if (startDate != null)
+				return new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,7 +151,8 @@ public class EventViewModel {
 
 	public Date getStartHour() {
 		try {
-			return new SimpleDateFormat("hh:mm").parse(startHour);
+			if (startHour != null)
+				return new SimpleDateFormat("hh:mm").parse(startHour);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -201,19 +215,19 @@ public class EventViewModel {
 	}
 
 	public String getWaveHeightInspire() {
-		return m_sWaveHeightInspire;
+		return waveHeightInspire;
 	}
 
 	public void setWaveHeightInspire(String m_sWaveHeightInpire) {
-		this.m_sWaveHeightInspire = m_sWaveHeightInpire;
+		this.waveHeightInspire = m_sWaveHeightInpire;
 	}
 
 	public String getWaveHeightTimeSeries() {
-		return m_sWaveHeightTimeSeries;
+		return waveHeightTimeSeries;
 	}
 
 	public void setWaveHeightTimeSeries(String m_sWaveHeightTimeSeries) {
-		this.m_sWaveHeightTimeSeries = m_sWaveHeightTimeSeries;
+		this.waveHeightTimeSeries = m_sWaveHeightTimeSeries;
 	}
 
 	public int getWaveDirectionType() {
@@ -241,19 +255,19 @@ public class EventViewModel {
 	}
 
 	public String getWaveDirectionInspire() {
-		return m_sWaveDirectionInspire;
+		return waveDirectionInspire;
 	}
 
 	public void setWaveDirectionInspire(String m_sWaveDirectionInpire) {
-		this.m_sWaveDirectionInspire = m_sWaveDirectionInpire;
+		this.waveDirectionInspire = m_sWaveDirectionInpire;
 	}
 
 	public String getWaveDirectionTimeSeries() {
-		return m_sWaveDirectionTimeSeries;
+		return waveDirectionTimeSeries;
 	}
 
 	public void setWaveDirectionTimeSeries(String m_sWaveDirectionTimeSeries) {
-		this.m_sWaveDirectionTimeSeries = m_sWaveDirectionTimeSeries;
+		this.waveDirectionTimeSeries = m_sWaveDirectionTimeSeries;
 	}
 
 	public int getWindIntensityType() {
@@ -273,19 +287,19 @@ public class EventViewModel {
 	}
 
 	public String getWindIntensityInspire() {
-		return m_sWindIntensityInspire;
+		return windIntensityInspire;
 	}
 
 	public void setWindIntensityInspire(String m_sWindIntensityInpire) {
-		this.m_sWindIntensityInspire = m_sWindIntensityInpire;
+		this.windIntensityInspire = m_sWindIntensityInpire;
 	}
 
 	public String getWindIntensitySeries() {
-		return m_sWindIntensitySeries;
+		return windIntensitySeries;
 	}
 
 	public void setWindIntensitySeries(String m_sWindIntensitySeries) {
-		this.m_sWindIntensitySeries = m_sWindIntensitySeries;
+		this.windIntensitySeries = m_sWindIntensitySeries;
 	}
 
 	public int getWindDirectionType() {
@@ -313,19 +327,19 @@ public class EventViewModel {
 	}
 
 	public String getWindDirectionInspire() {
-		return m_sWindDirectionInspire;
+		return windDirectionInspire;
 	}
 
 	public void setWindDirectionInspire(String m_sWindDirectionInpire) {
-		this.m_sWindDirectionInspire = m_sWindDirectionInpire;
+		this.windDirectionInspire = m_sWindDirectionInpire;
 	}
 
 	public String getWindDirectionTimeSeries() {
-		return m_sWindDirectionTimeSeries;
+		return windDirectionTimeSeries;
 	}
 
 	public void setWindDirectionTimeSeries(String m_sWindDirectionTimeSeries) {
-		this.m_sWindDirectionTimeSeries = m_sWindDirectionTimeSeries;
+		this.windDirectionTimeSeries = m_sWindDirectionTimeSeries;
 	}
 
 	public BigDecimal getPeakWaterDischarge() {
@@ -337,19 +351,19 @@ public class EventViewModel {
 	}
 
 	public String getPeakWaterInspire() {
-		return m_sPeakWaterInpire;
+		return peakWaterInpire;
 	}
 
 	public void setPeakWaterInspire(String m_sPeakWaterInpire) {
-		this.m_sPeakWaterInpire = m_sPeakWaterInpire;
+		this.peakWaterInpire = m_sPeakWaterInpire;
 	}
 
 	public String getPeakWaterTimeSeries() {
-		return m_sPeakWaterTimeSeries;
+		return peakWaterTimeSeries;
 	}
 
 	public void setPeakWaterTimeSeries(String m_sPeakWaterTimeSeries) {
-		this.m_sPeakWaterTimeSeries = m_sPeakWaterTimeSeries;
+		this.peakWaterTimeSeries = m_sPeakWaterTimeSeries;
 	}
 
 	public BigDecimal getFloodHeight() {
@@ -361,19 +375,19 @@ public class EventViewModel {
 	}
 
 	public String getFloodHeightInspire() {
-		return m_sFloodHeightInspire;
+		return floodHeightInspire;
 	}
 
 	public void setFloodHeightInspire(String m_sFloodHeightInpire) {
-		this.m_sFloodHeightInspire = m_sFloodHeightInpire;
+		this.floodHeightInspire = m_sFloodHeightInpire;
 	}
 
 	public String getFloodHeightTimeSeries() {
-		return m_sFloodHeightTimeSeries;
+		return floodHeightTimeSeries;
 	}
 
 	public void setFloodHeightTimeSeries(String m_sFloodHeightTimeSeries) {
-		this.m_sFloodHeightTimeSeries = m_sFloodHeightTimeSeries;
+		this.floodHeightTimeSeries = m_sFloodHeightTimeSeries;
 	}
 
 	public int getReporedCasualtiesNumber() {
@@ -394,20 +408,20 @@ public class EventViewModel {
 	}
 
 	public String getReporedCasualtiesInspire() {
-		return m_sReporedCasualtiesInspire;
+		return reporedCasualtiesInspire;
 	}
 
 	public void setReporedCasualtiesInspire(String m_sReporedCasualtiesInpire) {
-		this.m_sReporedCasualtiesInspire = m_sReporedCasualtiesInpire;
+		this.reporedCasualtiesInspire = m_sReporedCasualtiesInpire;
 	}
 
 	public String getReporedCasualtiesTimeSeries() {
-		return m_sReporedCasualtiesTimeSeries;
+		return reporedCasualtiesTimeSeries;
 	}
 
 	public void setReporedCasualtiesTimeSeries(
 			String m_sReporedCasualtiesTimeSeries) {
-		this.m_sReporedCasualtiesTimeSeries = m_sReporedCasualtiesTimeSeries;
+		this.reporedCasualtiesTimeSeries = m_sReporedCasualtiesTimeSeries;
 	}
 
 	public String getDamageToBuildingsDescription() {
@@ -428,20 +442,20 @@ public class EventViewModel {
 	}
 
 	public String getDamageToBuildingsInspire() {
-		return m_sDamageToBuildingsInspire;
+		return damageToBuildingsInspire;
 	}
 
 	public void setDamageToBuildingsInspire(String m_sDamageToBuildingsInpire) {
-		this.m_sDamageToBuildingsInspire = m_sDamageToBuildingsInpire;
+		this.damageToBuildingsInspire = m_sDamageToBuildingsInpire;
 	}
 
 	public String getDamageToBuildingsTimeSeries() {
-		return m_sDamageToBuildingsTimeSeries;
+		return damageToBuildingsTimeSeries;
 	}
 
 	public void setDamageToBuildingsTimeSeries(
 			String m_sDamageToBuildingsTimeSeries) {
-		this.m_sDamageToBuildingsTimeSeries = m_sDamageToBuildingsTimeSeries;
+		this.damageToBuildingsTimeSeries = m_sDamageToBuildingsTimeSeries;
 	}
 
 	public int getCostDetail() {
@@ -458,22 +472,6 @@ public class EventViewModel {
 
 	public void setDescriptionOfMeasure(String m_sDescriptionOfMeasure) {
 		this.descriptionOfMeasure = m_sDescriptionOfMeasure;
-	}
-
-	public GisViewModel getGis() {
-		return GIS;
-	}
-
-	public void setGis(GisViewModel gis) {
-		GIS = gis;
-	}
-
-	public ArrayList<MediaViewModel> getMedia() {
-		return Media;
-	}
-
-	public void setMedia(ArrayList<MediaViewModel> media) {
-		Media = media;
 	}
 	
 }

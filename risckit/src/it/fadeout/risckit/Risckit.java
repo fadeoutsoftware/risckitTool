@@ -16,6 +16,7 @@ public class Risckit extends Application{
         classes.add(MultiPartFeature.class);
         classes.add(CountryResource.class);
         classes.add(EventResource.class);
+        classes.add(MediaResource.class);
         return classes;
 	}
 }
