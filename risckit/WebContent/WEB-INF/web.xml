@@ -22,6 +22,10 @@
 			<param-value>it.fadeout.risckit.viewmodels</param-value>
 		</init-param>
 		<init-param>
+	        <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+	        <param-value>true</param-value>
+		</init-param>
+		<init-param>
 			<param-name>unit:WidgetPU</param-name>
 			<param-value>persistence/widget</param-value>
 		</init-param>
@@ -34,8 +38,21 @@
 			<param-value>it.fadeout.risckit.Risckit</param-value>
 		</init-param>
 		<init-param>
-			<param-name>AttachmentPath</param-name>
-			<param-value>C:/Users/s.adamo/Documents/Attachment/</param-value>
+			<param-name>SvnRepository</param-name>
+			<!-- <param-value>https://github.com/fadeoutsoftware/risckitTool/</param-value> -->
+			<param-value>https://10.0.1.3:8443/svn/risctest</param-value>
+		</init-param>
+		<init-param>
+			<param-name>SvnUser</param-name>
+			<param-value>s.adamo</param-value>
+		</init-param>
+		<init-param>
+			<param-name>SvnUserDomain</param-name>
+			<param-value>FADEOUT</param-value>
+		</init-param>
+		<init-param>
+			<param-name>SvnPwd</param-name>
+			<param-value>vera234</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
