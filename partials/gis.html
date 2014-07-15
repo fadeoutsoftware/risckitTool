@@ -10,7 +10,7 @@
                 <label for="gis-input">
                     <img src="img/upload.png"/>
                 </label>
-                <input id="gis-input" type="file" file-Model="m_oController.m_sGisFilePath" ng-hide="true"/>
+                <input id="gis-input" type="file" file-Model="m_oController.m_sGisFilePath" ng-hide="true" ng-file-select="onFileSelect($files, 0)"/>
             </div>
         </div>
         <div class="row col-lg-offset-1 col-lg-3">
@@ -20,12 +20,12 @@
                 <label for="Inspire-input">
                     <img src="img/upload.png"/>
                 </label>
-                <input id="Inspire-input" type="file" file-Model="m_oController.m_sInspireFilePath" ng-hide="true"/>
+                <input id="Inspire-input" type="file" file-Model="m_oController.m_sInspireFilePath" ng-hide="true" ng-file-select="onFileSelect($files, 1)"/>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="m_oController.ok()">OK</button>
+        <button class="btn btn-primary" ng-click="m_oController.ok()" ng-show="m_oController.Uploaded()" >Close</button>
         <button class="btn btn-warning" ng-click="m_oController.cancel()">Cancel</button>
     </div>
 </div>

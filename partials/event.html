@@ -64,7 +64,7 @@
                     </div>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.unitValue">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.unitValue" step="any" min="0">
                 </td>
                 <td colspan="2">
                     <div class="radio-inline">
@@ -104,7 +104,7 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waveHeightValue">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waveHeightValue" step="any" min="0">
                 </td>
                 <td>
                     <div class="loading" ng-show="false"></div>
@@ -112,9 +112,9 @@
                         <label for="wave-height-file-input-inspire">
                             <img src="img/upload.png" tooltip="Upload"/>
                         </label>
-                        <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files)" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightInspire')" ng-hide="true" />
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveHeightInspire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveHeightInspire == null">
                     </div>
                 </td>
                 <td>
@@ -123,9 +123,9 @@
                         <label for="wave-height-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="wave-height-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wave-height-file-input-timeseries" type="file" file-Model="" ng-hide="true" ng-file-select="onFileSelect($files, 'waveHeightTimeSeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveHeightTimeSeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveHeightTimeSeries == null">
                     </div>
                 </td>
             </tr>
@@ -152,8 +152,8 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.WaveDiectionType == 'Degrees'" ng-model="m_oController.m_oEvent.waveDirectionDegree">
-                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.WaveDiectionType == 'Clustered'">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.waveDirectionType == 0" ng-model="m_oController.m_oEvent.waveDirectionDegree" step="any" min="-360" max="360">
+                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.waveDirectionType == 1">
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenord" ng-checked="true">
@@ -218,9 +218,9 @@
                         <label for="wavedirection-file-input-inspire">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="wavedirection-file-input-inspire" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wavedirection-file-input-inspire" type="file" file-Model="" ng-hide="true" ng-file-select="onFileSelect($files, 'waveDirectionInspire')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveDirectionInspire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveDirectionInspire == null">
                     </div>
                 </td>
                 <td>
@@ -229,9 +229,9 @@
                         <label for="wavedirection-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="wavedirection-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wavedirection-file-input-timeseries" type="file" file-Model="" ng-hide="true" ng-file-select="onFileSelect($files, 'waveDirectionTimeSeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveDirectionTimeSeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveDirectionTimeSeries == null">
                     </div>
                 </td>
             </tr>
@@ -258,7 +258,7 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.windIntensityValue">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.windIntensityValue" step="any" min="0">
                 </td>
                 <td>
                     <div class="loading" ng-show="false"></div>
@@ -266,9 +266,9 @@
                         <label for="wind-intensity-file-input-inspire">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="wind-intensity-file-input-inspire" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wind-intensity-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windIntensityInspire')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windIntensityInspire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windIntensityInspire == null">
                     </div>
                 </td>
                 <td>
@@ -277,9 +277,9 @@
                         <label for="wind-intensity-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="wind-intensity-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wind-intensity-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windIntensitySeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windIntensitySeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windIntensitySeries == null">
                     </div>
                 </td>
             </tr>
@@ -307,8 +307,8 @@
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.WindDiectionType == 'Degrees'" ng-model="m_oController.m_oEvent.windDirectionDegree">
-                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.WaveDiectionType == 'Clustered'">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.windDirectionType == 0" ng-model="m_oController.m_oEvent.windDirectionDegree" step="any" max="360" min="-360">
+                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.windDirectionType == 1">
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnord" checked>
@@ -373,9 +373,9 @@
                         <label for="wind-direction-file-input-inspire">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="wind-direction-file-input-inspire" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wind-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windDirectionInspire')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windDirectionInspire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windDirectionInspire == null">
                     </div>
                 </td>
                 <td>
@@ -384,9 +384,9 @@
                         <label for="wind-direction-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="wind-direction-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="wind-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windDirectionTimeSeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windDirectionTimeSeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windDirectionTimeSeries == null">
                     </div>
                 </td>
             </tr>
@@ -412,7 +412,7 @@
                     <input type="checkbox" id="inlineCheckbox1" value="option1" ng-model="m_oController.Flooding">
                 </td>
                 <td ng-show="m_oController.Flooding">
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.peakWaterDischarge">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.peakWaterDischarge" step="any" min="0">
                 </td>
                 <td ng-show="m_oController.Flooding">
                     <div class="loading" ng-show="false"></div>
@@ -420,9 +420,9 @@
                         <label for="riverflooding-direction-file-input-inspire">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="riverflooding-direction-file-input-inspire" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="riverflooding-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'peakWaterInpire')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.peakWaterInpire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.peakWaterInpire == null">
                     </div>
                 </td>
                 <td ng-show="m_oController.Flooding">
@@ -431,9 +431,9 @@
                         <label for="riverflooding-direction-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="riverflooding-direction-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="riverflooding-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'peakWaterTimeSeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.peakWaterTimeSeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.peakWaterTimeSeries == null">
                     </div>
                 </td>
             </tr>
@@ -450,7 +450,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.floodHeight">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.floodHeight" step="any" min="0">
                 </td>
                 <td>
                     <div class="loading" ng-show="false"></div>
@@ -458,9 +458,9 @@
                         <label for="floodingheight-direction-file-input-inspire">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="floodingheight-direction-file-input-inspire" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="floodingheight-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'floodHeightInspire')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.floodHeightInspire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.floodHeightInspire == null">
                     </div>
                 </td>
                 <td>
@@ -469,9 +469,9 @@
                         <label for="floodingheight-direction-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="floodingheight-direction-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="floodingheight-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'floodHeightTimeSeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.floodHeightTimeSeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.floodHeightTimeSeries == null">
                     </div>
                 </td>
             </tr>
@@ -494,7 +494,7 @@
             </tr>
             <tr>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.reporedCasualtiesNumber">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.reporedCasualtiesNumber" min="0">
                 </td>
                 <td>
                     <textarea class="form-control" rows="2" placeholder="Description" ng-model="m_oController.m_oEvent.reporedCasualtiesDescription"></textarea>
@@ -505,9 +505,9 @@
                         <label for="report-direction-file-input-inspire">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="report-direction-file-input-inspire" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="report-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'reporedCasualtiesInspire')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.reporedCasualtiesInspire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.reporedCasualtiesInspire == null">
                     </div>
                 </td>
                 <td>
@@ -516,9 +516,9 @@
                         <label for="report-direction-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="report-direction-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="report-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'reporedCasualtiesTimeSeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.reporedCasualtiesTimeSeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.reporedCasualtiesTimeSeries == null">
                     </div>
                 </td>
             </tr>
@@ -544,7 +544,7 @@
                     <textarea class="form-control" rows="2" placeholder="Damage" ng-model="m_oController.m_oEvent.damageToBuildingsDescription"></textarea>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.damageToBuildingsCost">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.damageToBuildingsCost" step="any" min="0">
                 </td>
                 <td>
                     <div class="loading" ng-show="false"></div>
@@ -552,9 +552,9 @@
                         <label for="damage-direction-file-input-inspire">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="damage-direction-file-input-inspire" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="damage-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'damageToBuildingsInspire')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.damageToBuildingsInspire == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.damageToBuildingsInspire == null">
                     </div>
                 </td>
                 <td>
@@ -563,9 +563,9 @@
                         <label for="damage-direction-file-input-timeseries">
                             <img src="img/upload.png"/>
                         </label>
-                        <input id="damage-direction-file-input-timeseries" type="file" file-Model="" ng-hide="true"/>
-                        <img src="img/download.png" tooltip="Download">
-                        <img src="img/delete.png" tooltip="Delete">
+                        <input id="damage-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'damageToBuildingsTimeSeries')"/>
+                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.damageToBuildingsTimeSeries == null">
+                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.damageToBuildingsTimeSeries == null">
                     </div>
                 </td>
             </tr>
@@ -599,21 +599,23 @@
                 <td><label class="control-label">Lat</label></td>
                 <td><label class="control-label">Lon</label></td>
             </tr>
-            <tr ng-repeat="oTableRow in m_oController.m_oEvent.Media">
-                <td></td>
-                <td ng-repeat="oFile in oTableRow.Files">
-                    <div>
-                        <label>{{oFile.name}}</label>
-                        <img src="img/delete.png" tooltip="Delete">
-                    </div>
-                </td>
-                <td ng-hide="$index > 0" rowspan="oTableRow.Files.length">
-                    <label class="control-label">{{oTableRow.lat}}</label>
-                </td>
-                <td ng-hide="$index > 0" rowspan="oTableRow.Files.length">
-                    <label class="control-label">{{oTableRow.lon}}</label>
-                </td>
-            </tr>
+            <tbody ng-repeat="oTableRow in m_oController.m_oEvent.Media">
+                <tr>
+                    <td></td>
+                    <td>
+                        <div>
+                            <a ng-click="">{{oTableRow.filename}}</a>
+                            <img src="img/delete.png" tooltip="Delete">
+                        </div>
+                    </td>
+                    <td ng-hide="$index > 0">
+                        <label class="control-label">{{oTableRow.lat}}</label>
+                    </td>
+                    <td ng-hide="$index > 0">
+                        <label class="control-label">{{oTableRow.lon}}</label>
+                    </td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
@@ -625,13 +627,13 @@
             </tr>
             <tr ng-hide="m_oController.m_oEvent.GIS.GisFile == null">
                 <td>
-                    <label>{{m_oController.m_oEvent.GIS.GisFile.name}}</label>
+                    <a ng-click="">{{m_oController.m_oEvent.GIS.GisFile}}</a>
                     <img src="img/delete.png" tooltip="Delete" >
                 </td>
             </tr>
             <tr ng-hide="m_oController.m_oEvent.GIS.InspireFile == null">
                 <td>
-                    <label>{{m_oController.m_oEvent.GIS.InspireFile.name}}</label>
+                    <a ng-click="">{{m_oController.m_oEvent.GIS.InspireFile}}</a>
                     <img src="img/delete.png" tooltip="Delete">
                 </td>
             </tr>
