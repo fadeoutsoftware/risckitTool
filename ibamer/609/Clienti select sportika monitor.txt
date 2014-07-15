@@ -1,0 +1,32 @@
+SELECT 
+
+	Societa.RagioneSociale,
+	count(ISNULL(SpedizioniDocumenti.[IdDocumento],0)) Previsti,
+	ISNULL(CASE WHEN (Picking.InizioPicking IS NOT NULL AND Picking.FinePicking IS NULL)
+		THEN count(SpedizioniDocumenti.[IdDocumento])
+		END,0) AS InLavorazione,
+	ISNULL(CASE WHEN (Picking.InizioPicking IS NOT NULL AND Picking.FinePicking IS NOT NULL)
+		THEN count(SpedizioniDocumenti.[IdDocumento])
+		END,0) AS Preparati
+		
+	FROM Spedizioni
+	
+	LEFT OUTER JOIN SpedizioniDocumenti
+		ON Spedizioni.IdSpedizione = SpedizioniDocumenti.IdSpedizione
+	LEFT OUTER JOIN Societa
+		ON Spedizioni.IdCliente = Societa.IdSocieta
+	INNER JOIN Clienti
+		ON Societa.IdSocieta = Clienti.IdSocieta
+	LEFT OUTER JOIN Picking
+		ON SpedizioniDocumenti.IdDocumento = Picking.IdDocumento
+	INNER JOIN Documenti
+		ON SpedizioniDocumenti.IdDocumento = Documenti.IdDocumento
+	INNER JOIN ModelliDocumenti 
+		ON Documenti.IdModelloDocumento = ModelliDocumenti.IdModelloDocumento
+	INNER JOIN TipiDocumento 
+		ON TipiDocumento.IdTipoDOcumento = ModelliDocumenti.IdTipoDocumento
+		WHERE UPPER(TipiDocumento.Nome) = 'FOGLIO LAVORAZIONE'
+		GROUP BY Societa.RagioneSociale,
+		Picking.InizioPicking,
+		Picking.FinePicking
+	
