@@ -5,6 +5,7 @@ var riskit = angular.module('riskitapp',[
     'ngRoute',
     'ui.bootstrap',
     'google-maps',
+    'risckit.loginService',
     'risckit.eventService',
     'risckit.sharedService',
     'angularFileUpload',

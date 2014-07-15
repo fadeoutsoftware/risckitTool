@@ -10,14 +10,27 @@ var EventController = (function() {
         this.m_oModal = $modal;
         this.m_oEventService = oEventService; //Service
         this.m_oSharedService = oSharedService;
-        this.m_oEvent = new Object();
-        this.m_oEvent.Media = new Array(); //ipotizzo si possano inserire più media con coordinate diverse
-        this.m_oEvent.GIS = null; //ipotizzo sia solo un file
+
+
+        if (this.m_oScope.m_oController.m_oSharedService.getEvent() == null)
+        {
+            this.m_oScope.m_oController.m_oEvent = new Object();
+            this.m_oScope.m_oController.m_oEvent.Media = new Array(); //ipotizzo si possano inserire più media con coordinate diverse
+            this.m_oScope.m_oController.m_oEvent.GIS = null; //ipotizzo sia solo un file
+        }
+        else
+        {
+            this.m_oScope.m_oController.m_oEvent = this.m_oScope.m_oController.m_oSharedService.getEvent();
+            this.m_oScope.m_oController.m_oEvent.Media = this.m_oSharedService.getEvent().Media;
+        }
+
         this.uploadRightAway = true;
 
         //Init html
-        this.WaveDiectionType = 'Degrees';
-        this.WindDiectionType = 'Degrees';
+        this.m_oEvent.WaveDiectionType = 0;
+        this.m_oEvent.WindDiectionType = 0;
+        this.m_oEvent.unitHour = true;
+        this.m_oEvent.unitApproximated = true;
         this.m_oWaveHeightType = ["Mean", "Significant", "Peak"];
         this.m_oWaveDiectionType = ["Degrees", "Clustered"];
         this.m_oWindDiectionType = ["Degrees", "Clustered"];
@@ -26,27 +39,69 @@ var EventController = (function() {
         this.Flooding = false;
 
         //load countries
-        this.m_oEventService.GetAllCountries().success(function (data, status) {
-            //$scope.m_oController.m_oEvent.countryCode = null;
-            $scope.m_oController.m_oCountries = data;
-        });
+         this.m_oEventService.GetAllCountries().success(function (data, status) {
+             $scope.m_oController.m_oEvent.countryCode = null;
+             $scope.m_oController.m_oCountries = data;
+         });
 
         $scope.$watch('m_oController.m_oEvent.countryCode', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 //load regions
                 $scope.m_oController.m_oEventService.GetAllRegions($scope.m_oController.m_oEvent.countryCode).success(function (data, status) {
-                    $scope.m_oController.m_oEvent.countryId = null;
                     $scope.m_oController.m_oRegions = data;
+                    if ($scope.m_oController.m_oSharedService.getEvent() != null)
+                    {
+                        $scope.m_oController.m_oEvent.countryId = $scope.m_oController.m_oSharedService.getEvent().countryId;
+                        $scope.$apply();
+                    }
+
                 });
             }
         });
 
+
         if (this.m_oSharedService.getEvent() != null) {
-            $scope.m_oController.m_oEvent = this.m_oSharedService.getEvent();
-            $scope.m_oController.m_oEvent.Media = this.m_oSharedService.getEvent().Media;
+            $scope.m_oController.m_oEvent.countryCode = this.m_oSharedService.getEvent().countryCode;
         }
 
-        $scope.onFileSelect = function ($files) {
+
+
+        $scope.onFileSelect = function ($files, parameter) {
+
+            if ($files != null && $files.length > 0) {
+                if (parameter == 'waveHeightInspire')
+                    $scope.m_oController.m_oEvent.waveHeightInspire = $files[0].name;
+                if (parameter == 'waveHeightTimeSeries')
+                    $scope.m_oController.m_oEvent.waveHeightTimeSeries = $files[0].name;
+                if (parameter == 'waveDirectionInspire')
+                    $scope.m_oController.m_oEvent.waveDirectionInspire = $files[0].name;
+                if (parameter == 'waveDirectionTimeSeries')
+                    $scope.m_oController.m_oEvent.waveDirectionTimeSeries = $files[0].name;
+                if (parameter == 'windIntensityInspire')
+                    $scope.m_oController.m_oEvent.windIntensityInspire = $files[0].name;
+                if (parameter == 'windIntensitySeries')
+                    $scope.m_oController.m_oEvent.windIntensitySeries = $files[0].name;
+                if (parameter == 'windDirectionInspire')
+                    $scope.m_oController.m_oEvent.windDirectionInspire = $files[0].name;
+                if (parameter == 'windDirectionTimeSeries')
+                    $scope.m_oController.m_oEvent.windDirectionTimeSeries = $files[0].name;
+                if (parameter == 'peakWaterInpire')
+                    $scope.m_oController.m_oEvent.peakWaterInpire = $files[0].name;
+                if (parameter == 'peakWaterTimeSeries')
+                    $scope.m_oController.m_oEvent.peakWaterTimeSeries = $files[0].name;
+                if (parameter == 'floodHeightInspire')
+                    $scope.m_oController.m_oEvent.floodHeightInspire = $files[0].name;
+                if (parameter == 'floodHeightTimeSeries')
+                    $scope.m_oController.m_oEvent.floodHeightTimeSeries = $files[0].name;
+                if (parameter == 'reporedCasualtiesInspire')
+                    $scope.m_oController.m_oEvent.reporedCasualtiesInspire = $files[0].name;
+                if (parameter == 'reporedCasualtiesTimeSeries')
+                    $scope.m_oController.m_oEvent.reporedCasualtiesTimeSeries = $files[0].name;
+                if (parameter == 'damageToBuildingsInspire')
+                    $scope.m_oController.m_oEvent.damageToBuildingsInspire = $files[0].name;
+                if (parameter == 'damageToBuildingsTimeSeries')
+                    $scope.m_oController.m_oEvent.damageToBuildingsTimeSeries = $files[0].name;
+            }
             $scope.selectedFiles = [];
             $scope.progress = [];
             if ($scope.upload && $scope.upload.length > 0) {
@@ -59,6 +114,7 @@ var EventController = (function() {
             $scope.upload = [];
             $scope.uploadResult = [];
             $scope.selectedFiles = $files;
+            $scope.parameter = parameter
             $scope.dataUrls = [];
             for (var i = 0; i < $files.length; i++) {
                 var $file = $files[i];
@@ -85,8 +141,8 @@ var EventController = (function() {
             $scope.progress[index] = 0;
             $scope.errorMsg = null;
 
-            $scope.upload[index] = $scope.m_oController.m_oEventService.Upload($scope.m_oController.m_oEvent, $scope.selectedFiles[index]);
-            $scope.upload[index].then(function (response) {
+            $scope.m_oController.m_oEventService.Upload($scope.m_oController.m_oEvent, $scope.selectedFiles[index], $scope.parameter);
+            /*$scope.upload[index].then(function (response) {
                 $timeout(function () {
                     $scope.uploadResult.push(response.data);
                 });
@@ -98,7 +154,7 @@ var EventController = (function() {
             });
             $scope.upload[index].xhr(function (xhr) {
 //				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
-            });
+            });*/
 
         };
 
@@ -112,7 +168,7 @@ var EventController = (function() {
     };
 
     EventController.prototype.AddGIS = function (size) {
-
+        this.m_oSharedService.setEvent(this.m_oEvent);
         var oScope = this.m_oScope;
 
         var modalInstance = this.m_oModal.open({
@@ -121,20 +177,33 @@ var EventController = (function() {
             size: size
         });
 
-        modalInstance.result.then(function(GISFiles, InspireFiles) {
-            oScope.m_oController.m_oEvent.GIS = new Object();
-            oScope.m_oController.m_oEvent.GIS.GisFile = GISFiles;
-            oScope.m_oController.m_oEvent.GIS.InspireFile = InspireFiles;
+        modalInstance.result.then(function(GISFilesName, InspireFilesName) {
+            if (GISFilesName != null)
+                oScope.m_oController.m_oEvent.GIS.GisFile = GISFilesName.name;
+            if (InspireFilesName != null)
+                oScope.m_oController.m_oEvent.GIS.InspireFile = InspireFilesName.name;
         });
 
     };
 
     EventController.prototype.Save = function() {
 
+        var oScope = this.m_oScope;
+
         if (this.m_oEvent != null)
         {
             this.m_oEventService.Save(this.m_oEvent).success(function (data, status) {
-                alert("Saved");
+
+                //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
+                //di liste contenute
+                if (data != null) {
+
+                    var answer = confirm("Do you want to insert another event?");
+                    if (answer)
+                        oScope.m_oController.m_oEvent = new Object();
+                    else
+                        oScope.m_oController.m_oLocation.path('map');
+                }
             });
         }
 
