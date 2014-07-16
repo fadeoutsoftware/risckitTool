@@ -12,7 +12,7 @@ public class GisViewModel {
 	private String InspireFile;
 	
 	private int eventId;
-
+	
 	public String getGisFile() {
 		return GisFile;
 	}
@@ -44,4 +44,5 @@ public class GisViewModel {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 }

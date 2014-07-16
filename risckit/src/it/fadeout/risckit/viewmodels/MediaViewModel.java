@@ -93,9 +93,5 @@ public class MediaViewModel {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
-	
-
-	
 		
 }

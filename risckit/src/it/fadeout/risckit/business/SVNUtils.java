@@ -24,7 +24,15 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 public class SVNUtils {
 	
-	public void Commit(InputStream oInStream, String sSvnUser, String sSvnPwd, String sDirPath, String sFilePath, String sSvnRepository) throws SVNException, IOException {
+	public void Commit(InputStream oInStream,
+			String sLogin,
+			String sSvnUser, 
+			String sSvnPwd,
+			String sSvnDomain,
+			String sFilePath, 
+			String sSvnRepository,
+			String sStartDate,
+			String sLocation) throws SVNException, IOException {
         /*
          * URL that points to repository. 
          */
@@ -32,6 +40,12 @@ public class SVNUtils {
         /*
          * Credentials to use for authentication.
          */
+        String sUser = "";
+		if (sSvnDomain != null && !sSvnDomain.isEmpty())
+			sUser += sSvnDomain + "\\";
+
+		sUser += sSvnUser;
+
         String userName = sSvnUser;
         String userPassword = sSvnPwd;
         
@@ -127,7 +141,7 @@ public class SVNUtils {
          * SVNCommitInfo object contains basic information on the committed revision, i.e.
          * revision number, author name, commit date and commit message. 
          */
-        SVNCommitInfo commitInfo = addDir(editor, sDirPath, sFilePath, contents);
+        SVNCommitInfo commitInfo = addDir(editor, sLogin, sFilePath, contents, sStartDate, sLocation);
         System.out.println("The directory was added: " + commitInfo);
 
             }
@@ -136,8 +150,9 @@ public class SVNUtils {
      * This method performs commiting an addition of a  directory  containing  a
      * file.
      */
-    private SVNCommitInfo addDir(ISVNEditor editor, String dirPath,
-            String filePath, byte[] data) throws SVNException {
+    private SVNCommitInfo addDir(ISVNEditor editor, String sLogin,
+            String filePath, byte[] data, String sStartDate,
+			String sLocation) throws SVNException {
         /*
          * Always called first. Opens the current root directory. It  means  all
          * modifications will be applied to this directory until  a  next  entry
@@ -158,7 +173,41 @@ public class SVNUtils {
          * (the 3rd) parameter is set to  -1  since  the  directory is not added 
          * with history (is not copied, in other words).
          */
-        editor.addDir(dirPath, null, -1);
+        
+        try
+        {
+        	editor.addDir(sLogin, null, -1);
+        }
+        catch (Exception oEx){
+        	
+        }
+        
+        
+        try
+        {
+        	editor.addDir("risckit", null, -1);
+        }
+        catch (Exception oEx){
+        	
+        }
+        
+        try
+        {
+        	editor.addDir(sStartDate + "_" + sLocation, null, -1);
+        }
+        catch (Exception oEx){
+        	
+        }
+        
+        try
+        {
+        	editor.addDir("raw", null, -1);
+        }
+        catch (Exception oEx){
+        	
+        }
+        
+        
         /*
          * Adds a new file to the just added  directory. The  file  path is also 
          * defined as relative to the root directory.

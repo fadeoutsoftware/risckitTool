@@ -6,16 +6,19 @@ import java.util.ArrayList;
 
 import it.fadeout.risckit.business.Event;
 import it.fadeout.risckit.business.Media;
+import it.fadeout.risckit.business.SVNUtils;
 import it.fadeout.risckit.data.EventRepository;
 import it.fadeout.risckit.data.MediaRepository;
 import it.fadeout.risckit.viewmodels.EventViewModel;
 import it.fadeout.risckit.viewmodels.MediaViewModel;
 
+import javax.servlet.ServletConfig;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -23,6 +26,9 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 
 @Path("/media")
 public class MediaResource {
+	
+	@Context
+	ServletConfig servletConfig;
 
 	@POST
 	@Path("/save")
@@ -93,14 +99,29 @@ public class MediaResource {
 	@POST
 	@Path("/upload")
 	@Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
-	public String UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("mediaid") Integer iMediaId, @FormDataParam("file") FormDataContentDisposition fileDetail) throws IOException
+	public String UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("mediaid") Integer iMediaId, @FormDataParam("file") FormDataContentDisposition fileDetail,@FormDataParam("login") String sUserLogin, @FormDataParam("startDate") String sStartDate, @FormDataParam("regionName") String sRegionName, @FormDataParam("countryCode") String sCountryCode) throws IOException
 	{
 		try
 		{
 
 			MediaRepository oRepo = new MediaRepository();
 			Media oMedia = oRepo.Select(iMediaId, Media.class);
-			String sPathRepository = fileDetail.getFileName();
+			String sLocation = sCountryCode + "_" + sRegionName;
+			
+			SVNUtils oSvnUtils = new SVNUtils();
+			String sDirPath = "/" + sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
+			//csv
+			oSvnUtils.Commit(file,
+					sUserLogin,
+					servletConfig.getInitParameter("SvnUser"), 
+					servletConfig.getInitParameter("SvnPwd"), 
+					servletConfig.getInitParameter("SvnUserDomain"), 
+					sDirPath + "Event.csv", 
+					servletConfig.getInitParameter("SvnRepository"),
+					sStartDate,
+					sLocation);
+
+			String sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
 			oMedia.setFile(sPathRepository);
 
 			oRepo.Update(oMedia);

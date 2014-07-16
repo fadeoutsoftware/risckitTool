@@ -1,5 +1,7 @@
 package it.fadeout.risckit.business;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -497,6 +499,29 @@ public class Event {
 
 	public void setCountry(Country m_oCountry) {
 		this.m_oCountry = m_oCountry;
+	}
+	
+	public InputStream GetCsvInputStream()
+	{
+		String sCountryName = "";
+		String sStartDate = "";
+		String sStartHour = "";
+		String sDescription = "";
+		if (this.m_oCountry != null)
+			sCountryName = String.valueOf(this.m_oCountry.getName());
+		if (this.m_oStartDate != null)
+			sStartDate = String.valueOf(this.m_oStartDate);
+		if (this.m_sDescription != null)
+			sDescription = String.valueOf(this.m_sDescription);
+		String sRecord = 
+				String.valueOf(this.m_iId) + ";" +
+				sCountryName + ";" +
+				sStartDate + ";" +
+				sStartHour + ";" +
+				sDescription + ";";
+		
+		InputStream oInputStream = new ByteArrayInputStream(sRecord.getBytes());
+		return oInputStream;
 	}
 	
 }

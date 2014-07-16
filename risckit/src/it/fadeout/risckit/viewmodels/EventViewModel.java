@@ -107,6 +107,10 @@ public class EventViewModel {
 	
 	private String descriptionOfMeasure;
 	
+	private String login;
+	
+	private String regionName;
+	
 	public int getId() {
 		return id;
 	}
@@ -472,6 +476,22 @@ public class EventViewModel {
 
 	public void setDescriptionOfMeasure(String m_sDescriptionOfMeasure) {
 		this.descriptionOfMeasure = m_sDescriptionOfMeasure;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getRegionName() {
+		return regionName;
+	}
+
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
 	}
 	
 }
