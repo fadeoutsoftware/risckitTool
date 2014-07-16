@@ -19,7 +19,7 @@ var LoginController = (function() {
         var oModalService = this.m_oModalInstance;
 
         if (this.m_oLoginService.login(sUserName, sPassword) == true) {
-            oLoginService.m_sUserName = 'admin';
+            oLoginService.m_sUserName = 'unife';
             oLoginService.m_sUserRole = "Administrator";
             oLoginService.m_bIsLogged = true;
             oModalService.close(true);

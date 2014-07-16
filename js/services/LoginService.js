@@ -41,7 +41,7 @@ angular.module('risckit.loginService', []).
             });*/
 
 
-            if (sUserName == 'admin' && sPassword == 'admin')
+            if (sUserName == 'unife' && sPassword == 'unife')
                return true;
 
             return false;

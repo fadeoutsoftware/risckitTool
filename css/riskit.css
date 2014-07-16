@@ -131,55 +131,49 @@ body{
         padding: 15px;
     }
 
-    .project-icon {
-        margin: 0px 0px 0px 0px;
-        padding: 0px;
-        position: relative;
-        overflow: hidden;
-        width: 84px;
-        height: 84px;
-        border: 1px solid #eaedf0;
-        -webkit-border-radius: 3px;
-        border-radius: 3px;
-        background-color: transparent;
 
-    }
 
-    .project-icon:hover {
-        border: 2px solid #428bca;
-        background-color: #f8f8f8;
-        -webkit-transition: all .3s;
-        transition: all .3s;
-    }
+}
 
-    .project-icon-image {
-        margin: 10px;
-    }
+.project-icon {
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+    position: relative;
+    overflow: hidden;
+    width: 35px;
+    height: 35px;
+    border: 1px solid #eaedf0;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    background-color: transparent;
+}
 
-    .loading {
-        position:absolute;
-        width: 300px;
-        height: 100px;
-        display: inline;
-        z-index: 1001;
-        background: url('../img/Spinner.gif') no-repeat center #fff;
+.div-td{
+    float: left;
+}
 
-    }
+.project-icon:hover {
+    border: 2px solid #428bca;
+    background-color: #f8f8f8;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+}
 
-    #map_canvas{
-        width: 100px;
-        height: 200px;
-    }
+.project-icon-image {
+    margin: 0px;
+}
 
-    .full-width-image-1 {
-        background: url(http://lorempixel.com/g/1920/500/) no-repeat center center;
-        background-size: cover;
-        text-align: center;
-        padding: 100px 0;
-    }
+.loading {
+    width: 30px;
+    height: 30px;
+}
 
-    .logo-wrapper {
-        display: inline-block;
-    }
+.full-width-image-1 {
+    background-size: cover;
+    text-align: center;
+    padding: 10px 0;
+}
 
+.logo-wrapper {
+    display: inline-block;
 }

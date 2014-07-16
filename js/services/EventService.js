@@ -6,8 +6,7 @@ angular.module('risckit.eventService', []).
         //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
         this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
-        this.m_oUpload = $upload;
-        this.m_oUploaded = false;
+        //this.m_oUpload = $upload;
 
         this.GetAllCountries = function () {
             return this.m_oHttp.get(this.APIURL + '/countries/all');
@@ -33,54 +32,26 @@ angular.module('risckit.eventService', []).
             return this.m_oHttp.post(this.APIURL + '/gis/save', Gis);
         };
 
-        this.setUploaded = function(value) {
-            this.m_oUploaded = value;
-        };
-
-        this.Uploaded = function() {
-            return this.m_oUploaded;
-        };
 
         this.Upload = function (event, selectedfile, parameter) {
 
             var Url = this.APIURL;
+            var oService = this;
             //Verifico se devo salvare prima l'evento
-            if (event == null || event.id == null || event.id == 0) {
-               return this.Save(event).success(function (data, status) {
+            var fd = new FormData();
+            fd.append('file', selectedfile);
+            fd.append("eventid", event.id);
+            fd.append("parameter", parameter);
+            fd.append("login", event.login);
+            fd.append("startDate", event.startDate);
+            fd.append("regionName", event.regionName);
+            fd.append("countryCode", event.countryCode);
 
-                    event.id = data.id;
-/*
-                   return this.m_oUpload.upload({
-                        url: Url + '/events/upload/',
-                        method: 'POST',
-                        headers: {'Content-Type': undefined},
-                        transformRequest: angular.identity,
-                        file: selectedfile
+            return $http.post(Url + "/events/upload", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
 
-                    });
-                    */
-                    var fd = new FormData();
-                    fd.append('file', selectedfile);
-                    fd.append("eventid", event.id);
-                    fd.append("parameter", parameter);
-
-                    return $http.post(Url + "/events/upload", fd, {
-                        transformRequest: angular.identity,
-                        headers: {'Content-Type': undefined}
-                    });
-
-                });
-            }
-            else {
-                 return this.m_oUpload.upload({
-                    url: Url + '/events/upload/' + event.id,
-                    method: 'POST',
-                    headers: {'Content-Type': undefined},
-                    transformRequest: angular.identity,
-                    file: selectedfile
-
-                });
-            }
         };
 
 
@@ -98,13 +69,17 @@ angular.module('risckit.eventService', []).
                         var fd = new FormData();
                         fd.append('file', oSelectedfile);
                         fd.append("mediaid", data.id);
+                        fd.append("login", event.login);
+                        fd.append("startDate", event.startDate);
+                        fd.append("regionName", event.regionName);
+                        fd.append("countryCode", event.countryCode);
 
                         return $http.post(Url + "/media/upload", fd, {
                             transformRequest: angular.identity,
                             headers: {'Content-Type': undefined}
                         }).success(function (data, status){
                             media.downloadPath = data;
-                            oService.m_oUploaded = true;
+
                         });
                     });
                 });
@@ -116,12 +91,17 @@ angular.module('risckit.eventService', []).
                     var fd = new FormData();
                     fd.append('file', oSelectedfile);
                     fd.append("mediaid", media.id);
+                    fd.append("login", event.login);
+                    fd.append("startDate", event.startDate);
+                    fd.append("regionName", event.regionName);
+                    fd.append("countryCode", event.countryCode);
+
                     return $http.post(Url + "/media/upload", fd, {
                         transformRequest: angular.identity,
                         headers: {'Content-Type': undefined}
                     }).success(function (data, status){
                         media.downloadPath = data;
-                        oService.m_oUploaded = true;
+
                     });
                 });
 
@@ -145,6 +125,10 @@ angular.module('risckit.eventService', []).
                             fd.append('file', oSelectedfile);
                             fd.append("gisid", data.id);
                             fd.append("type", type);
+                            fd.append("login", event.login);
+                            fd.append("startDate", event.startDate);
+                            fd.append("regionName", event.regionName);
+                            fd.append("countryCode", event.countryCode);
 
                             return $http.post(Url + "/gis/upload", fd, {
                                 transformRequest: angular.identity,
@@ -154,7 +138,7 @@ angular.module('risckit.eventService', []).
                                     gis.downloadGisPath = data;
                                 else
                                     gis.downloadInspirePath = data;
-                                oService.m_oUploaded = true;
+
                             });
                         });
                     }
@@ -164,6 +148,10 @@ angular.module('risckit.eventService', []).
                         fd.append('file', oSelectedfile);
                         fd.append("gisid", gis.id);
                         fd.append("type", type);
+                        fd.append("login", event.login);
+                        fd.append("startDate", event.startDate);
+                        fd.append("regionName", event.regionName);
+                        fd.append("countryCode", event.countryCode);
 
                         return $http.post(Url + "/gis/upload", fd, {
                             transformRequest: angular.identity,
@@ -173,7 +161,7 @@ angular.module('risckit.eventService', []).
                                 gis.downloadGisPath = data;
                             else
                                 gis.downloadInspirePath = data;
-                            oService.m_oUploaded = true;
+
                         });
                     }
                 });
@@ -188,6 +176,10 @@ angular.module('risckit.eventService', []).
                         fd.append('file', oSelectedfile);
                         fd.append("gisid", data.id);
                         fd.append("type", type);
+                        fd.append("login", event.login);
+                        fd.append("startDate", event.startDate);
+                        fd.append("regionName", event.regionName);
+                        fd.append("countryCode", event.countryCode);
 
                         return $http.post(Url + "/gis/upload", fd, {
                             transformRequest: angular.identity,
@@ -197,7 +189,7 @@ angular.module('risckit.eventService', []).
                                 gis.downloadGisPath = data;
                             else
                                 gis.downloadInspirePath = data;
-                            oService.m_oUploaded = true;
+
                         });
                     });
                 }
@@ -207,6 +199,10 @@ angular.module('risckit.eventService', []).
                     fd.append('file', oSelectedfile);
                     fd.append("gisid", gis.id);
                     fd.append("type", type);
+                    fd.append("login", event.login);
+                    fd.append("startDate", event.startDate);
+                    fd.append("regionName", event.regionName);
+                    fd.append("countryCode", event.countryCode);
 
                     return $http.post(Url + "/gis/upload", fd, {
                         transformRequest: angular.identity,
@@ -216,7 +212,7 @@ angular.module('risckit.eventService', []).
                             gis.downloadGisPath = data;
                         else
                             gis.downloadInspirePath = data;
-                        oService.m_oUploaded = true;
+
                     });
                 }
             }

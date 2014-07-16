@@ -107,25 +107,45 @@
                     <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waveHeightValue" step="any" min="0">
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wave-height-file-input-inspire">
-                            <img src="img/upload.png" tooltip="Upload"/>
-                        </label>
-                        <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightInspire')" ng-hide="true" />
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveHeightInspire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveHeightInspire == null">
+                    <div class="loading" ng-show="m_oController.waveHeightInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wave-height-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightInspire')" ng-hide="true" ng-click="m_oController.Check()" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waveHeightInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.waveHeightInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wave-height-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="wave-height-file-input-timeseries" type="file" file-Model="" ng-hide="true" ng-file-select="onFileSelect($files, 'waveHeightTimeSeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveHeightTimeSeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveHeightTimeSeries == null">
+                    <div class="loading" ng-show="m_oController.waveHeightTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wave-height-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wave-height-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveHeightTimeSeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waveHeightTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.waveHeightTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -213,25 +233,45 @@
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wavedirection-file-input-inspire">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="wavedirection-file-input-inspire" type="file" file-Model="" ng-hide="true" ng-file-select="onFileSelect($files, 'waveDirectionInspire')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveDirectionInspire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveDirectionInspire == null">
+                    <div class="loading" ng-show="m_oController.waveDirectionInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wavedirection-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wavedirection-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveDirectionInspire')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waveDirectionInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.waveDirectionInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wavedirection-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="wavedirection-file-input-timeseries" type="file" file-Model="" ng-hide="true" ng-file-select="onFileSelect($files, 'waveDirectionTimeSeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.waveDirectionTimeSeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.waveDirectionTimeSeries == null">
+                    <div class="loading" ng-show="m_oController.waveDirectionTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wavedirection-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wavedirection-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveDirectionTimeSeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waveDirectionTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.waveDirectionTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -261,25 +301,45 @@
                     <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.windIntensityValue" step="any" min="0">
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wind-intensity-file-input-inspire">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="wind-intensity-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windIntensityInspire')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windIntensityInspire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windIntensityInspire == null">
+                    <div class="loading" ng-show="m_oController.windIntensityInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wind-intensity-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wind-intensity-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityInspire')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windIntensityInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.windIntensityInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wind-intensity-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="wind-intensity-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windIntensitySeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windIntensitySeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windIntensitySeries == null">
+                    <div class="loading" ng-show="m_oController.windIntensitySeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wind-intensity-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wind-intensity-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensitySeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windIntensitySeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.windIntensitySeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -368,25 +428,45 @@
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wind-direction-file-input-inspire">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="wind-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windDirectionInspire')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windDirectionInspire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windDirectionInspire == null">
+                    <div class="loading" ng-show="m_oController.windDirectionInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wind-direction-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windDirectionInspire')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windDirectionInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.windDirectionInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="wind-direction-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="wind-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'windDirectionTimeSeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.windDirectionTimeSeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.windDirectionTimeSeries == null">
+                    <div class="loading" ng-show="m_oController.windDirectionTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="wind-direction-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windDirectionTimeSeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windDirectionTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.windDirectionTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -415,25 +495,45 @@
                     <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.peakWaterDischarge" step="any" min="0">
                 </td>
                 <td ng-show="m_oController.Flooding">
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500" ng-show="m_oController.Flooding">
-                        <label for="riverflooding-direction-file-input-inspire">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="riverflooding-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'peakWaterInpire')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.peakWaterInpire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.peakWaterInpire == null">
+                    <div class="loading" ng-show="m_oController.peakWaterInpireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="riverflooding-direction-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="riverflooding-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'peakWaterInpire')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.peakWaterInpireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.peakWaterInpireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td ng-show="m_oController.Flooding">
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500" ng-show="m_oController.Flooding">
-                        <label for="riverflooding-direction-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="riverflooding-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'peakWaterTimeSeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.peakWaterTimeSeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.peakWaterTimeSeries == null">
+                    <div class="loading" ng-show="m_oController.peakWaterTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="riverflooding-direction-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="riverflooding-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'peakWaterTimeSeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.peakWaterTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.peakWaterTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -453,25 +553,45 @@
                     <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.floodHeight" step="any" min="0">
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500" ng-show="m_oController.Flooding">
-                        <label for="floodingheight-direction-file-input-inspire">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="floodingheight-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'floodHeightInspire')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.floodHeightInspire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.floodHeightInspire == null">
+                    <div class="loading" ng-show="m_oController.floodHeightInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="floodingheight-direction-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="floodingheight-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'floodHeightInspire')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.floodHeightInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.floodHeightInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500" ng-show="m_oController.Flooding">
-                        <label for="floodingheight-direction-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="floodingheight-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'floodHeightTimeSeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.floodHeightTimeSeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.floodHeightTimeSeries == null">
+                    <div class="loading" ng-show="m_oController.floodHeightTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="floodingheight-direction-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="floodingheight-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'floodHeightTimeSeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.floodHeightTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.floodHeightTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -500,25 +620,45 @@
                     <textarea class="form-control" rows="2" placeholder="Description" ng-model="m_oController.m_oEvent.reporedCasualtiesDescription"></textarea>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="report-direction-file-input-inspire">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="report-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'reporedCasualtiesInspire')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.reporedCasualtiesInspire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.reporedCasualtiesInspire == null">
+                    <div class="loading" ng-show="m_oController.reporedCasualtiesInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="report-direction-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="report-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'reporedCasualtiesInspire')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.reporedCasualtiesInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.reporedCasualtiesInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="report-direction-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="report-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'reporedCasualtiesTimeSeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.reporedCasualtiesTimeSeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.reporedCasualtiesTimeSeries == null">
+                    <div class="loading" ng-show="m_oController.reporedCasualtiesTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="report-direction-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="report-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'reporedCasualtiesTimeSeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.reporedCasualtiesTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.reporedCasualtiesTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
@@ -547,25 +687,45 @@
                     <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.damageToBuildingsCost" step="any" min="0">
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="damage-direction-file-input-inspire">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="damage-direction-file-input-inspire" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'damageToBuildingsInspire')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.damageToBuildingsInspire == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.damageToBuildingsInspire == null">
+                    <div class="loading" ng-show="m_oController.damageToBuildingsInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="damage-direction-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="damage-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'damageToBuildingsInspire')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.damageToBuildingsInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.damageToBuildingsInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
                 <td>
-                    <div class="loading" ng-show="false"></div>
-                    <div class="project-icon" tooltip-popup-delay="500">
-                        <label for="damage-direction-file-input-timeseries">
-                            <img src="img/upload.png"/>
-                        </label>
-                        <input id="damage-direction-file-input-timeseries" type="file" ng-hide="true" ng-file-select="onFileSelect($files, 'damageToBuildingsTimeSeries')"/>
-                        <img src="img/download.png" tooltip="Download" ng-hide="m_oController.m_oEvent.damageToBuildingsTimeSeries == null">
-                        <img src="img/delete.png" tooltip="Delete" ng-hide="m_oController.m_oEvent.damageToBuildingsTimeSeries == null">
+                    <div class="loading" ng-show="m_oController.damageToBuildingsTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="damage-direction-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="damage-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'damageToBuildingsTimeSeries')" ng-hide="true" />
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.damageToBuildingsTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.damageToBuildingsTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
                     </div>
                 </td>
             </tr>
