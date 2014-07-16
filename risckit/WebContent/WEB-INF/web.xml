@@ -39,20 +39,20 @@
 		</init-param>
 		<init-param>
 			<param-name>SvnRepository</param-name>
-			<!-- <param-value>https://github.com/fadeoutsoftware/risckitTool/</param-value> -->
-			<param-value>https://10.0.1.3:8443/svn/risctest</param-value>
+			<param-value>https://svn.oss.deltares.nl/repos/openearthrawdata/trunk/</param-value>
+			<!-- <param-value>https://github.com/fadeoutsoftware/omirl/trunk/</param-value>  -->
 		</init-param>
 		<init-param>
 			<param-name>SvnUser</param-name>
-			<param-value>s.adamo</param-value>
+			<param-value>risckit</param-value>
 		</init-param>
 		<init-param>
 			<param-name>SvnUserDomain</param-name>
-			<param-value>FADEOUT</param-value>
+			<param-value></param-value>
 		</init-param>
 		<init-param>
 			<param-name>SvnPwd</param-name>
-			<param-value>vera234</param-value>
+			<param-value>7m6dcdJM</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
