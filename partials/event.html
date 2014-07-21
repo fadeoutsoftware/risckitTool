@@ -70,7 +70,7 @@
                     <div class="radio-inline">
                         <label>
                             <input type="radio" value="true" ng-model="m_oController.m_oEvent.unitApproximated" ng-checked="true">
-                            Approximated
+                            Approximate
                         </label>
                     </div>
                     <div class="radio-inline">
@@ -79,6 +79,11 @@
                             Exact
                         </label>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" class="text-center">
+                    <label class="control-label">Wave information</label>
                 </td>
             </tr>
             <tr>
@@ -139,7 +144,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wave-height-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveHeightTimeSeries')" ng-hide="true" />
+                        <input id="wave-height-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveHeightTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waveHeightTimeSeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -151,7 +156,7 @@
             </tr>
             <tr>
                 <td rowspan="2">
-                    <label class="control-label">Wave Directions</label>
+                    <label class="control-label">Wave Direction</label>
                 </td>
                 <td>
                     <label class="control-label">Type</label>
@@ -177,57 +182,57 @@
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenord" ng-checked="true">
+                                <img src="img/arrow_down.png" tooltip="Nord" >
                                 N
-                                <img src="img/arrow_up.png" tooltip="Nord" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NE"ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordest">
+                                <img src="img/arrow_down_left.png" tooltip="Nord-Est" >
                                 NE
-                                <img src="img/arrow_up_right.png" tooltip="Nord-Est" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="E" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveest">
+                                <img src="img/arrow_left.png" tooltip="Est" >
                                 E
-                                <img src="img/arrow_right.png" tooltip="Est" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SE" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudest">
+                                <img src="img/arrow_up_left.png" tooltip="Sud-Est" >
                                 SE
-                                <img src="img/arrow_down_right.png" tooltip="Sud-Est" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="S" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesud">
+                                <img src="img/arrow_up.png" tooltip="Sud" >
                                 S
-                                <img src="img/arrow_down.png" tooltip="Sud" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudovest">
+                                <img src="img/arrow_up_right.png" tooltip="Sud-West" >
                                 SW
-                                <img src="img/arrow_down_left.png" tooltip="Sud-West" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="O" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveovest">
+                                <img src="img/arrow_right.png" tooltip="West" >
                                 W
-                                <img src="img/arrow_left.png" tooltip="West" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordovest">
+                                <img src="img/arrow_down_right.png" tooltip="Nord-West" >
                                 NW
-                                <img src="img/arrow_up_left.png" tooltip="Nord-West" >
                             </label>
                         </div>
                     </div>
@@ -244,7 +249,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wavedirection-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveDirectionInspire')" ng-hide="true" />
+                        <input id="wavedirection-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()" />
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waveDirectionInspireuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -265,7 +270,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wavedirection-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveDirectionTimeSeries')" ng-hide="true" />
+                        <input id="wavedirection-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waveDirectionTimeSeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -273,6 +278,11 @@
                             <img src="img/delete.png"  >
                         </div>
                     </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="6" class="text-center">
+                    <label class="control-label">Wind information</label>
                 </td>
             </tr>
             <tr>
@@ -312,7 +322,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-intensity-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityInspire')" ng-hide="true" />
+                        <input id="wind-intensity-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windIntensityInspireuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -333,7 +343,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-intensity-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensitySeries')" ng-hide="true" />
+                        <input id="wind-intensity-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensitySeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windIntensitySeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -345,7 +355,7 @@
             </tr>
             <tr>
                 <td rowspan="2">
-                    <label class="control-label">Wind Directions</label>
+                    <label class="control-label">Wind Direction</label>
                 </td>
                 <td>
                     <label class="control-label">Type</label>
@@ -372,57 +382,57 @@
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnord" checked>
+                                <img src="img/arrow_down.png" tooltip="Nord" >
                                 N
-                                <img src="img/arrow_up.png" tooltip="Nord" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NE" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnordest">
+                                <img src="img/arrow_down_left.png" tooltip="Nord-Est" >
                                 NE
-                                <img src="img/arrow_up_right.png" tooltip="Nord-Est" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="E" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windest">
+                                <img src="img/arrow_left.png" tooltip="Est" >
                                 E
-                                <img src="img/arrow_right.png" tooltip="Est" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SE" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsudest">
+                                <img src="img/arrow_up_left.png" tooltip="Sud-Est" >
                                 SE
-                                <img src="img/arrow_down_right.png" tooltip="Sud-Est" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="S" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsud">
+                                <img src="img/arrow_up.png" tooltip="Sud" >
                                 S
-                                <img src="img/arrow_down.png" tooltip="Sud" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SO" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsudovest">
+                                <img src="img/arrow_up_right.png" tooltip="Sud-West" >
                                 SW
-                                <img src="img/arrow_down_left.png" tooltip="Sud-West" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="O"  ng-model="m_oController.m_oEvent.windDirectionClustered" id="windovest">
+                                <img src="img/arrow_right.png" tooltip="West" >
                                 W
-                                <img src="img/arrow_left.png" tooltip="West" >
                             </label>
                         </div>
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NO" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnordovest">
+                                <img src="img/arrow_down_right.png" tooltip="Nord-West" >
                                 NW
-                                <img src="img/arrow_up_left.png" tooltip="Nord-West" >
                             </label>
                         </div>
                     </div>
@@ -439,7 +449,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windDirectionInspire')" ng-hide="true" />
+                        <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windDirectionInspireuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -460,7 +470,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windDirectionTimeSeries')" ng-hide="true" />
+                        <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.windDirectionTimeSeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -470,12 +480,82 @@
                     </div>
                 </td>
             </tr>
+
+            <tr>
+                <td rowspan="2">
+                    <label class="control-label">Water Level</label>
+                </td>
+                <td>
+                    <label class="control-label">Type</label>
+                </td>
+                <td>
+                    <label class="control-label">Value ((meters))</label>
+                </td>
+                <td>
+                    <label class="control-label">Inspire</label>
+                </td>
+                <td>
+                    <label class="control-label">Time Series</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select class="form-control" ng-model="m_oController.m_oEvent.waterLevelType" ng-options="idx as choice for (idx, choice) in m_oController.m_oWaterLevelType">
+                    </select>
+                </td>
+                <td>
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waterLevelValue" step="any" min="0">
+                </td>
+                <td>
+                    <div class="loading" ng-show="m_oController.waterLevelInspireuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="water-level-file-input-inspire">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="water-level-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waterLevelInspireuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.waterLevelInspireuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="loading" ng-show="m_oController.waterLevelTimeSeriesuploading">
+                        <img src="img/Spinner.gif" class="loading"/>
+                    </div>
+                    <div>
+                        <div class="div-td">
+                            <label for="water-level-file-input-timeseries">
+                                <div class="project-icon" tooltip-popup-delay="500" tooltip="Upload">
+                                    <img class="project-icon-image" src="img/upload.png"/>
+                                </div>
+                            </label>
+                        </div>
+                        <input id="water-level-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensitySeries')" ng-hide="true" ng-click="m_oController.Check()"/>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.waterLevelTimeSeriesuploaded">
+                            <img src="img/download.png" >
+                        </div>
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.waterLevelTimeSeriesuploaded">
+                            <img src="img/delete.png"  >
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
             <tr>
                 <td rowspan="4">
                     <label class="control-label">River Flooding</label>
                 </td>
                 <td>
-                    <label class="control-label">Enable</label>
+                    <label class="control-label">Relevant</label>
                 </td>
                 <td>
                     <label class="control-label" ng-show="m_oController.Flooding">Peak Water discharge (m^3/s)</label>
@@ -506,7 +586,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="riverflooding-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'peakWaterInpire')" ng-hide="true" />
+                        <input id="riverflooding-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'peakWaterInpire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.peakWaterInpireuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -527,7 +607,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="riverflooding-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'peakWaterTimeSeries')" ng-hide="true" />
+                        <input id="riverflooding-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'peakWaterTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.peakWaterTimeSeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -564,7 +644,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="floodingheight-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'floodHeightInspire')" ng-hide="true" />
+                        <input id="floodingheight-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'floodHeightInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.floodHeightInspireuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -585,7 +665,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="floodingheight-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'floodHeightTimeSeries')" ng-hide="true" />
+                        <input id="floodingheight-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'floodHeightTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.floodHeightTimeSeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -631,7 +711,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="report-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'reporedCasualtiesInspire')" ng-hide="true" />
+                        <input id="report-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'reporedCasualtiesInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.reporedCasualtiesInspireuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -652,7 +732,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="report-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'reporedCasualtiesTimeSeries')" ng-hide="true" />
+                        <input id="report-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'reporedCasualtiesTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.reporedCasualtiesTimeSeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -698,7 +778,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="damage-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'damageToBuildingsInspire')" ng-hide="true" />
+                        <input id="damage-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'damageToBuildingsInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.damageToBuildingsInspireuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -719,7 +799,7 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="damage-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'damageToBuildingsTimeSeries')" ng-hide="true" />
+                        <input id="damage-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'damageToBuildingsTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.damageToBuildingsTimeSeriesuploaded">
                             <img src="img/download.png" >
                         </div>
@@ -801,11 +881,11 @@
     </div>
 
     <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-2">
-            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.AddMedia()">Add media</button>
+        <div class="col-sm-offset-2 col-sm-3">
+            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.AddMedia()">Add supplementary media</button>
         </div>
-        <div class="col-sm-2">
-            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.AddGIS('sm')">Add GIS</button>
+        <div class="col-sm-3">
+            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.AddGIS('sm')">Add supplementary GIS</button>
         </div>
         <div class="col-sm-2">
             <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()">Send</button>

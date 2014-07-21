@@ -1,12 +1,14 @@
 <div class="container-fluid">
     <div class="modal-header">
-        <h3 class="modal-title">Add GIS-INSPIRE File</h3>
+        <h3 class="modal-title">Add GIS and INSPIRE File</h3>
     </div>
     <div class="modal-body">
         <div class="row col-lg-offset-1 col-lg-3">
-            <div class="loading" ng-show="false"></div>
+            <div class="loading" ng-show="m_oController.m_oUploadingGis">
+                <img src="img/Spinner.gif" class="loading"/>
+            </div>
+            <label>GIS</label>
             <div class="project-icon" tooltip-popup-delay="500">
-                <label>GIS</label>
                 <label for="gis-input">
                     <img src="img/upload.png"/>
                 </label>
@@ -14,18 +16,24 @@
             </div>
         </div>
         <div class="row col-lg-offset-1 col-lg-3">
-            <div class="loading" ng-show="false"></div>
+            <div class="loading" ng-show="m_oController.m_oUploadingInspire">
+                <img src="img/Spinner.gif" class="loading"/>
+            </div>
+            <label>Inspire</label>
             <div class="project-icon" tooltip-popup-delay="500">
-                <label>Inspire</label>
                 <label for="Inspire-input">
                     <img src="img/upload.png"/>
                 </label>
                 <input id="Inspire-input" type="file" file-Model="m_oController.m_sInspireFilePath" ng-hide="true" ng-file-select="onFileSelect($files, 1)"/>
             </div>
         </div>
+        <br/>
+        <br/>
+        <br/>
+
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="m_oController.ok()" ng-show="m_oController.Uploaded()" >Close</button>
+        <button class="btn btn-primary" ng-click="m_oController.ok()" >Close</button>
         <button class="btn btn-warning" ng-click="m_oController.cancel()">Cancel</button>
     </div>
 </div>

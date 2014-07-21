@@ -30,21 +30,25 @@
                 </tr>
             </table>
             <div class="row col-lg-offset-1 col-lg-1">
-                <div class="loading" ng-show="false"></div>
-                <div class="project-icon" tooltip-popup-delay="500">
-                    <label for="media-input">
-                        <img src="img/upload.png" />
+                <div class="loading" ng-show="m_oController.m_oUploading">
+                    <img src="img/Spinner.gif" class="loading"/>
+                </div>
+                <div class="project-icon">
+                    <label for="media-input" tooltip-popup-delay="500" tooltip="Upload">
+                       <img src="img/upload.png"/>
                     </label>
                     <input id="media-input" type="file" file-Model="m_oController.m_sFilePath" ng-file-select="onFileSelect($files)" ng-hide="true"/>
                 </div>
+
             </div>
         </div>
+        <br/>
         <div class="row">
-            <div class="col-lg-offset-1 col-lg-1 form-group">
-                <div class="col-sm-2">
-                    <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()" ng-show="m_oController.Uploaded()">Close</button>
-                    <button class="btn btn-warning" ng-click="m_oController.cancel()">Cancel</button>
-                </div>
+            <div class="col-lg-offset-1 col-sm-2">
+                <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()">Close</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-primary btn-lg" ng-click="m_oController.cancel()">Cancel</button>
             </div>
         </div>
     </div>
