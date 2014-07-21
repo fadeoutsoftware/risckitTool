@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
@@ -21,7 +22,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement
 public class EventViewModel {
 	
-	private int id;
+	private Integer id;
 	
 	private String countryCode;
 	
@@ -111,11 +112,19 @@ public class EventViewModel {
 	
 	private String regionName;
 	
-	public int getId() {
+	private Integer waterLevelType;
+	
+	private BigDecimal waterLevelValue;
+	
+	private String waterLevelInspire;
+	
+	private String waterLevelTimeSeries;
+	
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -492,6 +501,38 @@ public class EventViewModel {
 
 	public void setRegionName(String regionName) {
 		this.regionName = regionName;
+	}
+
+	public Integer getWaterLevelType() {
+		return waterLevelType;
+	}
+
+	public void setWaterLevelType(Integer waterLevelType) {
+		this.waterLevelType = waterLevelType;
+	}
+
+	public BigDecimal getWaterLevelValue() {
+		return waterLevelValue;
+	}
+
+	public void setWaterLevelValue(BigDecimal waterLevelValue) {
+		this.waterLevelValue = waterLevelValue;
+	}
+
+	public String getWaterLevelInspire() {
+		return waterLevelInspire;
+	}
+
+	public void setWaterLevelInspire(String waterLevelInspire) {
+		this.waterLevelInspire = waterLevelInspire;
+	}
+
+	public String getWaterLevelTimeSeries() {
+		return waterLevelTimeSeries;
+	}
+
+	public void setWaterLevelTimeSeries(String waterLevelTimeSeries) {
+		this.waterLevelTimeSeries = waterLevelTimeSeries;
 	}
 	
 }

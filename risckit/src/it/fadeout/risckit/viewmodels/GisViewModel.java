@@ -13,6 +13,10 @@ public class GisViewModel {
 	
 	private int eventId;
 	
+	private String downloadGisPath;
+	
+	private String downloadInspirePath;
+	
 	public String getGisFile() {
 		return GisFile;
 	}
@@ -43,6 +47,22 @@ public class GisViewModel {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getDownloadGisPath() {
+		return downloadGisPath;
+	}
+
+	public void setDownloadGisPath(String downloadGisPath) {
+		this.downloadGisPath = downloadGisPath;
+	}
+
+	public String getDownloadInspirePath() {
+		return downloadInspirePath;
+	}
+
+	public void setDownloadInspirePath(String downloadInspirePath) {
+		this.downloadInspirePath = downloadInspirePath;
 	}
 	
 }

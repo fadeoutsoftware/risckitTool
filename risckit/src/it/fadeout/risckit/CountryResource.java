@@ -16,7 +16,7 @@ import javax.ws.rs.Produces;
 
 @Path("/countries")
 public class CountryResource {
-	
+
 	@GET
 	@Path("/all")
 	@Produces({"application/json"})
@@ -28,12 +28,15 @@ public class CountryResource {
 			CountryRepository oRepo = new CountryRepository();
 			List<Country> oEntities = oRepo.SelectAllCountries();
 
-			for (Country oCountry : oEntities) {
-				CountryViewModel oViewModel = new CountryViewModel();
-				oViewModel.setid(oCountry.getId());
-				oViewModel.setcountryname(oCountry.getName());
-				oViewModel.setCountryCode(oCountry.getCountryCode());
-				oReturnList.add(oViewModel);
+			if (oEntities != null)
+			{
+				for (Country oCountry : oEntities) {
+					CountryViewModel oViewModel = new CountryViewModel();
+					oViewModel.setid(oCountry.getId());
+					oViewModel.setcountryname(oCountry.getName());
+					oViewModel.setCountryCode(oCountry.getCountryCode());
+					oReturnList.add(oViewModel);
+				}
 			}
 
 			return oReturnList;
@@ -46,7 +49,7 @@ public class CountryResource {
 		}
 
 	}
-	
+
 	@GET
 	@Path("/regions/{countrycode}")
 	@Produces({"application/json"})
@@ -77,5 +80,5 @@ public class CountryResource {
 
 	}
 
-	
+
 }

@@ -45,10 +45,16 @@ public class GisResource {
 
 				Gis oGis = new Gis();
 				oGis.setEventId(oGisViewModel.getEventId());
-				oGis.setGisFile(oGisViewModel.getGisFile());
-				oGis.setInspireFile(oGisViewModel.getInspireFile());
-				oRepo.Save(oGis);
-				
+				oGis.setGisFile(oGisViewModel.getDownloadGisPath());
+				oGis.setInspireFile(oGisViewModel.getDownloadInspirePath());
+				if (oGisViewModel.getId() == null || oGisViewModel.getId() == 0)
+					oRepo.Save(oGis);
+				else
+				{
+					oGis.setId(oGisViewModel.getId());
+					oRepo.Update(oGis);
+				}
+					
 				if (oGis != null)
 					oGisViewModel.setId(oGis.getId());
 				

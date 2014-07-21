@@ -14,6 +14,7 @@ import it.fadeout.risckit.business.Event;
 import it.fadeout.risckit.business.SVNUtils;
 import it.fadeout.risckit.data.CountryRepository;
 import it.fadeout.risckit.data.EventRepository;
+import it.fadeout.risckit.viewmodels.CountryViewModel;
 import it.fadeout.risckit.viewmodels.EventViewModel;
 
 import javax.servlet.ServletConfig;
@@ -73,14 +74,26 @@ public class EventResource {
 				oEvent.setDamageToBuildingsCost(oViewModel.getDamageToBuildingsCost());
 				oEvent.setCostDetail(oViewModel.getCostDetail());
 				oEvent.setDescriptionOfMeasure(oViewModel.getDescriptionOfMeasure());
-				if (oViewModel.getId() == 0)
+				oEvent.setWaterLevelType(oViewModel.getWaterLevelType());
+				oEvent.setWaterLevelValue(oViewModel.getWaterLevelValue());
+				oEvent.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
+				oEvent.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
+				if (oViewModel.getId() == null || oViewModel.getId() == 0)
+				{
 					oRepo.Save(oEvent);
+				}
 				else
+				{
+					oEvent.setId(oViewModel.getId());
 					oRepo.Update(oEvent);
-
+				}
+				
 				if (oEvent != null)
 				{
 					oViewModel.setId(oEvent.getId());
+					//Load Country
+					CountryRepository oRepoCountry = new CountryRepository();
+					oEvent.setCountry(oRepoCountry.Select(oEvent.getCountryId(), Country.class));
 					//csv
 					
 					String sLocation = oViewModel.getCountryCode() + "_" + oViewModel.getRegionName();

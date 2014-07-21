@@ -48,7 +48,13 @@ public class MediaResource {
 				oMedia.setFile(oMediaViewModel.getDownloadPath());
 				oMedia.setDate(oMediaViewModel.getDate());
 				oMedia.setDescription(oMediaViewModel.getDescription());
-				oRepo.Save(oMedia);
+				if (oMediaViewModel.getId() == null || oMediaViewModel.getId() == 0)
+					oRepo.Save(oMedia);
+				else
+				{
+					oMedia.setId(oMediaViewModel.getId());
+					oRepo.Update(oMedia);
+				}
 					
 				if (oMedia != null)
 					oMediaViewModel.setId(oMedia.getId());
@@ -63,38 +69,6 @@ public class MediaResource {
 		return oMediaViewModel;
 	}
 	
-	@POST
-	@Path("/update/{mediaid}")
-	@Consumes({"application/xml", "application/json", "text/xml"})
-	@Produces({"application/json"})
-	public MediaViewModel UpdateMedia(MediaViewModel oMediaViewModel, @PathParam("mediaid") Integer iMediaId) {
-
-		try
-		{
-			if (oMediaViewModel != null)
-			{
-				MediaRepository oRepo = new MediaRepository();
-				Media oMedia = new Media();
-				oMedia.setId(iMediaId);
-				oMedia.setEventId(oMediaViewModel.getEventId());
-				oMedia.setLat(oMediaViewModel.getLat());
-				oMedia.setLon(oMediaViewModel.getLon());
-				oMedia.setFile(oMediaViewModel.getDownloadPath());
-				oMedia.setDate(oMediaViewModel.getDate());
-				oMedia.setDescription(oMediaViewModel.getDescription());
-				oRepo.Update(oMedia);
-				
-			}
-		}
-		catch(Exception oEx)
-		{
-			oEx.printStackTrace();
-
-		}
-
-		return oMediaViewModel;
-	}
-
 	@SuppressWarnings("unused")
 	@POST
 	@Path("/upload")
