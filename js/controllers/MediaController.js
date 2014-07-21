@@ -14,8 +14,8 @@ var MediaController = (function() {
         this.m_sFilePath = null;
         this.uploadRightAway = true;
         this.description = null;
+        this.m_oUploading = false;
         this.date = null;
-        this.m_oEventService.setUploaded(false)
         this.Files = [];
         this.m_oSharedService = oSharedService;
         this.NewMedia;
@@ -109,8 +109,20 @@ var MediaController = (function() {
         $scope.start = function (index) {
             $scope.progress[index] = 0;
             $scope.errorMsg = null;
+            $scope.m_oController.m_oUploading = true;
+            $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function(data){
+                $scope.m_oController.m_oSharedService.getEvent().id = data.id;
+                $scope.m_oController.NewMedia.eventId = data.id;
+                $scope.m_oController.m_oEventService.SaveMedia($scope.m_oController.NewMedia).success(function(data){
+                    $scope.m_oController.NewMedia.id = data.id;
+                    $scope.m_oController.m_oEventService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function(data){
+                        $scope.m_oController.NewMedia.downloadPath = data;
+                        $scope.m_oController.m_oUploading = false;
+                    });
+                })
+            });
 
-            $scope.m_oController.m_oEventService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]);
+
 
         };
 
@@ -129,7 +141,7 @@ var MediaController = (function() {
         }
 
         var oController = this.m_oScope.m_oController;
-        this.m_oEventService.UpdateMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
+        this.m_oEventService.SaveMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
 
             if (data != null)
                 oController.m_oLocation.path('event');
@@ -138,10 +150,6 @@ var MediaController = (function() {
         });
     };
 
-        MediaController.prototype.Uploaded = function() {
-            return this.m_oEventService.Uploaded();
-
-        };
 
     MediaController.prototype.cancel = function() {
         this.m_oLocation.path('event');

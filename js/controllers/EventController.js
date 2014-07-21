@@ -34,10 +34,11 @@ var EventController = (function() {
         this.m_oEvent.WindDiectionType = 0;
         this.m_oEvent.unitHour = true;
         this.m_oEvent.unitApproximated = true;
-        this.m_oWaveHeightType = ["Mean", "Significant", "Peak"];
-        this.m_oWaveDiectionType = ["Degrees", "Clustered"];
-        this.m_oWindDiectionType = ["Degrees", "Clustered"];
-        this.m_oWindIntensityType = ["Maximun values", "Time average", "Maximun gust"];
+        this.m_oWaveHeightType = ["Mean significant during event", "Peak significant", "Maximum"];
+        this.m_oWaveDiectionType = ["Degrees from N", "Compass"];
+        this.m_oWindDiectionType = ["Degrees from N", "Compass"];
+        this.m_oWaterLevelType = ["Total water level", "Astronomical tide"];
+        this.m_oWindIntensityType = ["Mean speed during event", "Maximum speed", "Maximum gust"];
         this.m_oCostDetails = ["Direct Cost", "Business Interruption Cost", "Indirect Cost", "Intangible Cost", "Risk mitigation Cost"];
         this.Flooding = false;
 
@@ -50,15 +51,16 @@ var EventController = (function() {
         $scope.$watch('m_oController.m_oEvent.countryCode', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 //load regions
-                $scope.m_oController.m_oEventService.GetAllRegions($scope.m_oController.m_oEvent.countryCode).success(function (data, status) {
-                    $scope.m_oController.m_oRegions = data;
-                    if ($scope.m_oController.m_oSharedService.getEvent() != null)
-                    {
-                        $scope.m_oController.m_oEvent.countryId = $scope.m_oController.m_oSharedService.getEvent().countryId;
-                        $scope.$apply();
-                    }
+                if ($scope.m_oController.m_oEvent.countryCode != null) {
+                    $scope.m_oController.m_oEventService.GetAllRegions($scope.m_oController.m_oEvent.countryCode).success(function (data, status) {
+                        $scope.m_oController.m_oRegions = data;
+                        if ($scope.m_oController.m_oSharedService.getEvent() != null) {
+                            $scope.m_oController.m_oEvent.countryId = $scope.m_oController.m_oSharedService.getEvent().countryId;
+                            $scope.$apply();
+                        }
 
-                });
+                    });
+                }
             }
         });
 
@@ -119,6 +121,16 @@ var EventController = (function() {
                     $scope.m_oController.m_oEvent.windDirectionTimeSeries = $files[0].name;
                     $scope.m_oController.windDirectionTimeSeriesuploading = true;
                     $scope.m_oController.windDirectionTimeSeriesuploaded = false;
+                }
+                if (parameter == 'waterLevelInspire'){
+                    $scope.m_oController.m_oEvent.waterLevelInspire = $files[0].name;
+                    $scope.m_oController.waterLevelInspireuploading = true;
+                    $scope.m_oController.waterLevelInspireuploaded = false;
+                }
+                if (parameter == 'waterLevelTimeSeries'){
+                    $scope.m_oController.m_oEvent.waterLevelTimeSeries = $files[0].name;
+                    $scope.m_oController.waterLevelTimeSeriesuploading = true;
+                    $scope.m_oController.waterLevelTimeSeriesuploaded = false;
                 }
                 if (parameter == 'peakWaterInpire'){
                     $scope.m_oController.m_oEvent.peakWaterInpire = $files[0].name;
@@ -245,6 +257,16 @@ var EventController = (function() {
                         $scope.m_oController.windDirectionTimeSeriesuploading = false;
                         $scope.m_oController.windDirectionTimeSeriesuploaded = true;
                     }
+                    if ($scope.parameter == 'waterLevelInspire') {
+                        $scope.m_oController.m_oEvent.waterLevelInspire = data;
+                        $scope.m_oController.waterLevelInspireuploading = false;
+                        $scope.m_oController.waterLevelInspireuploaded = true;
+                    }
+                    if ($scope.parameter == 'waterLevelTimeSeries') {
+                        $scope.m_oController.m_oEvent.waterLevelTimeSeries = data;
+                        $scope.m_oController.waterLevelTimeSeriesuploading = false;
+                        $scope.m_oController.waterLevelTimeSeriesuploaded = true;
+                    }
                     if ($scope.parameter == 'peakWaterInpire') {
                         $scope.m_oController.m_oEvent.peakWaterInpire = data;
                         $scope.m_oController.peakWaterInpireuploading = false;
@@ -290,23 +312,6 @@ var EventController = (function() {
 
                 });
             });
-
-
-
-            /*$scope.upload[index].then(function (response) {
-                $timeout(function () {
-                    $scope.uploadResult.push(response.data);
-                });
-            }, function (response) {
-                if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
-            }, function (evt) {
-                // Math.min is to fix IE which reports 200% sometimes
-                $scope.progress[index] = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-            });
-            $scope.upload[index].xhr(function (xhr) {
-//				xhr.upload.addEventListener('abort', function() {console.log('abort complete')}, false);
-            });*/
-
         };
 
     }
@@ -314,28 +319,33 @@ var EventController = (function() {
 
 
     EventController.prototype.AddMedia = function (partial, size) {
-        this.m_oSharedService.setEvent(this.m_oEvent);
-        this.m_oLocation.path('media');
 
+        if (this.m_oScope.m_oController.CheckAddMediaGis()) {
+            this.m_oSharedService.setEvent(this.m_oEvent);
+            this.m_oLocation.path('media');
+        }
     };
 
     EventController.prototype.AddGIS = function (size) {
-        this.m_oSharedService.setEvent(this.m_oEvent);
-        var oScope = this.m_oScope;
 
-        var modalInstance = this.m_oModal.open({
-            templateUrl:  'partials/gis.html',
-            controller: GisController,
-            size: size
-        });
+        if(this.m_oScope.m_oController.CheckAddMediaGis()) {
+            this.m_oSharedService.setEvent(this.m_oEvent);
+            var oScope = this.m_oScope;
 
-        modalInstance.result.then(function(GISFilesName, InspireFilesName) {
-            if (GISFilesName != null)
-                oScope.m_oController.m_oEvent.GIS.GisFile = GISFilesName.name;
-            if (InspireFilesName != null)
-                oScope.m_oController.m_oEvent.GIS.InspireFile = InspireFilesName.name;
+            var modalInstance = this.m_oModal.open({
+                templateUrl: 'partials/gis.html',
+                controller: GisController,
+                size: size
+            });
 
-        });
+            modalInstance.result.then(function (GISFilesName, InspireFilesName) {
+                if (GISFilesName != null)
+                    oScope.m_oController.m_oEvent.GIS.GisFile = GISFilesName.name;
+                if (InspireFilesName != null)
+                    oScope.m_oController.m_oEvent.GIS.InspireFile = InspireFilesName.name;
+
+            });
+        }
 
     };
 
@@ -366,9 +376,15 @@ var EventController = (function() {
             alert("Select country, region and start date, please!");
             event.preventDefault();
         }
+    };
 
+    EventController.prototype.CheckAddMediaGis = function () {
+        if (this.m_oScope.m_oController.m_oEvent.countryId == null || this.m_oScope.m_oController.m_oEvent.startDate == null) {
+            alert("Select country, region and start date, please!");
+            return false;
+        }
 
-        return;
+        return true;
     };
 
 

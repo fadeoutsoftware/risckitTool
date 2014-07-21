@@ -10,9 +10,10 @@ var GisController = (function() {
         this.m_oModaleInstance = $modalInstance;
         this.m_oSharedService = oSharedService;
         this.m_oEventService = oEventService;
-        this.m_oEventService.setUploaded(false);
         this.m_sGisFilePath = null;
         this.m_sInspireFilePath = null;
+        this.m_oUploadingGis = false;
+        this.m_oUploadingInspire = false;
         this.m_oGISFiles;
         this.m_oInspireFiles;
         this.uploadRightAway = true;
@@ -71,9 +72,27 @@ var GisController = (function() {
         $scope.start = function (index) {
             $scope.progress[index] = 0;
             $scope.errorMsg = null;
-
-            $scope.m_oController.m_oEventService.UploadGis($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.m_oSharedService.getEvent().GIS, $scope.selectedFiles[index], $scope.type);
-
+            if ($scope.type)
+                $scope.m_oController.m_oUploadingGis = true;
+            else
+                $scope.m_oController.m_oUploadingInspire = true;
+            $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function(data){
+                $scope.m_oController.m_oSharedService.getEvent().id = data.id;
+                $scope.m_oController.m_oSharedService.getEvent().GIS.eventId = data.id;
+                $scope.m_oController.m_oEventService.SaveGis($scope.m_oController.m_oSharedService.getEvent().GIS).success(function(data){
+                    $scope.m_oController.m_oSharedService.getEvent().GIS.id = data.id;
+                    $scope.m_oController.m_oEventService.UploadGis($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.m_oSharedService.getEvent().GIS, $scope.selectedFiles[index], $scope.type).success(function(data){
+                        if ($scope.type == 0) {
+                            $scope.m_oController.m_oSharedService.getEvent().GIS.downloadGisPath = data;
+                            $scope.m_oController.m_oUploadingGis = false;
+                        }
+                        else {
+                            $scope.m_oController.m_oSharedService.getEvent().GIS.downloadInspirePath = data;
+                            $scope.m_oController.m_oUploadingInspire = false;
+                        }
+                    });
+                })
+            });
         };
 
     };
@@ -85,11 +104,6 @@ var GisController = (function() {
 
     GisController.prototype.cancel  = function () {
         this.m_oModaleInstance.dismiss('cancel');
-
-    };
-
-    GisController.prototype.Uploaded = function() {
-        return this.m_oEventService.Uploaded();
 
     };
 
