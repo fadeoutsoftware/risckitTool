@@ -58,15 +58,19 @@ public class CountryResource {
 		try
 		{	
 			ArrayList<CountryViewModel> oReturnList = new ArrayList<CountryViewModel>();
-			CountryRepository oRepo = new CountryRepository();
-			List<Country> oEntities = oRepo.SelectAllRegionsByCountry(sCountryCode);
+			if (sCountryCode != null && !sCountryCode.equals(""))
+			{
 
-			for (Country oCountry : oEntities) {
-				CountryViewModel oViewModel = new CountryViewModel();
-				oViewModel.setid(oCountry.getId());
-				oViewModel.setcountryname(oCountry.getName());
-				oViewModel.setCountryCode(oCountry.getCountryCode());
-				oReturnList.add(oViewModel);
+				CountryRepository oRepo = new CountryRepository();
+				List<Country> oEntities = oRepo.SelectAllRegionsByCountry(sCountryCode);
+
+				for (Country oCountry : oEntities) {
+					CountryViewModel oViewModel = new CountryViewModel();
+					oViewModel.setid(oCountry.getId());
+					oViewModel.setcountryname(oCountry.getName());
+					oViewModel.setCountryCode(oCountry.getCountryCode());
+					oReturnList.add(oViewModel);
+				}
 			}
 
 			return oReturnList;
