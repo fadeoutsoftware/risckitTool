@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import it.fadeout.risckit.business.Country;
@@ -18,10 +19,11 @@ public class CountryRepository extends Repository<Country> {
 
 		try {
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			Transaction oTx = oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Country.class);
 			oCriteria.add(Restrictions.eq("NutsLevel", "0"));
 			aoList = oCriteria.list();
-				
+			oTx.commit();	
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
@@ -47,11 +49,12 @@ public class CountryRepository extends Repository<Country> {
 
 		try {
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			Transaction oTx = oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Country.class);
 			oCriteria.add(Restrictions.eq("NutsLevel", "2"));
 			oCriteria.add(Restrictions.eq("CountryCode", sCountryCode));
 			aoList = oCriteria.list();
-				
+			oTx.commit();	
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
