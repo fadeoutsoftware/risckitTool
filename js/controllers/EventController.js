@@ -44,8 +44,8 @@ var EventController = (function() {
 
         //load countries
          this.m_oEventService.GetAllCountries().success(function (data, status) {
-             $scope.m_oController.m_oEvent.countryCode = null;
              $scope.m_oController.m_oCountries = data;
+             $scope.m_oController.m_oEvent.countryCode = null;
          });
 
         $scope.$watch('m_oController.m_oEvent.countryCode', function (newVal, oldVal) {
