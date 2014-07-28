@@ -4,8 +4,8 @@
 'use strict';
 angular.module('risckit.loginService', []).
     service('LoginService', ['$http',  function ($http) {
-        this.APIURL = 'http://localhost:8080/GenUserServer/rest';
-        //this.APIURL = 'http://95.110.165.229/GenUserServer/rest';
+        //this.APIURL = 'http://localhost:8080/GenUserServer/rest';
+        this.APIURL = 'http://95.110.165.229/GenUserServer/rest';
 
         this.m_oHttp = $http;
         this.m_bIsLogged = null;

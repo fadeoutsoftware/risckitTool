@@ -3,8 +3,8 @@
  */
 angular.module('risckit.eventService', []).
     service('EventService',  ['$http', '$upload', function ($http, $upload) {
-        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        //this.APIURL = 'http://localhost:8080/risckit/rest';
+        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
         //this.m_oUpload = $upload;
 
