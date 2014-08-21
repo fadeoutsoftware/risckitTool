@@ -43,10 +43,9 @@ var EventController = (function() {
         this.Flooding = false;
 
         //load countries
-         this.m_oEventService.GetAllCountries().success(function (data, status) {
-             $scope.m_oController.m_oCountries = data;
-             $scope.m_oController.m_oEvent.countryCode = null;
-         });
+        if (this.m_oLoginService.isLogged()) {
+            this.m_oEventService.LoadCountries()
+        }
 
         $scope.$watch('m_oController.m_oEvent.countryCode', function (newVal, oldVal) {
             if (newVal !== oldVal) {
@@ -324,6 +323,11 @@ var EventController = (function() {
             this.m_oSharedService.setEvent(this.m_oEvent);
             this.m_oLocation.path('media');
         }
+    };
+
+    EventController.prototype.GetCountries = function() {
+        return this.m_oEventService.GetCountries();
+
     };
 
     EventController.prototype.AddGIS = function (size) {

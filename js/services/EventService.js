@@ -3,13 +3,25 @@
  */
 angular.module('risckit.eventService', []).
     service('EventService',  ['$http', '$upload', function ($http, $upload) {
-        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        this.APIURL = 'http://localhost:8080/risckit/rest';
+        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        //this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
+        this.m_oCountries;
         //this.m_oUpload = $upload;
 
-        this.GetAllCountries = function () {
-            return this.m_oHttp.get(this.APIURL + '/countries/all');
+        this.LoadCountries = function () {
+
+            var oServiceVar = this;
+            if (oServiceVar.m_oCountries == null) {
+                this.m_oHttp.get(this.APIURL + '/countries/all/').success(function (data) {
+                    oServiceVar.m_oCountries = data;
+                });
+            }
+
+        };
+
+        this.GetCountries = function(){
+            return this.m_oCountries;
         };
 
         this.GetAllRegions = function (countryCode) {

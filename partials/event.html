@@ -3,7 +3,7 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Country</label>
         <div class="col-sm-8">
-            <select class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.m_oCountries"></select>
+            <select class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
         </div>
     </div>
     <div class="form-group">

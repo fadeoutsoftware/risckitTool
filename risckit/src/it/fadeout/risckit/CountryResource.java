@@ -27,7 +27,7 @@ public class CountryResource {
 			ArrayList<CountryViewModel> oReturnList = new ArrayList<CountryViewModel>();
 			CountryRepository oRepo = new CountryRepository();
 			List<Country> oEntities = oRepo.SelectAllCountries();
-
+			System.out.println("Query Executed");
 			if (oEntities != null)
 			{
 				for (Country oCountry : oEntities) {
