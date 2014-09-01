@@ -63,14 +63,26 @@ public class CountryResource {
 
 				CountryRepository oRepo = new CountryRepository();
 				List<Country> oEntities = oRepo.SelectAllRegionsByCountry(sCountryCode);
-
-				for (Country oCountry : oEntities) {
-					CountryViewModel oViewModel = new CountryViewModel();
-					oViewModel.setid(oCountry.getId());
-					oViewModel.setcountryname(oCountry.getName());
-					oViewModel.setCountryCode(oCountry.getCountryCode());
-					oReturnList.add(oViewModel);
+				
+				if (oEntities != null) {
+					for (Country oCountry : oEntities) {
+						CountryViewModel oViewModel = new CountryViewModel();
+						oViewModel.setid(oCountry.getId());
+						oViewModel.setcountryname(oCountry.getName());
+						oViewModel.setCountryCode(oCountry.getCountryCode());
+						oReturnList.add(oViewModel);
+					}					
 				}
+				else {
+					// TODO: METTERCI UN DEFAULT IN QUESTO CASO
+					
+					CountryViewModel oViewModel = new CountryViewModel();
+					//oViewModel.setid(1);
+					//oViewModel.setcountryname(oCountry.getName());
+					oViewModel.setCountryCode("Default");
+					oReturnList.add(oViewModel);					
+				}
+
 			}
 
 			return oReturnList;

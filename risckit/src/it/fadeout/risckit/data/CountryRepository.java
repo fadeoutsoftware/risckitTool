@@ -19,22 +19,14 @@ public class CountryRepository extends Repository<Country> {
 	public List<Country> SelectAllCountries() throws NamingException
 	{
 		Session oSession = HibernateUtils.getSessionFactory().openSession();
-		Transaction tx = null;
 		List<Country> aoList = null;
 
-		try {
-			
-			//Criteria oCriteria = oSession.createCriteria(Country.class);
-			//oCriteria.add(Restrictions.eq("NutsLevel", "0"));
-			//aoList = oCriteria.list();
-			tx = oSession.beginTransaction();
+		try {			
 			Query oQuery = oSession.createQuery("from Country where NutsLevel = '0' order by Name");
 			System.out.println("Begin query");
 			aoList = oQuery.list();
-			tx.commit();
 		}
 		catch(Exception oEx) {
-			tx.rollback();
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
 			 
@@ -59,12 +51,10 @@ public class CountryRepository extends Repository<Country> {
 
 		try {
 			oSession = HibernateUtils.getSessionFactory().openSession();
-			Transaction oTx = oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Country.class);
 			oCriteria.add(Restrictions.eq("NutsLevel", "2"));
 			oCriteria.add(Restrictions.eq("CountryCode", sCountryCode));
 			aoList = oCriteria.list();
-			oTx.commit();	
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
@@ -80,6 +70,4 @@ public class CountryRepository extends Repository<Country> {
 		}
 		return aoList;
 	}
-	
-	
 }
