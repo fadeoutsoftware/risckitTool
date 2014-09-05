@@ -34,11 +34,11 @@ var EventController = (function() {
         this.m_oEvent.WindDiectionType = 0;
         this.m_oEvent.unitHour = true;
         this.m_oEvent.unitApproximated = true;
-        this.m_oWaveHeightType = ["Mean significant during event", "Peak significant", "Maximum"];
+        this.m_oWaveHeightType = ["Mean significant wave height", "Peak significant wave height", "Maximum wave height"];
         this.m_oWaveDiectionType = ["Degrees from N", "Compass"];
         this.m_oWindDiectionType = ["Degrees from N", "Compass"];
-        this.m_oWaterLevelType = ["Total water level", "Astronomical tide"];
-        this.m_oWindIntensityType = ["Mean speed during event", "Maximum speed", "Maximum gust"];
+        this.m_oWaterLevelType = ["Maximum total water level", "Maximum astronomical tide"];
+        this.m_oWindIntensityType = ["Mean wind speed", "Maximum wind speed", "Maximum wind gust"];
         this.m_oCostDetails = ["Direct Cost", "Business Interruption Cost", "Indirect Cost", "Intangible Cost", "Risk mitigation Cost"];
         this.Flooding = false;
 
