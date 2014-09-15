@@ -1,0 +1,45 @@
+<div class="container-fluid">
+    <div class="row">
+        <h1 class="col-xs-1"><i class="fa fa-thumb-tack fa-fw"></i>Events</h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-1 col-md-1" tooltip-popup-delay="500" tooltip="New Event" >
+            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.newEvent()">New Event</button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <th></th>
+                <th>Country</th>
+                <th>Region</th>
+                <th>Start Date</th>
+                <th>Start Hour</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="oItem in m_oController.m_oEventList | pagination : m_oController.currentPage*m_oController.itemsPerPage | limitTo: m_oController.itemsPerPage">
+                    <td><button type="button" tooltip-popup-delay="500" tooltip="Edit" class="btn btn-primary" ng-click="m_oController.openEvent(oItem.id)">Edit</button></td>
+                    <td>{{oItem.countryCode}}</td>
+                    <td>{{oItem.regionName}}</td>
+                    <td>{{oItem.startDate}}</td>
+                    <td>{{oItem.startHour}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row">
+        <ul class="pagination">
+            <li ng-class="m_oController.DisablePrevPage()">
+                <a href ng-click="m_oController.prevPage()"> Prev</a>
+            </li>
+            <li ng-repeat="n in m_oController.range()"
+                ng-class="{active: n == m_oController.currentPage}"
+                ng-click="m_oController.setPage(n)">
+                <a href>{{n+1}}</a>
+            </li>
+            <li ng-class="m_oController.DisableNextPage()">
+                <a href ng-click="m_oController.nextPage()">Next </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -50,13 +50,13 @@
                 <td>
                     <div class="radio-inline">
                         <label>
-                            <input type="radio" value="true" ng-model="m_oController.m_oEvent.unitHour" ng-checked="true">
+                            <input type="radio" ng-value="true" ng-model="m_oController.m_oEvent.unitHour">
                             hours
                         </label>
                     </div>
                     <div class="radio-inline">
                         <label>
-                            <input type="radio" value="false" ng-model="m_oController.m_oEvent.unitHour">
+                            <input type="radio" ng-value="false" ng-model="m_oController.m_oEvent.unitHour">
                             days
                         </label>
                     </div>
@@ -67,13 +67,13 @@
                 <td colspan="2">
                     <div class="radio-inline">
                         <label>
-                            <input type="radio" value="true" ng-model="m_oController.m_oEvent.unitApproximated" ng-checked="true">
+                            <input type="radio" ng-value="true" ng-model="m_oController.m_oEvent.unitApproximated">
                             Approximate
                         </label>
                     </div>
                     <div class="radio-inline">
                         <label>
-                            <input type="radio" value="false" ng-model="m_oController.m_oEvent.unitApproximated">
+                            <input type="radio" ng-value="false" ng-model="m_oController.m_oEvent.unitApproximated">
                             Exact
                         </label>
                     </div>
@@ -103,8 +103,10 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.waveHeightType" ng-options="idx as choice for (idx, choice) in m_oController.m_oWaveHeightType">
+
+                    <select class="form-control" ng-model="m_oController.m_oEvent.waveHeightType" ng-options="obj.value as obj.name for obj in m_oController.GetWaveHeightType()">
                     </select>
+
                 </td>
                 <td>
                     <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waveHeightValue" step="any" min="0">
@@ -171,15 +173,15 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.waveDirectionType" ng-options="idx as choice for (idx, choice) in m_oController.m_oWaveDiectionType">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.waveDirectionType" ng-options="obj.value as obj.name for obj in m_oController.GetWaveDiectionType()">
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.waveDirectionType == 0" ng-model="m_oController.m_oEvent.waveDirectionDegree" step="any" min="-360" max="360">
-                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.waveDirectionType == 1">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.waveDirectionType == 1" ng-model="m_oController.m_oEvent.waveDirectionDegree" step="any" min="-360" max="360">
+                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.waveDirectionType == 2">
                         <div class="radio">
                             <label class="control-label">
-                                <input type="radio" value="N" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenord" ng-checked="true">
+                                <input type="radio" value="N" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenord">
                                 <img src="img/arrow_down.png" tooltip="Nord" >
                                 N
                             </label>
@@ -291,8 +293,8 @@
                     <label class="control-label">Type</label>
                 </td>
                 <td>
-                    <label class="control-label">Value (m/s)</label>
-                </td>
+                <label class="control-label">Value (m/s)</label>
+            </td>
                 <td>
                     <label class="control-label">Inspire</label>
                 </td>
@@ -302,7 +304,7 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.windIntensityType" ng-options="idx as choice for (idx, choice) in m_oController.m_oWindIntensityType">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.windIntensityType" ng-options="obj.value as obj.name for obj in m_oController.GetWindIntensityType()">
                     </select>
                 </td>
                 <td>
@@ -370,13 +372,13 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.windDirectionType" ng-options="idx as choice for (idx, choice) in m_oController.m_oWindDiectionType">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.windDirectionType" ng-options="obj.value as obj.name for obj in m_oController.GetWindDiectionType()">
 
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.windDirectionType == 0" ng-model="m_oController.m_oEvent.windDirectionDegree" step="any" max="360" min="-360">
-                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.windDirectionType == 1">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.windDirectionType == 1" ng-model="m_oController.m_oEvent.windDirectionDegree" step="any" max="360" min="-360">
+                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.windDirectionType == 2">
                         <div class="radio">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnord" checked>
@@ -487,7 +489,7 @@
                     <label class="control-label">Type</label>
                 </td>
                 <td>
-                    <label class="control-label">Value ((meters))</label>
+                    <label class="control-label">Value (meters)</label>
                 </td>
                 <td>
                     <label class="control-label">Inspire</label>
@@ -498,7 +500,7 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.waterLevelType" ng-options="idx as choice for (idx, choice) in m_oController.m_oWaterLevelType">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.waterLevelType" ng-options="obj.value as obj.name for obj in m_oController.GetWaterLevelType()">
                     </select>
                 </td>
                 <td>
@@ -818,7 +820,7 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.costDetail" ng-options="idx as choice for (idx, choice) in m_oController.m_oCostDetails">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.costDetail" ng-options="obj.value as obj.name for obj in m_oController.GetCostDetails()">
                     </select>
                 </td>
                 <td colspan="3">
@@ -841,9 +843,14 @@
                 <tr>
                     <td></td>
                     <td>
-                        <div>
-                            <a ng-click="">{{oTableRow.filename}}</a>
-                            <img src="img/delete.png" tooltip="Delete">
+                        <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Delete">
+                            <img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, m_oController.m_oEvent.id)">
+                        </div>
+                        <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
+                            <img src="img/download.png" tooltip="Delete" ng-click="m_oController.DownloadMedia(oTableRow.id)">
+                        </div>
+                        <div class="delete">
+                            <a href="{{oTableRow.downloadPath}}">{{oTableRow.shortDownloadPath}}</a>
                         </div>
                     </td>
                     <td ng-hide="$index > 0">

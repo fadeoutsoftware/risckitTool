@@ -1,6 +1,6 @@
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <br/>
-    <label class="col-xs-offset-1 control-label">Select a position on map</label>
+    <label class="col-xs-offset-1 control-label">Select a position on map, description and date</label>
     <div id="media_map_canvas" class="col-xs-12" style="height: 500px;"></div>
     <br/>
     <div class="row col-lg-8">
@@ -13,18 +13,20 @@
             <label class="col-xs-offset-1 control-label">Date</label>
             <input class="col-xs-offset-1 col-xs-2 form-control" type="date" ng-model="m_oController.date">
         </div>
-        <div class="row">
+        <div class="row" ng-show="m_oController.canUpload()">
             <br/>
             <div class="row">
                 <label class="col-xs-offset-1 control-label">Attachment</label>
             </div>
             <br/>
             <table class="col-xs-offset-1 table table-bordered table-condensed">
-                <tr ng-repeat="oTableRow in m_oController.Files">
+                <tr ng-repeat="oTableRow in m_oController.getMedia()">
                     <td>
-                        <div>
-                            <label>{{oTableRow.name}}</label>
-                            <img src="img/delete.png" tooltip="Delete">
+                        <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Delete">
+                            <img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, oTableRow.eventId)">
+                        </div>
+                        <div class="delete">
+                            <a ng-href="{{oTableRow.downloadPath}}">{{oTableRow.shortDownloadPath}}</a>
                         </div>
                     </td>
                 </tr>
@@ -34,7 +36,7 @@
                     <img src="img/Spinner.gif" class="loading"/>
                 </div>
                 <div class="project-icon">
-                    <label for="media-input" tooltip-popup-delay="500" tooltip="Upload">
+                    <label for="media-input" tooltip-popup-delay="500" tooltip="Upload" >
                        <img src="img/upload.png"/>
                     </label>
                     <input id="media-input" type="file" file-Model="m_oController.m_sFilePath" ng-file-select="onFileSelect($files)" ng-hide="true"/>
@@ -45,9 +47,9 @@
         <br/>
         <div class="row">
             <div class="col-lg-offset-1 col-sm-2">
-                <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()">Close</button>
+                <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()">Save/Close</button>
             </div>
-            <div class="col-sm-2">
+            <div class="col-lg-offset-1 col-sm-2">
                 <button class="btn btn-primary btn-lg" ng-click="m_oController.cancel()">Cancel</button>
             </div>
         </div>
