@@ -162,10 +162,15 @@ var MediaController = (function() {
                 $scope.m_oController.NewMedia.eventId = data.id;
                 $scope.m_oController.m_oEventService.SaveMedia($scope.m_oController.NewMedia).success(function(data){
                     $scope.m_oController.NewMedia.id = data.id;
-                    $scope.m_oController.m_oEventService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function(data){
-                        $scope.m_oController.m_oSharedService.getEvent().Media = data;
-                        $scope.m_oController.m_oUploading = false;
-                    });
+                    if ($scope.selectedFiles[index] != null) {
+                        $scope.m_oController.m_oEventService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function (data) {
+                            $scope.m_oController.m_oSharedService.getEvent().Media = data;
+                            $scope.m_oController.NewMedia = null;
+                            $scope.m_oController.m_oUploading = false;
+                        });
+                    }
+                    else
+                        $scope.m_oController.NewMedia = null;
                 })
             });
 

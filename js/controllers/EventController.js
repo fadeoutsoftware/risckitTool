@@ -388,15 +388,17 @@ var EventController = (function() {
 
     EventController.prototype.DeleteMedia = function(idMedia, idEvent) {
 
+        var oScope = this.m_oScope;
+
         this.m_oMediaService.DeleteMedia(idMedia, idEvent).success(function(data){
-            this.m_oScope.m_oController.m_oEvent.Media = data;
+            oScope.m_oController.m_oEvent.Media = data;
         });
 
     };
 
     EventController.prototype.DownloadMedia = function(idMedia) {
 
-        this.m_oMediaService.DownloadMedia(idMedia);
+        return this.m_oMediaService.DownloadMedia(idMedia);
 
     };
 

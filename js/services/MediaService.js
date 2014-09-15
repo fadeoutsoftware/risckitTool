@@ -21,7 +21,7 @@ angular.module('risckit.mediaService', []).
 
         this.DownloadMedia = function (idMedia) {
 
-            return this.m_oHttp({method: 'GET', url: this.APIURL + '/media/download/' + idMedia});
+            return this.APIURL + '/media/download/' + idMedia;
 
         };
 
