@@ -1,5 +1,10 @@
 package it.fadeout.risckit.business;
 
+import it.fadeout.risckit.viewmodels.MediaViewModel;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -91,6 +96,35 @@ public class Media {
 
 	public void setDescription(String m_sDescription) {
 		this.m_sDescription = m_sDescription;
+	}
+	
+	public void setEntity(MediaViewModel oMediaViewModel) throws ParseException
+	{
+		this.setEventId(oMediaViewModel.getEventId());
+		this.setLat(oMediaViewModel.getLat());
+		this.setLon(oMediaViewModel.getLon());
+		this.setFile(oMediaViewModel.getDownloadPath());
+		this.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(oMediaViewModel.getDate()));
+		this.setDescription(oMediaViewModel.getDescription());
+	}
+	
+	public MediaViewModel getViewModel()
+	{
+		MediaViewModel oViewModel = new MediaViewModel();
+		oViewModel.setId(this.getId());
+		oViewModel.setEventId(this.getEventId());
+		oViewModel.setLat(this.getLat());
+		oViewModel.setLon(this.getLon());
+		oViewModel.setDownloadPath(this.getFile());
+		if (this.getDate() != null)
+		{
+			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			String sDate = dateFormatter.format(this.getDate());
+			oViewModel.setDate(sDate);
+		}
+			
+		oViewModel.setDescription(this.getDescription());
+		return oViewModel;
 	}
 	
 }

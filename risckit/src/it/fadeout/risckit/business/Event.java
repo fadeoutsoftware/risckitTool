@@ -1,15 +1,20 @@
 package it.fadeout.risckit.business;
 
+import it.fadeout.risckit.viewmodels.EventViewModel;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.SequenceInputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +26,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.swing.text.DateFormatter;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
@@ -167,6 +173,9 @@ public class Event {
 
 	@Column(name="waterleveltimeseries")
 	private String m_sWaterLevelTimeSeries;
+	
+	@Column(name="userid")
+	private Integer m_iUserId;
 
 	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="countryid", nullable=true, insertable=false, updatable=false)
@@ -655,6 +664,11 @@ public class Event {
 			DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);
 			sStartDate = dateFormatter.format(this.getStartDate());
 		}
+		if (this.m_oStartHour != null)
+		{
+			DateFormat dateFormatter = new SimpleDateFormat("hh:mm");
+			sStartHour = dateFormatter.format(this.getStartDate());
+		}
 		if (this.m_sDescription != null)
 			sDescription = String.valueOf(this.m_sDescription);
 		if (this.getUnitHour() == null || !this.getUnitHour())
@@ -687,12 +701,14 @@ public class Event {
 			if (this.getWaveDirectionType() == 0)
 			{
 				sWaveDirectionType = "Degrees from N";
-				sWaveDirectionValue = this.getWaveDirectionDegree().toString();
+				if (this.getWaveDirectionDegree() != null)
+					sWaveDirectionValue = this.getWaveDirectionDegree().toString();
 			}
 			else
 			{
 				sWaveDirectionType = "Compass";
-				sWaveDirectionValue = this.getWaveDirectionClustered().toString();
+				if (this.getWaveDirectionClustered() != null)
+					sWaveDirectionValue = this.getWaveDirectionClustered().toString();
 			}
 		}
 
@@ -730,12 +746,14 @@ public class Event {
 			if (this.getWindDirectionType() == 0)
 			{
 				sWindDirectionType = "Degrees from N";
-				sWindDirectionValue = this.getWindDirectionDegree().toString();
+				if (this.getWindDirectionDegree() != null)
+					sWindDirectionValue = this.getWindDirectionDegree().toString();
 			}
 			else
 			{
 				sWindDirectionType = "Compass";
-				sWindDirectionValue = this.getWaveDirectionClustered().toString();
+				if (this.getWaveDirectionClustered() != null)
+					sWindDirectionValue = this.getWaveDirectionClustered().toString();
 			}
 
 		}
@@ -889,6 +907,117 @@ public class Event {
 			}
 
 		};
+	}
+
+	public Integer getUserId() {
+		return m_iUserId;
+	}
+
+	public void setUserId(Integer m_iUserId) {
+		this.m_iUserId = m_iUserId;
 	} 
+	
+	public void setEntity(EventViewModel oViewModel) throws ParseException
+	{
+		this.setCountryId(oViewModel.getCountryId());
+		this.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(oViewModel.getStartDate()));
+		this.setStartHour(new SimpleDateFormat("HH:mm").parse(oViewModel.getStartHour()));
+		this.setDescription(oViewModel.getDescription());
+		this.setUnitHour(oViewModel.getUnitHour());
+		this.setUnitValue(oViewModel.getUnitValue());
+		this.setUnitApproximated(oViewModel.getUnitApproximated());
+		this.setWaveHeightType(oViewModel.getWaveHeightType());
+		this.setWaveHeightValue(oViewModel.getWaveHeightValue());
+		this.setWaveDirectionType(oViewModel.getWaveDirectionType());
+		this.setWaveDirectionDegree(oViewModel.getWaveDirectionDegree());
+		this.setWaveDirectionClustered(oViewModel.getWaveDirectionClustered());
+		this.setWindIntensityType(oViewModel.getWindIntensityType());
+		this.setWindIntensityValue(oViewModel.getWindIntensityValue());
+		this.setWindDirectionType(oViewModel.getWindDirectionType());
+		this.setWindDirectionDegree(oViewModel.getWindDirectionDegree());
+		this.setWindDirectionClustered(oViewModel.getWindDirectionClustered());
+		this.setPeakWaterDischarge(oViewModel.getPeakWaterDischarge());
+		this.setFloodHeight(oViewModel.getFloodHeight());
+		this.setReporedCasualtiesNumber(oViewModel.getReporedCasualtiesNumber());
+		this.setReporedCasualtiesDescription(oViewModel.getReporedCasualtiesDescription());
+		this.setDamageToBuildingsDescription(oViewModel.getDamageToBuildingsDescription());
+		this.setDamageToBuildingsCost(oViewModel.getDamageToBuildingsCost());
+		this.setCostDetail(oViewModel.getCostDetail());
+		this.setDescriptionOfMeasure(oViewModel.getDescriptionOfMeasure());
+		this.setWaterLevelType(oViewModel.getWaterLevelType());
+		this.setWaterLevelValue(oViewModel.getWaterLevelValue());
+		this.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
+		this.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
+		this.setUserId(oViewModel.getUserId());
+	}
+	
+	public EventViewModel getViewModel(List<Country> oCountries)
+	{
+		Country oCountry = new Country();
+		Country oRegion = new Country();
+		for (Country country : oCountries) {
+			if (country.getId().equals(this.getCountryId()) && country.getNutsLevel().equals("2"))
+			{
+				oRegion = country;
+				break;
+			}
+		}
+		
+		for (Country country : oCountries) {
+			if (country.getCountryCode().equals(oRegion.getCountryCode()) && country.getNutsLevel().equals("0"))
+			{
+				oCountry = country;
+				break;
+			}
+		}
+		
+		EventViewModel oViewModel = new EventViewModel();
+		oViewModel.setId(this.getId());
+		oViewModel.setCountryId(this.getCountryId());
+		oViewModel.setCountryCode(oCountry.getCountryCode());
+		oViewModel.setRegionName(oRegion.getName());
+		if (this.m_oStartDate != null)
+		{
+			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			String sStartDate = dateFormatter.format(this.getStartDate());
+			oViewModel.setStartDate(sStartDate);
+		}
+		if (this.m_oStartHour != null)
+		{
+			DateFormat dateFormatter = new SimpleDateFormat("HH:mm");
+			String sStartHour = dateFormatter.format(this.getStartHour());
+			oViewModel.setStartHour(sStartHour);
+		}
+		
+		oViewModel.setDescription(this.getDescription());
+		oViewModel.setUnitHour(this.getUnitHour());
+		oViewModel.setUnitValue(this.getUnitValue());
+		oViewModel.setUnitApproximated(this.getUnitApproximated());
+		oViewModel.setWaveHeightType(this.getWaveHeightType());
+		oViewModel.setWaveHeightValue(this.getWaveHeightValue());
+		oViewModel.setWaveDirectionType(this.getWaveDirectionType());
+		oViewModel.setWaveDirectionDegree(this.getWaveDirectionDegree());
+		oViewModel.setWaveDirectionClustered(this.getWaveDirectionClustered());
+		oViewModel.setWindIntensityType(this.getWindIntensityType());
+		oViewModel.setWindIntensityValue(this.getWindIntensityValue());
+		oViewModel.setWindDirectionType(this.getWindDirectionType());
+		oViewModel.setWindDirectionDegree(this.getWindDirectionDegree());
+		oViewModel.setWindDirectionClustered(this.getWindDirectionClustered());
+		oViewModel.setPeakWaterDischarge(this.getPeakWaterDischarge());
+		oViewModel.setFloodHeight(this.getFloodHeight());
+		oViewModel.setReporedCasualtiesNumber(this.getReporedCasualtiesNumber());
+		oViewModel.setReporedCasualtiesDescription(this.getReporedCasualtiesDescription());
+		oViewModel.setDamageToBuildingsDescription(this.getDamageToBuildingsDescription());
+		oViewModel.setDamageToBuildingsCost(this.getDamageToBuildingsCost());
+		oViewModel.setCostDetail(this.getCostDetail());
+		oViewModel.setDescriptionOfMeasure(this.getDescriptionOfMeasure());
+		oViewModel.setWaterLevelType(this.getWaterLevelType());
+		oViewModel.setWaterLevelValue(this.getWaterLevelValue());
+		oViewModel.setWaterLevelInspire(this.getWaterLevelInspire());
+		oViewModel.setWaterLevelTimeSeries(this.getWaterLevelTimeSeries());
+		oViewModel.setUserId(this.getUserId());
+		
+		return oViewModel;
+	}
 
 }

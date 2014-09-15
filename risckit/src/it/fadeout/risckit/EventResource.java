@@ -7,18 +7,23 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.Event;
+import it.fadeout.risckit.business.Media;
 import it.fadeout.risckit.business.SVNUtils;
 import it.fadeout.risckit.data.CountryRepository;
 import it.fadeout.risckit.data.EventRepository;
+import it.fadeout.risckit.data.MediaRepository;
 import it.fadeout.risckit.viewmodels.CountryViewModel;
 import it.fadeout.risckit.viewmodels.EventViewModel;
 
 import javax.servlet.ServletConfig;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -43,41 +48,14 @@ public class EventResource {
 	@Produces({"application/json"})
 	public EventViewModel SaveEvent(EventViewModel oViewModel) {
 
+		Event oEvent = null;
 		try
 		{
 			if (oViewModel != null)
 			{
 				EventRepository oRepo = new EventRepository();
-				Event oEvent = new Event();
-				oEvent.setCountryId(oViewModel.getCountryId());
-				oEvent.setStartDate(oViewModel.getStartDate());
-				oEvent.setStartHour(oViewModel.getStartHour());
-				oEvent.setDescription(oViewModel.getDescription());
-				oEvent.setUnitHour(oViewModel.getUnitHour());
-				oEvent.setUnitValue(oViewModel.getUnitValue());
-				oEvent.setUnitApproximated(oViewModel.getUnitApproximated());
-				oEvent.setWaveHeightType(oViewModel.getWaveHeightType());
-				oEvent.setWaveHeightValue(oViewModel.getWaveHeightValue());
-				oEvent.setWaveDirectionType(oViewModel.getWaveDirectionType());
-				oEvent.setWaveDirectionDegree(oViewModel.getWaveDirectionDegree());
-				oEvent.setWaveDirectionClustered(oViewModel.getWaveDirectionClustered());
-				oEvent.setWindIntensityType(oViewModel.getWindIntensityType());
-				oEvent.setWindIntensityValue(oViewModel.getWindIntensityValue());
-				oEvent.setWindDirectionType(oViewModel.getWindDirectionType());
-				oEvent.setWindDirectionDegree(oViewModel.getWindDirectionDegree());
-				oEvent.setWindDirectionClustered(oViewModel.getWindDirectionClustered());
-				oEvent.setPeakWaterDischarge(oViewModel.getPeakWaterDischarge());
-				oEvent.setFloodHeight(oViewModel.getFloodHeight());
-				oEvent.setReporedCasualtiesNumber(oViewModel.getReporedCasualtiesNumber());
-				oEvent.setReporedCasualtiesDescription(oViewModel.getReporedCasualtiesDescription());
-				oEvent.setDamageToBuildingsDescription(oViewModel.getDamageToBuildingsDescription());
-				oEvent.setDamageToBuildingsCost(oViewModel.getDamageToBuildingsCost());
-				oEvent.setCostDetail(oViewModel.getCostDetail());
-				oEvent.setDescriptionOfMeasure(oViewModel.getDescriptionOfMeasure());
-				oEvent.setWaterLevelType(oViewModel.getWaterLevelType());
-				oEvent.setWaterLevelValue(oViewModel.getWaterLevelValue());
-				oEvent.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
-				oEvent.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
+				oEvent = new Event();
+				oEvent.setEntity(oViewModel);
 				if (oViewModel.getId() == null || oViewModel.getId() == 0)
 				{
 					oRepo.Save(oEvent);
@@ -113,12 +91,16 @@ public class EventResource {
 							sStartDate,
 							sLocation);
 				}
+				else
+					oViewModel = null;	
 			}
 		}
 		catch(Exception oEx)
 		{
 			oEx.printStackTrace();
-
+			if (oEvent == null)
+				oViewModel = null;
+				
 		}
 
 		return oViewModel;
@@ -201,6 +183,47 @@ public class EventResource {
 			oEx.printStackTrace();
 			return null;
 		}
+	}
+	
+	@GET
+	@Path("/{id}")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public EventViewModel getEvent(@PathParam("id") int iIdEvent) {
+		
+		EventRepository oRepo = new EventRepository();
+		Event oEvent = oRepo.Select(iIdEvent, Event.class);
+		
+		CountryRepository oCountryRepo = new CountryRepository();
+		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
+		
+		if (oEvent != null)
+				return oEvent.getViewModel(oCountries);
+		else
+			return null;
+	}
+	
+	@GET
+	@Path("/user/{iduser}")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public List<EventViewModel> getEventList(@PathParam("iduser") int iIdUser) {
+		
+		List<EventViewModel> oReturnList = null;
+		EventRepository oRepo = new EventRepository();
+		List<Event> oEvents = oRepo.SelectByUser(iIdUser);
+		
+		CountryRepository oCountryRepo = new CountryRepository();
+		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
+		
+		if (oEvents != null)
+		{
+			oReturnList = new ArrayList<EventViewModel>();
+			for (Event event : oEvents) {
+				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
+				oReturnList.add(oEventViewModel);
+			}
+		}
+		
+		return oReturnList;
 	}
 
 }

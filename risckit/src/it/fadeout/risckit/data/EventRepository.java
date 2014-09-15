@@ -1,8 +1,14 @@
 package it.fadeout.risckit.data;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
+import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.Event;
 
 public class EventRepository extends Repository<Event>{
@@ -43,6 +49,45 @@ public class EventRepository extends Repository<Event>{
 		}
 		
 		return oEntity;
+	}
+	
+	
+	public List<Event> SelectByUser(int iIdUser) {
+		
+		Session oSession = null;
+		
+		List<Event> aoList = null;
+		
+		try {				
+			oSession = HibernateUtils.getSessionFactory().openSession();
+			Criteria oCriteria = oSession.createCriteria(Event.class);
+			oCriteria.add(Restrictions.eq("m_iUserId", iIdUser));
+			oCriteria.addOrder(Order.desc("m_iId"));
+			aoList = oCriteria.list();
+		}
+		catch(Throwable oEx) {
+			System.err.println(oEx.toString());
+			oEx.printStackTrace();
+			
+			
+			try {
+				
+			}
+			catch(Throwable oEx2) {
+				System.err.println(oEx2.toString());
+				oEx2.printStackTrace();					
+			}			
+		}		
+		finally {
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
+
+		}
+		
+		return aoList;
 	}
 	
 }

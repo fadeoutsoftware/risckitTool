@@ -2,6 +2,8 @@ package it.fadeout.risckit;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.Event;
@@ -13,11 +15,14 @@ import it.fadeout.risckit.data.EventRepository;
 import it.fadeout.risckit.data.GisRepository;
 import it.fadeout.risckit.data.MediaRepository;
 import it.fadeout.risckit.viewmodels.GisViewModel;
+import it.fadeout.risckit.viewmodels.MediaViewModel;
 
 import javax.servlet.ServletConfig;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -44,9 +49,7 @@ public class GisResource {
 				GisRepository oRepo = new GisRepository();
 
 				Gis oGis = new Gis();
-				oGis.setEventId(oGisViewModel.getEventId());
-				oGis.setGisFile(oGisViewModel.getDownloadGisPath());
-				oGis.setInspireFile(oGisViewModel.getDownloadInspirePath());
+				oGis.setEntity(oGisViewModel);
 				if (oGisViewModel.getId() == null || oGisViewModel.getId() == 0)
 					oRepo.Save(oGis);
 				else
@@ -111,5 +114,19 @@ public class GisResource {
 			oEx.printStackTrace();
 			return null;
 		}
+	}
+	
+	@GET
+	@Path("/event/{idevent}")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public GisViewModel getGis(@PathParam("idevent") int iIdEvent) {
+		
+		GisViewModel oReturnValue = null;
+		GisRepository oGisRepository = new GisRepository();
+		Gis oGis = oGisRepository.SelectByEvent(iIdEvent);
+		if (oGis != null)
+			oReturnValue = oGis.getViewModel();
+		
+		return oReturnValue;
 	}
 }

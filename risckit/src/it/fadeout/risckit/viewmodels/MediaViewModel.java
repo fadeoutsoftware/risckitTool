@@ -30,6 +30,8 @@ public class MediaViewModel {
 	
 	private String description;
 	
+	private String shortDownloadPath;
+	
 	public String getLat() {
 		return lat;
 	}
@@ -62,8 +64,8 @@ public class MediaViewModel {
 		downloadPath = filesAttach;
 	}
 
-	public Date getDate() {
-		
+	public String getDate() {
+		/*
 		try {
 			if (date != null)
 				return new SimpleDateFormat("yyyy-MM-dd").parse(date);
@@ -71,7 +73,8 @@ public class MediaViewModel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return null;
+		*/
+		return date;
 	}
 
 	public void setDate(String m_odate) {
@@ -92,6 +95,25 @@ public class MediaViewModel {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getShortDownloadPath() {
+
+		if (downloadPath != null)
+		{
+			String[] sSplitString = downloadPath.split("/");
+			if (sSplitString != null && sSplitString.length > 0)
+			{
+				shortDownloadPath = sSplitString[sSplitString.length - 1];
+			}
+			else
+				shortDownloadPath = downloadPath;
+		}	
+		return shortDownloadPath;
+	}
+
+	public void setShortDownloadPath(String shortDownloadPath) {
+		this.shortDownloadPath = shortDownloadPath;
 	}
 		
 }

@@ -1,5 +1,7 @@
 package it.fadeout.risckit.business;
 
+import it.fadeout.risckit.viewmodels.GisViewModel;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,6 +58,24 @@ public class Gis {
 
 	public void setId(int m_iId) {
 		this.m_iId = m_iId;
+	}
+	
+	public void setEntity(GisViewModel oGisViewModel)
+	{
+		this.setEventId(oGisViewModel.getEventId());
+		this.setGisFile(oGisViewModel.getDownloadGisPath());
+		this.setInspireFile(oGisViewModel.getDownloadInspirePath());
+	}
+	
+	public GisViewModel getViewModel()
+	{
+		GisViewModel oViewModel = new GisViewModel();
+		oViewModel.setId(this.getEventId());
+		oViewModel.setEventId(this.getEventId());
+		oViewModel.setDownloadGisPath(this.getGisFile());
+		oViewModel.setDownloadInspirePath(this.getInspireFile());
+		
+		return oViewModel;
 	}
 
 }

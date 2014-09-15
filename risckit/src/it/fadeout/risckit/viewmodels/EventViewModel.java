@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -120,6 +121,10 @@ public class EventViewModel {
 	
 	private String waterLevelTimeSeries;
 	
+	private int userId;
+	
+	private ArrayList<MediaViewModel> media;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -144,34 +149,39 @@ public class EventViewModel {
 		this.countryId = m_iCountryId;
 	}
 	
-	public Date getStartDate() {
-		
+	public String getStartDate() {
+		/*
 		try {
 			if (startDate != null)
-				return new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
+				return new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(startDate);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return null;
-		
+		*/
+		return this.startDate;
 	}
 
 	public void setStartDate(String m_oStartDate) {
 		this.startDate = m_oStartDate;
 	}
 
-	public Date getStartHour() {
+	public String getStartHour() {
+		/*
 		try {
 			if (startHour != null)
-				return new SimpleDateFormat("hh:mm").parse(startHour);
+				return new SimpleDateFormat("hh:mm", Locale.ENGLISH).parse(startHour);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return null;
+		*/
+		
+		return this.startHour;
 	}
 
 	public void setStartHour(String m_oStartHour) {
@@ -533,6 +543,22 @@ public class EventViewModel {
 
 	public void setWaterLevelTimeSeries(String waterLevelTimeSeries) {
 		this.waterLevelTimeSeries = waterLevelTimeSeries;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public ArrayList<MediaViewModel> getMedia() {
+		return media;
+	}
+
+	public void setMedia(ArrayList<MediaViewModel> media) {
+		this.media = media;
 	}
 	
 }
