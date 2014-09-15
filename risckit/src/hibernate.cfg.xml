@@ -25,5 +25,6 @@
 		<mapping class="it.fadeout.risckit.business.Event" />
 		<mapping class="it.fadeout.risckit.business.Media" />
 		<mapping class="it.fadeout.risckit.business.Gis" />
+		<mapping class="it.fadeout.risckit.business.User" />
 	</session-factory>
 </hibernate-configuration>
