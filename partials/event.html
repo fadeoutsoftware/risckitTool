@@ -846,9 +846,11 @@
                         <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Delete">
                             <img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, m_oController.m_oEvent.id)">
                         </div>
-                        <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
-                            <img src="img/download.png" tooltip="Delete" ng-click="m_oController.DownloadMedia(oTableRow.id)">
-                        </div>
+                        <a ng-href="{{m_oController.DownloadMedia(oTableRow.id)}}">
+                            <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
+                                <img src="img/download.png" tooltip="Download">
+                            </div>
+                        </a>
                         <div class="delete">
                             <a href="{{oTableRow.downloadPath}}">{{oTableRow.shortDownloadPath}}</a>
                         </div>
