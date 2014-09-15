@@ -6,22 +6,24 @@
  */
 var MediaController = (function() {
 
-    function MediaController($scope, $location, oSharedService, oEventService) {
+    function MediaController($scope, $location, oSharedService, oEventService, oMediaService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
         this.m_oEventService = oEventService;
+        this.m_oMediaService = oMediaService;
         this.m_sFilePath = null;
         this.uploadRightAway = true;
         this.description = null;
         this.m_oUploading = false;
         this.date = null;
-        this.Files = [];
         this.m_oSharedService = oSharedService;
         this.NewMedia;
         this.m_oPositionMark = null;
         this.Marker;
+        this.Media = [];
 
+        var oRootScope = this.m_oScope;
 
         var map_canvas = document.getElementById('media_map_canvas');
         var map_options = {
@@ -49,8 +51,52 @@ var MediaController = (function() {
                 draggable: true
             });
 
-            $scope.m_oController.m_oPositionMark = location;
+            oRootScope.m_oController.m_oPositionMark = location;
+            oRootScope.$apply();
         }
+
+        var oEvent = this.m_oSharedService.getEvent();
+        if (oEvent != null)
+        {
+            if (oEvent.Media == null && oEvent.id != null) {
+                this.m_oMediaService.LoadMedia(oEvent.id).success(function (data) {
+
+                    //add marker
+                    for (var i = 0; i < data.length; i++) {
+                        var myLatlng = new google.maps.LatLng(data[i].lat, data[i].lon);
+                        $scope.m_oController.m_oPositionMark = myLatlng;
+                        // To add the marker to the map, use the 'map' property
+                        var marker = new google.maps.Marker({
+                            position: myLatlng,
+                            map: map
+                        });
+
+                        oEvent.Media = data;
+                    }
+
+                    $scope.m_oController.description = oEvent.Media[0].description;
+                    $scope.m_oController.date = oEvent.Media[0].date;
+                });
+            }
+            else if (oEvent.Media != null)
+            {
+                //add marker
+                for (var i = 0; i < oEvent.Media.length; i++) {
+                    var myLatlng = new google.maps.LatLng(oEvent.Media[i].lat, oEvent.Media[i].lon);
+                    $scope.m_oController.m_oPositionMark = myLatlng;
+                    // To add the marker to the map, use the 'map' property
+                    var marker = new google.maps.Marker({
+                        position: myLatlng,
+                        map: map
+                    });
+                }
+
+                if (oEvent.Media.length > 0) {
+                    $scope.m_oController.description = oEvent.Media[0].description;
+                    $scope.m_oController.date = oEvent.Media[0].date;
+                }
+            }
+    }
 
         $scope.$watch('m_oController.m_sFilePath', function(newVal, oldVal) {
             if (newVal !== oldVal) {
@@ -59,14 +105,15 @@ var MediaController = (function() {
                 $scope.m_oController.NewMedia.lat = $scope.m_oController.m_oPositionMark.lat();
                 $scope.m_oController.NewMedia.lon = $scope.m_oController.m_oPositionMark.lng();
                 $scope.m_oController.NewMedia.latlon = $scope.m_oController.m_oPositionMark;
-                $scope.m_oController.NewMedia.filename = newVal.name;
+                $scope.m_oController.NewMedia.downloadPath = newVal.name;
                 $scope.m_oController.NewMedia.description = $scope.m_oController.description;
                 $scope.m_oController.NewMedia.date = $scope.m_oController.date;
+                if ($scope.m_oController.m_oSharedService.getEvent().Media == null)
+                    $scope.m_oController.m_oSharedService.getEvent().Media = new Array();
                 $scope.m_oController.m_oSharedService.getEvent().Media.push($scope.m_oController.NewMedia);
-                $scope.m_oController.Files.push(newVal);
+                //$scope.m_oController.Files.push(newVal);
             }
         });
-
 
         $scope.onFileSelect = function ($files) {
 
@@ -116,7 +163,7 @@ var MediaController = (function() {
                 $scope.m_oController.m_oEventService.SaveMedia($scope.m_oController.NewMedia).success(function(data){
                     $scope.m_oController.NewMedia.id = data.id;
                     $scope.m_oController.m_oEventService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function(data){
-                        $scope.m_oController.NewMedia.downloadPath = data;
+                        $scope.m_oController.m_oSharedService.getEvent().Media = data;
                         $scope.m_oController.m_oUploading = false;
                     });
                 })
@@ -156,12 +203,35 @@ var MediaController = (function() {
 
     };
 
+    MediaController.prototype.getMedia = function() {
+        return this.m_oSharedService.getEvent().Media;
+
+    };
+
+    MediaController.prototype.canUpload = function() {
+        return this.m_oScope.m_oController.m_oPositionMark != null &&
+            this.m_oScope.m_oController.description != null &&
+            this.m_oScope.m_oController.date != null;
+
+    };
+
+    MediaController.prototype.DeleteMedia = function(idMedia, idEvent) {
+
+        this.m_oMediaService.DeleteMedia(idMedia, idEvent).success(function(data){
+            this.m_oSharedService.getEvent().Media = data;
+        });
+
+    };
+
+
+
 
     MediaController.$inject = [
         '$scope',
         '$location',
         'SharedService',
-        'EventService'
+        'EventService',
+        'MediaService'
     ];
 
 

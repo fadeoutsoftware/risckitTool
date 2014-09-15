@@ -18,19 +18,25 @@ var LoginController = (function() {
         var oLoginService = this.m_oLoginService;
         var oModalService = this.m_oModalInstance;
 
-        if (this.m_oLoginService.login(sUserName, sPassword) == true) {
-            oLoginService.m_sUserName = 'unife';
-            oLoginService.m_sUserRole = "Administrator";
-            oLoginService.m_bIsLogged = true;
-            oModalService.close(true);
-            oLoginService.setLogDialogOn(false);
+        this.m_oLoginService.login(sUserName, sPassword).success(function(data){
 
-        }
-        else {
+            if (data != null && data != "") {
+                oLoginService.m_sUserName = data.userName;
+                oLoginService.m_iUserId = data.id;
+                oLoginService.m_sUserRole = "Administrator";
+                oLoginService.m_bIsLogged = true;
+                oModalService.close(true);
+                oLoginService.setLogDialogOn(false);
+            }
+            else {
+                oLoginService.m_bIsLogged = false;
+                alert('Login Error');
+                //oModalService.dismiss('cancel');
+            }
+
+        }).error(function(data){
             oLoginService.m_bIsLogged = false;
-            alert('Login Error');
-            //oModalService.dismiss('cancel');
-        }
+        });
     };
 
 

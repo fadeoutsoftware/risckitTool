@@ -3,7 +3,7 @@
  */
 var EventController = (function() {
 
-    function EventController($scope, $location, $modal, oEventService, oSharedService, oLoginService) {
+    function EventController($scope, $location, $modal, oEventService, oSharedService, oLoginService, oMediaService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
@@ -11,17 +11,33 @@ var EventController = (function() {
         this.m_oEventService = oEventService; //Service
         this.m_oSharedService = oSharedService;
         this.m_oLoginService = oLoginService;
+        this.m_oMediaService = oMediaService;
+        this.Flooding = false;
 
         if (this.m_oScope.m_oController.m_oSharedService.getEvent() == null)
         {
             this.m_oScope.m_oController.m_oEvent = new Object();
-            this.m_oScope.m_oController.m_oEvent.Media = new Array(); //ipotizzo si possano inserire più media con coordinate diverse
+            this.m_oScope.m_oController.m_oEvent.userId = this.m_oLoginService.getUserId();
+            this.m_oScope.m_oController.m_oEvent.Media = null; //ipotizzo si possano inserire più media con coordinate diverse
             this.m_oScope.m_oController.m_oEvent.GIS = null; //ipotizzo sia solo un file
         }
         else
         {
             this.m_oScope.m_oController.m_oEvent = this.m_oScope.m_oController.m_oSharedService.getEvent();
-            this.m_oScope.m_oController.m_oEvent.Media = this.m_oSharedService.getEvent().Media;
+            if (this.m_oSharedService.getEvent().Media == null)
+            {
+                //load Media
+                this.m_oMediaService.LoadMedia( $scope.m_oController.m_oEvent.id).success(function(data){
+                    $scope.m_oController.m_oEvent.Media = data;
+                });
+            }
+            else
+            {
+                this.m_oScope.m_oController.m_oEvent.Media = this.m_oSharedService.getEvent().Media;
+            }
+            if (this.m_oScope.m_oController.m_oEvent.peakWaterDischarge != null || this.m_oScope.m_oController.m_oEvent.floodHeight != null)
+                this.Flooding = true;
+
         }
 
         if (this.m_oLoginService.isLogged())
@@ -29,26 +45,38 @@ var EventController = (function() {
 
         this.uploadRightAway = true;
 
-        //Init html
-        this.m_oEvent.WaveDiectionType = 0;
-        this.m_oEvent.WindDiectionType = 0;
-        this.m_oEvent.unitHour = true;
-        this.m_oEvent.unitApproximated = true;
-        this.m_oWaveHeightType = ["Mean significant wave height", "Peak significant wave height", "Maximum wave height"];
-        this.m_oWaveDiectionType = ["Degrees from N", "Compass"];
-        this.m_oWindDiectionType = ["Degrees from N", "Compass"];
-        this.m_oWaterLevelType = ["Maximum total water level", "Maximum astronomical tide"];
-        this.m_oWindIntensityType = ["Mean wind speed", "Maximum wind speed", "Maximum wind gust"];
-        this.m_oCostDetails = ["Direct Cost", "Business Interruption Cost", "Indirect Cost", "Intangible Cost", "Risk mitigation Cost"];
-        this.Flooding = false;
-
-        //load countries
+        //load countries and region
         if (this.m_oLoginService.isLogged()) {
-            this.m_oEventService.LoadCountries()
+            this.m_oEventService.LoadCountries();
+
+            if (this.m_oSharedService.getEvent() != null) {
+                $scope.m_oController.m_oEvent.countryCode = this.m_oSharedService.getEvent().countryCode;
+                $scope.m_oController.m_oEventService.GetAllRegions($scope.m_oController.m_oEvent.countryCode).success(function (data, status) {
+                    $scope.m_oController.m_oRegions = data;
+                    if ($scope.m_oController.m_oSharedService.getEvent() != null) {
+                        $scope.m_oController.m_oEvent.countryId = $scope.m_oController.m_oSharedService.getEvent().countryId;
+                    }
+
+                });
+            }
+            else
+            {
+                //Init html
+                this.m_oEvent.waveHeightType = 0;
+                this.m_oEvent.waveDirectionType = 0;
+                this.m_oEvent.windIntensityType = 0;
+                this.m_oEvent.windDirectionType = 0;
+                this.m_oEvent.costDetail = 0;
+                this.m_oEvent.waterLevelType = 0;
+                this.m_oEvent.unitHour = true;
+                this.m_oEvent.unitApproximated = true;
+
+            }
+
         }
 
         $scope.$watch('m_oController.m_oEvent.countryCode', function (newVal, oldVal) {
-            if (newVal !== oldVal) {
+            if (newVal != oldVal) {
                 //load regions
                 if ($scope.m_oController.m_oEvent.countryCode != null) {
                     $scope.m_oController.m_oEventService.GetAllRegions($scope.m_oController.m_oEvent.countryCode).success(function (data, status) {
@@ -64,7 +92,7 @@ var EventController = (function() {
         });
 
         $scope.$watch('m_oController.m_oEvent.countryId', function (newVal, oldVal) {
-            if (newVal !== oldVal) {
+            if (newVal != oldVal) {
 
                 for(var iCount= 0;iCount<$scope.m_oController.m_oRegions.length; iCount++)
                 {
@@ -74,9 +102,7 @@ var EventController = (function() {
             }
         });
 
-        if (this.m_oSharedService.getEvent() != null) {
-            $scope.m_oController.m_oEvent.countryCode = this.m_oSharedService.getEvent().countryCode;
-        }
+
 
         $scope.onFileSelect = function ($files, parameter) {
 
@@ -330,6 +356,50 @@ var EventController = (function() {
 
     };
 
+    EventController.prototype.GetWaveHeightType = function() {
+        return [{name:"Mean significant wave height", value:1}, {name:"Peak significant wave height", value:2}, {name:"Maximum wave height", value:3}];
+
+    };
+
+    EventController.prototype.GetWaveDiectionType = function() {
+        return [{name:"Degrees from N", value:1}, {name:"Compass", value:2}];
+
+    };
+
+    EventController.prototype.GetWindDiectionType = function() {
+        return [{name:"Degrees from N", value:1}, {name:"Compass", value:2}];
+
+    };
+
+    EventController.prototype.GetWaterLevelType = function() {
+        return [{name:"Maximum total water level", value:1}, {name:"Maximum astronomical tide", value:2}];
+
+    };
+
+    EventController.prototype.GetWindIntensityType = function() {
+        return [{name:"Mean wind speed", value:1}, {name:"Maximum wind speed", value:2}, {name:"Maximum wind gust", value:3}];
+
+    };
+
+    EventController.prototype.GetCostDetails = function() {
+        return [{name:"Direct Cost", value:1}, {name:"Business Interruption Cost", value:2}, {name:"Indirect Cost", value:3}, {name:"Risk mitigation Cost", value:4}];
+
+    };
+
+    EventController.prototype.DeleteMedia = function(idMedia, idEvent) {
+
+        this.m_oMediaService.DeleteMedia(idMedia, idEvent).success(function(data){
+            this.m_oScope.m_oController.m_oEvent.Media = data;
+        });
+
+    };
+
+    EventController.prototype.DownloadMedia = function(idMedia) {
+
+        this.m_oMediaService.DownloadMedia(idMedia);
+
+    };
+
     EventController.prototype.AddGIS = function (size) {
 
         if(this.m_oScope.m_oController.CheckAddMediaGis()) {
@@ -357,19 +427,26 @@ var EventController = (function() {
         var oScope = this.m_oScope;
         if (this.m_oEvent != null)
         {
-            this.m_oEventService.Save(this.m_oEvent).success(function (data, status) {
+            if (this.m_oLoginService.isLogged()) {
+                this.m_oEvent.userId = this.m_oLoginService.getUserId();
+                this.m_oEventService.Save(this.m_oEvent).success(function (data, status) {
 
-                //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
-                //di liste contenute
-                if (data != null) {
+                    //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
+                    //di liste contenute
+                    if (data != null) {
 
-                    var answer = confirm("Do you want to insert another event?");
-                    if (answer)
-                        oScope.m_oController.m_oEvent = new Object();
+                        var answer = confirm("Do you want to insert another event?");
+                        if (answer)
+                            oScope.m_oController.m_oEvent = new Object();
+                        else
+                            oScope.m_oController.m_oLocation.path('eventslist');
+                    }
                     else
-                        oScope.m_oController.m_oLocation.path('map');
-                }
-            });
+                    {
+                        alert("Error saving event");
+                    }
+                });
+            }
         }
 
     };
@@ -398,7 +475,8 @@ var EventController = (function() {
             '$modal',
             'EventService',
             'SharedService',
-            'LoginService'
+            'LoginService',
+            'MediaService'
         ];
 
     return EventController;

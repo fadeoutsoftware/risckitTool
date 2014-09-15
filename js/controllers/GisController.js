@@ -3,13 +3,14 @@
  */
 var GisController = (function() {
 
-    function GisController($scope, $location, $modalInstance, oSharedService, oEventService) {
+    function GisController($scope, $location, $modalInstance, oSharedService, oEventService, oGisService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
         this.m_oModaleInstance = $modalInstance;
         this.m_oSharedService = oSharedService;
         this.m_oEventService = oEventService;
+        this.m_oGisService = oGisService;
         this.m_sGisFilePath = null;
         this.m_sInspireFilePath = null;
         this.m_oUploadingGis = false;
@@ -18,8 +19,15 @@ var GisController = (function() {
         this.m_oInspireFiles;
         this.uploadRightAway = true;
 
-        if ($scope.m_oController.m_oSharedService.getEvent().GIS == null)
-            $scope.m_oController.m_oSharedService.getEvent().GIS = new Object();
+        if ($scope.m_oController.m_oSharedService.getEvent().GIS == null) {
+            //Provo a caricarlo da db
+            this.m_oGisService.LoadGis($scope.m_oController.m_oSharedService.getEvent().id).success(function(data){
+                $scope.m_oController.m_oSharedService.getEvent().GIS = data;
+                if ($scope.m_oController.m_oSharedService.getEvent().GIS == null)
+                    $scope.m_oController.m_oSharedService.getEvent().GIS = new Object();
+            });
+
+        }
 
         $scope.$watch('m_oController.m_sGisFilePath', function(newVal, oldVal) {
             if (newVal !== oldVal) {
@@ -107,12 +115,28 @@ var GisController = (function() {
 
     };
 
+    GisController.prototype.downloadGisPath  = function () {
+        if (this.m_oScope.m_oController.m_oSharedService.getEvent().GIS != null)
+            return this.m_oScope.m_oController.m_oSharedService.getEvent().GIS.downloadGisPath;
+
+        return null;
+
+    };
+
+    GisController.prototype.downloadInspirePath  = function () {
+        if (this.m_oScope.m_oController.m_oSharedService.getEvent().GIS != null)
+            return this.m_oScope.m_oController.m_oSharedService.getEvent().GIS.downloadInspirePath;
+
+        return null;
+    };
+
     GisController.$inject = [
         '$scope',
         '$location',
         '$modalInstance',
         'SharedService',
-        'EventService'
+        'EventService',
+        'GisService'
 
     ];
 
