@@ -75,9 +75,10 @@ public class EventResource {
 					//csv
 					
 					String sLocation = oViewModel.getCountryCode() + "_" + oViewModel.getRegionName();
-					DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);
+					
+					DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 					String sStartDate = dateFormatter.format(oEvent.getStartDate());
-					sStartDate = sStartDate.replace("/", "_");
+					
 					SVNUtils oSvnUtils = new SVNUtils();
 					String sDirPath = "/" + oViewModel.getLogin() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 					//csv
@@ -122,10 +123,8 @@ public class EventResource {
 			
 			SVNUtils oSvnUtils = new SVNUtils();
 			String sDirPath = "/" + sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
-			Date dtStartDate = new SimpleDateFormat("yyyy-MM-dd").parse(sStartDate);
-			DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);
-			sStartDate = dateFormatter.format(dtStartDate);
-			sStartDate = sStartDate.replace("/", "_");
+			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			sStartDate = dateFormatter.format(oEvent.getStartDate());
 			
 			//csv
 			oSvnUtils.Commit(file,

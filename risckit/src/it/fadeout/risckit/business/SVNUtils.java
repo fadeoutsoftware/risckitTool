@@ -274,7 +274,6 @@ public class SVNUtils {
 		/*
 		 * URL that points to repository. 
 		 */
-		sSvnRepository += "/" + sLogin + "/" + "risckit" + "/" + sStartDate + "_" + sLocation + "/" + "raw";
 		SVNURL url = SVNURL.parseURIEncoded(sSvnRepository);
 		/*
 		 * Credentials to use for authentication.
@@ -369,6 +368,8 @@ public class SVNUtils {
 		 * revision number, author name, commit date and commit message. 
 		 */
 
+		sFileName = sFileName.replaceAll(sSvnRepository, "");
+		
 		SVNCommitInfo commitInfo = DeleteDir(editor, sFileName, latestRevision);
 
 		System.out.println("The directory was added: " + commitInfo);

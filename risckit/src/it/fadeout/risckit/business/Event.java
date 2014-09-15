@@ -661,7 +661,7 @@ public class Event {
 
 		if (this.m_oStartDate != null)
 		{
-			DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);
+			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			sStartDate = dateFormatter.format(this.getStartDate());
 		}
 		if (this.m_oStartHour != null)

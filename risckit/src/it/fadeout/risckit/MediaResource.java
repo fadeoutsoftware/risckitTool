@@ -1,9 +1,12 @@
 package it.fadeout.risckit;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,6 +14,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +41,10 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.StreamingOutput;
 
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -70,7 +76,7 @@ public class MediaResource {
 				}
 
 				if (oMedia != null)
-					oMediaViewModel.setId(oMedia.getId());
+					oMediaViewModel = oMedia.getViewModel();
 			}
 		}
 		catch(Exception oEx)
@@ -160,12 +166,7 @@ public class MediaResource {
 			if (oMedia != null)
 			{
 				String sRepoFile = oMedia.getFile();
-				String[] sSplitString = sRepoFile.split("/");
-				if (sSplitString != null && sSplitString.length > 0)
-				{
-					sRepoFile = sSplitString[sSplitString.length - 1];
-				}
-
+				
 				boolean bRet = oRepo.Delete(oMedia);
 
 				if (bRet)
@@ -177,10 +178,9 @@ public class MediaResource {
 					Country oCountry = oCountryRepo.Select(oEvent.getCountryId(), Country.class);
 
 					String sLocation = oCountry.getCountryCode() + "_" + oCountry.getName();
-					DateFormat dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT);
+					DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 					String sStartDate = dateFormatter.format(oEvent.getStartDate());
-					sStartDate = sStartDate.replace("/", "_");
-
+					
 					UserRepository oUserRepo = new UserRepository();
 					User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 
@@ -233,19 +233,14 @@ public class MediaResource {
 		UserRepository oUserRepo = new UserRepository();
 		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 		
-		StreamingOutput stream = new StreamingOutput() {
-			@Override
-			public void write(OutputStream os) throws IOException,
-			WebApplicationException {
-				Writer writer = new BufferedWriter(new OutputStreamWriter(os));
-				writer.write("file");
-				writer.flush();
-			}
-		};
+		String sRepoFile = oMedia.getFile();
+		String[] sSplitString = sRepoFile.split("/");
+		final String sTemp = sSplitString[sSplitString.length - 1];;
 		
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
-		OutputStream oOut = new ByteArrayOutputStream();
+		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
+		OutputStream oOut = new FileOutputStream(oFile);
 		
 
 		oSvnUtils.GetFile(
@@ -257,9 +252,12 @@ public class MediaResource {
 				servletConfig.getInitParameter("SvnRepository"),
 				oOut);
 		
-		stream.write(oOut);
-
-		return Response.ok(stream).build();
+		
+		ResponseBuilder response = Response.ok(oFile);
+		response.header("Content-Disposition", "attachment; filename=\""
+				+ sTemp + "\"");
+		return response.build();
+		
 
 	}
 
