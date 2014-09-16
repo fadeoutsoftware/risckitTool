@@ -3,7 +3,7 @@
  */
 var EventController = (function() {
 
-    function EventController($scope, $location, $modal, oEventService, oSharedService, oLoginService, oMediaService) {
+    function EventController($scope, $location, $modal, oEventService, oSharedService, oLoginService, oMediaService, oGisService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
@@ -12,6 +12,7 @@ var EventController = (function() {
         this.m_oSharedService = oSharedService;
         this.m_oLoginService = oLoginService;
         this.m_oMediaService = oMediaService;
+        this.m_oGisService = oGisService;
         this.Flooding = false;
 
         if (this.m_oScope.m_oController.m_oSharedService.getEvent() == null)
@@ -30,11 +31,24 @@ var EventController = (function() {
                 this.m_oMediaService.LoadMedia( $scope.m_oController.m_oEvent.id).success(function(data){
                     $scope.m_oController.m_oEvent.Media = data;
                 });
+
             }
             else
             {
                 this.m_oScope.m_oController.m_oEvent.Media = this.m_oSharedService.getEvent().Media;
             }
+
+            if (this.m_oSharedService.getEvent().GIS == null) {
+                //load GIS
+                this.m_oGisService.LoadGis($scope.m_oController.m_oEvent.id).success(function (data) {
+                    $scope.m_oController.m_oEvent.GIS = data;
+                });
+            }
+            else
+            {
+                this.m_oScope.m_oController.m_oEvent.GIS = this.m_oSharedService.getEvent().GIS;
+            }
+
             if (this.m_oScope.m_oController.m_oEvent.peakWaterDischarge != null || this.m_oScope.m_oController.m_oEvent.floodHeight != null)
                 this.Flooding = true;
 
@@ -396,9 +410,25 @@ var EventController = (function() {
 
     };
 
+    EventController.prototype.DeleteGis = function(idGis, idEvent, type) {
+
+        var oScope = this.m_oScope;
+
+        this.m_oGisService.DeleteGis(idGis, idEvent, type).success(function(data){
+            oScope.m_oController.m_oEvent.GIS = data;
+        });
+
+    };
+
     EventController.prototype.DownloadMedia = function(idMedia) {
 
         return this.m_oMediaService.DownloadMedia(idMedia);
+
+    };
+
+    EventController.prototype.DownloadGis = function(idGis, type) {
+
+        return this.m_oGisService.DownloadGis(idGis, type);
 
     };
 
@@ -414,12 +444,8 @@ var EventController = (function() {
                 size: size
             });
 
-            modalInstance.result.then(function (GISFilesName, InspireFilesName) {
-                if (GISFilesName != null)
-                    oScope.m_oController.m_oEvent.GIS.GisFile = GISFilesName.name;
-                if (InspireFilesName != null)
-                    oScope.m_oController.m_oEvent.GIS.InspireFile = InspireFilesName.name;
-
+            modalInstance.result.then(function (GIS) {
+                    oScope.m_oController.m_oEvent.GIS = GIS;
             });
         }
 
@@ -478,7 +504,8 @@ var EventController = (function() {
             'EventService',
             'SharedService',
             'LoginService',
-            'MediaService'
+            'MediaService',
+            'GisService'
         ];
 
     return EventController;

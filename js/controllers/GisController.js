@@ -19,23 +19,16 @@ var GisController = (function() {
         this.m_oInspireFiles;
         this.uploadRightAway = true;
 
-        if ($scope.m_oController.m_oSharedService.getEvent().GIS == null) {
-            //Provo a caricarlo da db
-            this.m_oGisService.LoadGis($scope.m_oController.m_oSharedService.getEvent().id).success(function(data){
-                $scope.m_oController.m_oSharedService.getEvent().GIS = data;
-                if ($scope.m_oController.m_oSharedService.getEvent().GIS == null)
-                    $scope.m_oController.m_oSharedService.getEvent().GIS = new Object();
-            });
+        if ($scope.m_oController.m_oSharedService.getEvent().GIS == null || $scope.m_oController.m_oSharedService.getEvent().GIS == '')
+            $scope.m_oController.m_oSharedService.getEvent().GIS = new Object();
 
-        }
-
-        $scope.$watch('m_oController.m_sGisFilePath', function(newVal, oldVal) {
+        $scope.$watch('m_oController.m_sGisFilePath', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 $scope.m_oController.m_oGISFiles = newVal;
             }
         });
 
-        $scope.$watch('m_oController.m_sInspireFilePath', function(newVal, oldVal) {
+        $scope.$watch('m_oController.m_sInspireFilePath', function (newVal, oldVal) {
             if (newVal !== oldVal) {
                 $scope.m_oController.m_oInspireFiles = newVal;
             }
@@ -84,29 +77,26 @@ var GisController = (function() {
                 $scope.m_oController.m_oUploadingGis = true;
             else
                 $scope.m_oController.m_oUploadingInspire = true;
-            $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function(data){
+
+            $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function (data) {
                 $scope.m_oController.m_oSharedService.getEvent().id = data.id;
                 $scope.m_oController.m_oSharedService.getEvent().GIS.eventId = data.id;
-                $scope.m_oController.m_oEventService.SaveGis($scope.m_oController.m_oSharedService.getEvent().GIS).success(function(data){
-                    $scope.m_oController.m_oSharedService.getEvent().GIS.id = data.id;
-                    $scope.m_oController.m_oEventService.UploadGis($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.m_oSharedService.getEvent().GIS, $scope.selectedFiles[index], $scope.type).success(function(data){
-                        if ($scope.type == 0) {
-                            $scope.m_oController.m_oSharedService.getEvent().GIS.downloadGisPath = data;
-                            $scope.m_oController.m_oUploadingGis = false;
-                        }
-                        else {
-                            $scope.m_oController.m_oSharedService.getEvent().GIS.downloadInspirePath = data;
-                            $scope.m_oController.m_oUploadingInspire = false;
-                        }
+                $scope.m_oController.m_oEventService.SaveGis($scope.m_oController.m_oSharedService.getEvent().GIS).success(function (data) {
+                    $scope.m_oController.m_oSharedService.getEvent().GIS = data;
+                    $scope.m_oController.m_oEventService.UploadGis($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.m_oSharedService.getEvent().GIS, $scope.selectedFiles[index], $scope.type).success(function (data) {
+                        $scope.m_oController.m_oSharedService.getEvent().GIS = data;
+                        $scope.m_oController.m_oUploadingGis = false;
+                        $scope.m_oController.m_oUploadingInspire = false;
+
                     });
-                })
+                });
             });
         };
 
-    };
+    }
 
     GisController.prototype.ok = function () {
-        this.m_oModaleInstance.close(this.m_oGISFiles, this.m_oInspireFiles);
+        this.m_oModaleInstance.close(this.m_oScope.m_oController.m_oSharedService.getEvent().GIS);
 
     };
 

@@ -13,5 +13,17 @@ angular.module('risckit.gisService', []).
 
         };
 
+        this.DeleteGis = function (idGis, idEvent, type) {
+
+            return this.m_oHttp.post(this.APIURL + '/gis/delete/' + idGis + '/' + idEvent + '/' + type);
+
+        };
+
+        this.DownloadGis = function (idGis, type) {
+
+            return this.APIURL + '/gis/download/' + idGis + '/' + type;
+
+        };
+
     }]);
 
