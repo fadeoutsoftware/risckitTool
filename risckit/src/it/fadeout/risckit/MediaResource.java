@@ -102,7 +102,7 @@ public class MediaResource {
 			String sLocation = sCountryCode + "_" + sRegionName;
 
 			SVNUtils oSvnUtils = new SVNUtils();
-			String sDirPath = "/" + sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
+			String sDirPath = sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 			oSvnUtils.Commit(file,
 					sUserLogin,
 					servletConfig.getInitParameter("SvnUser"), 

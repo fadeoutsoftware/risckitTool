@@ -469,7 +469,7 @@ public class SVNUtils {
 		 * "" (empty string) is path relative to that URL, 
 		 * -1 is value that may be used to specify HEAD (latest) revision.
 		 */
-		//SVNNodeKind nodeKind = repository.checkPath(sPath, -1);
+		SVNNodeKind nodeKind = repository.checkPath("", -1);
 
 		sPath = sPath.replaceAll(sSvnRepository, "");
 		
@@ -478,7 +478,7 @@ public class SVNUtils {
 		 * it doesn't, the program exits. SVNNodeKind is that one who says  what
 		 * is located at a path in a revision. 
 		 */
-		/*
+		
 		if (nodeKind == SVNNodeKind.NONE) {
 			SVNErrorMessage err = SVNErrorMessage.create(SVNErrorCode.UNKNOWN, "No entry at URL ''{0}''", url);
 			throw new SVNException(err);
@@ -486,7 +486,7 @@ public class SVNUtils {
 			SVNErrorMessage err = SVNErrorMessage.create(SVNErrorCode.UNKNOWN, "Entry at URL ''{0}'' is a file while directory was expected", url);
 			throw new SVNException(err);
 		}
-	 	*/
+	 	
 		/*
 		 * Get exact value of the latest (HEAD) revision.
 		 */

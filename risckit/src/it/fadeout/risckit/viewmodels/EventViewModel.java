@@ -147,7 +147,7 @@ public class EventViewModel {
 
 	public void setCountryId(int m_iCountryId) {
 		this.countryId = m_iCountryId;
-	}
+	}   
 	
 	public String getStartDate() {
 		/*

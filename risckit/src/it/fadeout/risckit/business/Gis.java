@@ -70,7 +70,7 @@ public class Gis {
 	public GisViewModel getViewModel()
 	{
 		GisViewModel oViewModel = new GisViewModel();
-		oViewModel.setId(this.getEventId());
+		oViewModel.setId(this.getId());
 		oViewModel.setEventId(this.getEventId());
 		oViewModel.setDownloadGisPath(this.getGisFile());
 		oViewModel.setDownloadInspirePath(this.getInspireFile());

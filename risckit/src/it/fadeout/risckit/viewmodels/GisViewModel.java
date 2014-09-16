@@ -7,9 +7,9 @@ public class GisViewModel {
 	
 	private Integer id;
 	
-	private String GisFile;
+	private String shortGisFile;
 	
-	private String InspireFile;
+	private String shortInspireFile;
 	
 	private int eventId;
 	
@@ -17,20 +17,41 @@ public class GisViewModel {
 	
 	private String downloadInspirePath;
 	
-	public String getGisFile() {
-		return GisFile;
+	public String getShortGisFile() {
+		if (downloadGisPath != null)
+		{
+			String[] sSplitString = downloadGisPath.split("/");
+			if (sSplitString != null && sSplitString.length > 0)
+			{
+				shortGisFile = sSplitString[sSplitString.length - 1];
+			}
+			else
+				shortGisFile = downloadGisPath;
+		}	
+		return shortGisFile;
+		
 	}
 
-	public void setGisFile(String gisFile) {
-		GisFile = gisFile;
+	public void setShortGisFile(String gisFile) {
+		shortGisFile = gisFile;
 	}
 
-	public String getInspireFile() {
-		return InspireFile;
+	public String getShortInspireFile() {
+		if (downloadInspirePath != null)
+		{
+			String[] sSplitString = downloadInspirePath.split("/");
+			if (sSplitString != null && sSplitString.length > 0)
+			{
+				shortInspireFile = sSplitString[sSplitString.length - 1];
+			}
+			else
+				shortInspireFile = downloadInspirePath;
+		}	
+		return shortInspireFile;
 	}
 
-	public void setInspireFile(String inspireFile) {
-		InspireFile = inspireFile;
+	public void setShortInspireFile(String inspireFile) {
+		shortInspireFile = inspireFile;
 	}
 
 	public int getEventId() {
