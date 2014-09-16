@@ -867,21 +867,39 @@
     </div>
 
     <div class="col-sm-12">
-        <table class="table" ng-hide="m_oController.m_oEvent.GIS == null">
+        <table class="table" ng-hide="m_oController.m_oEvent.GIS == null || m_oController.m_oEvent.GIS == ''">
             <tr>
                 <td rowspan="3"><label class="control-label">Gis</label></td>
                 <td><label class="control-label">Attachments</label></td>
             </tr>
-            <tr ng-hide="m_oController.m_oEvent.GIS.GisFile == null">
+            <tr ng-hide="m_oController.m_oEvent.GIS.shortGisFile == null">
                 <td>
-                    <a ng-click="">{{m_oController.m_oEvent.GIS.GisFile}}</a>
-                    <img src="img/delete.png" tooltip="Delete" >
+                    <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Delete">
+                        <img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 0)">
+                    </div>
+                    <a ng-href="{{m_oController.DownloadGis(m_oController.m_oEvent.GIS.id, 0)}}">
+                        <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
+                            <img src="img/download.png" tooltip="Download">
+                        </div>
+                    </a>
+                    <div class="delete">
+                        <a href="{{m_oController.m_oEvent.GIS.downloadGisPath}}">{{m_oController.m_oEvent.GIS.shortGisFile}}</a>
+                    </div>
                 </td>
             </tr>
-            <tr ng-hide="m_oController.m_oEvent.GIS.InspireFile == null">
+            <tr ng-hide="m_oController.m_oEvent.GIS.shortInspireFile == null">
                 <td>
-                    <a ng-click="">{{m_oController.m_oEvent.GIS.InspireFile}}</a>
-                    <img src="img/delete.png" tooltip="Delete">
+                    <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Delete">
+                        <img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 1)">
+                    </div>
+                    <a ng-href="{{m_oController.DownloadGis(m_oController.m_oEvent.GIS.id, 1)}}">
+                        <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
+                            <img src="img/download.png" tooltip="Download">
+                        </div>
+                    </a>
+                    <div class="delete">
+                        <a href="{{m_oController.m_oEvent.GIS.downloadInspirePath}}">{{m_oController.m_oEvent.GIS.shortInspireFile}}</a>
+                    </div>
                 </td>
             </tr>
         </table>
