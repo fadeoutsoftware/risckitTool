@@ -949,6 +949,26 @@ public class Event {
 		this.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
 		this.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
 		this.setUserId(oViewModel.getUserId());
+		
+		this.setWaveHeightInspire(oViewModel.getWaveHeightInspire());
+		this.setWaveHeightTimeSeries(oViewModel.getWaveHeightTimeSeries());
+		this.setWaveDirectionInspire(oViewModel.getWaveDirectionInspire());
+		this.setWaveDirectionTimeSeries(oViewModel.getWaveDirectionTimeSeries());
+		this.setWindIntensityInspire(oViewModel.getWindIntensityInspire());
+		this.setWindIntensitySeries(oViewModel.getWindIntensitySeries());
+		this.setWindDirectionInspire(oViewModel.getWindDirectionInspire());
+		this.setWindDirectionTimeSeries(oViewModel.getWindDirectionTimeSeries());
+		this.setPeakWaterInspire(oViewModel.getPeakWaterInspire());
+		this.setPeakWaterTimeSeries(oViewModel.getPeakWaterTimeSeries());
+		this.setFloodHeightInspire(oViewModel.getFloodHeightInspire());
+		this.setFloodHeightTimeSeries(oViewModel.getFloodHeightTimeSeries());
+		this.setReporedCasualtiesInspire(oViewModel.getReporedCasualtiesInspire());
+		this.setReporedCasualtiesTimeSeries(oViewModel.getReporedCasualtiesTimeSeries());
+		this.setDamageToBuildingsInspire(oViewModel.getDamageToBuildingsInspire());
+		this.setDamageToBuildingsTimeSeries(oViewModel.getDamageToBuildingsTimeSeries());
+		this.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
+		this.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
+		
 	}
 	
 	public EventViewModel getViewModel(List<Country> oCountries)
@@ -995,20 +1015,36 @@ public class Event {
 		oViewModel.setUnitApproximated(this.getUnitApproximated());
 		oViewModel.setWaveHeightType(this.getWaveHeightType());
 		oViewModel.setWaveHeightValue(this.getWaveHeightValue());
+		oViewModel.setWaveHeightInspire(this.getWaveHeightInspire());
+		oViewModel.setWaveHeightTimeSeries(this.getWaveHeightTimeSeries());
 		oViewModel.setWaveDirectionType(this.getWaveDirectionType());
 		oViewModel.setWaveDirectionDegree(this.getWaveDirectionDegree());
 		oViewModel.setWaveDirectionClustered(this.getWaveDirectionClustered());
+		oViewModel.setWaveDirectionInspire(this.getWaveDirectionInspire());
+		oViewModel.setWaveDirectionTimeSeries(this.getWaveDirectionTimeSeries());
 		oViewModel.setWindIntensityType(this.getWindIntensityType());
 		oViewModel.setWindIntensityValue(this.getWindIntensityValue());
+		oViewModel.setWindIntensityInspire(this.getWindIntensityInspire());
+		oViewModel.setWindIntensitySeries(this.getWindIntensitySeries());
 		oViewModel.setWindDirectionType(this.getWindDirectionType());
 		oViewModel.setWindDirectionDegree(this.getWindDirectionDegree());
 		oViewModel.setWindDirectionClustered(this.getWindDirectionClustered());
+		oViewModel.setWindDirectionInspire(this.getWindDirectionInspire());
+		oViewModel.setWindDirectionTimeSeries(this.getWindDirectionTimeSeries());
 		oViewModel.setPeakWaterDischarge(this.getPeakWaterDischarge());
+		oViewModel.setPeakWaterInspire(this.getPeakWaterInspire());
+		oViewModel.setPeakWaterTimeSeries(this.getPeakWaterTimeSeries());
 		oViewModel.setFloodHeight(this.getFloodHeight());
+		oViewModel.setFloodHeightInspire(this.getFloodHeightInspire());
+		oViewModel.setFloodHeightTimeSeries(this.getFloodHeightTimeSeries());
 		oViewModel.setReporedCasualtiesNumber(this.getReporedCasualtiesNumber());
 		oViewModel.setReporedCasualtiesDescription(this.getReporedCasualtiesDescription());
+		oViewModel.setReporedCasualtiesInspire(this.getReporedCasualtiesInspire());
+		oViewModel.setReporedCasualtiesTimeSeries(this.getReporedCasualtiesTimeSeries());
 		oViewModel.setDamageToBuildingsDescription(this.getDamageToBuildingsDescription());
 		oViewModel.setDamageToBuildingsCost(this.getDamageToBuildingsCost());
+		oViewModel.setDamageToBuildingsInspire(this.getDamageToBuildingsInspire());
+		oViewModel.setDamageToBuildingsTimeSeries(this.getDamageToBuildingsTimeSeries());
 		oViewModel.setCostDetail(this.getCostDetail());
 		oViewModel.setDescriptionOfMeasure(this.getDescriptionOfMeasure());
 		oViewModel.setWaterLevelType(this.getWaterLevelType());
@@ -1018,6 +1054,88 @@ public class Event {
 		oViewModel.setUserId(this.getUserId());
 		
 		return oViewModel;
+	}
+	
+	public void setPathRepository(String sNameProperty, String sPathRepository)
+	{
+		if (sNameProperty.equals("waveHeightInspire"))
+			this.setWaveHeightInspire(sPathRepository);
+		if (sNameProperty.equals("waveHeightTimeSeries"))
+			this.setWaveHeightTimeSeries(sPathRepository);
+		if (sNameProperty.equals("waveDirectionInspire"))
+			this.setWaveDirectionInspire(sPathRepository);
+		if (sNameProperty.equals("waveDirectionTimeSeries"))
+			this.setWaveDirectionTimeSeries(sPathRepository);
+		if (sNameProperty.equals("windIntensityInspire"))
+			this.setWindIntensityInspire(sPathRepository);
+		if (sNameProperty.equals("windIntensitySeries"))
+			this.setWindIntensitySeries(sPathRepository);
+		if (sNameProperty.equals("windDirectionInspire"))
+			this.setWindDirectionInspire(sPathRepository);
+		if (sNameProperty.equals("windDirectionTimeSeries"))
+			this.setWindDirectionTimeSeries(sPathRepository);
+		if (sNameProperty.equals("waterLevelInspire"))
+			this.setWaterLevelInspire(sPathRepository);
+		if (sNameProperty.equals("waterLevelTimeSeries"))
+			this.setWaterLevelTimeSeries(sPathRepository);
+		if (sNameProperty.equals("peakWaterInpire"))
+			this.setPeakWaterInspire(sPathRepository);
+		if (sNameProperty.equals("peakWaterTimeSeries"))
+			this.setPeakWaterTimeSeries(sPathRepository);
+		if (sNameProperty.equals("floodHeightInspire"))
+			this.setFloodHeightInspire(sPathRepository);
+		if (sNameProperty.equals("floodHeightTimeSeries"))
+			this.setFloodHeightTimeSeries(sPathRepository);
+		if (sNameProperty.equals("reporedCasualtiesInspire"))
+			this.setReporedCasualtiesInspire(sPathRepository);
+		if (sNameProperty.equals("reporedCasualtiesTimeSeries"))
+			this.setReporedCasualtiesTimeSeries(sPathRepository);
+		if (sNameProperty.equals("damageToBuildingsInspire"))
+			this.setDamageToBuildingsInspire(sPathRepository);
+		if (sNameProperty.equals("damageToBuildingsTimeSeries"))
+			this.setDamageToBuildingsTimeSeries(sPathRepository);
+	}
+	
+	public String getPathRepository(String sNameProperty)
+	{
+		if (sNameProperty.equals("waveHeightInspire"))
+			return this.getWaveHeightInspire();
+		if (sNameProperty.equals("waveHeightTimeSeries"))
+			this.getWaveHeightTimeSeries();
+		if (sNameProperty.equals("waveDirectionInspire"))
+			this.getWaveDirectionInspire();
+		if (sNameProperty.equals("waveDirectionTimeSeries"))
+			this.getWaveDirectionTimeSeries();
+		if (sNameProperty.equals("windIntensityInspire"))
+			this.getWindIntensityInspire();
+		if (sNameProperty.equals("windIntensitySeries"))
+			this.getWindIntensitySeries();
+		if (sNameProperty.equals("windDirectionInspire"))
+			this.getWindDirectionInspire();
+		if (sNameProperty.equals("windDirectionTimeSeries"))
+			this.getWindDirectionTimeSeries();
+		if (sNameProperty.equals("waterLevelInspire"))
+			this.getWaterLevelInspire();
+		if (sNameProperty.equals("waterLevelTimeSeries"))
+			this.getWaterLevelTimeSeries();
+		if (sNameProperty.equals("peakWaterInpire"))
+			this.getPeakWaterInspire();
+		if (sNameProperty.equals("peakWaterTimeSeries"))
+			this.getPeakWaterTimeSeries();
+		if (sNameProperty.equals("floodHeightInspire"))
+			this.getFloodHeightInspire();
+		if (sNameProperty.equals("floodHeightTimeSeries"))
+			this.getFloodHeightTimeSeries();
+		if (sNameProperty.equals("reporedCasualtiesInspire"))
+			this.getReporedCasualtiesInspire();
+		if (sNameProperty.equals("reporedCasualtiesTimeSeries"))
+			this.getReporedCasualtiesTimeSeries();
+		if (sNameProperty.equals("damageToBuildingsInspire"))
+			this.getDamageToBuildingsInspire();
+		if (sNameProperty.equals("damageToBuildingsTimeSeries"))
+			this.getDamageToBuildingsTimeSeries();
+		
+		return null;
 	}
 
 }

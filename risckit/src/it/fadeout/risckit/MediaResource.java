@@ -258,7 +258,6 @@ public class MediaResource {
 				+ sTemp + "\"");
 		return response.build();
 		
-
 	}
 
 }

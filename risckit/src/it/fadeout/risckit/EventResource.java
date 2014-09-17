@@ -2,8 +2,11 @@ package it.fadeout.risckit;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,13 +16,18 @@ import java.util.List;
 
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.Event;
+import it.fadeout.risckit.business.Gis;
 import it.fadeout.risckit.business.Media;
 import it.fadeout.risckit.business.SVNUtils;
+import it.fadeout.risckit.business.User;
 import it.fadeout.risckit.data.CountryRepository;
 import it.fadeout.risckit.data.EventRepository;
+import it.fadeout.risckit.data.GisRepository;
 import it.fadeout.risckit.data.MediaRepository;
+import it.fadeout.risckit.data.UserRepository;
 import it.fadeout.risckit.viewmodels.CountryViewModel;
 import it.fadeout.risckit.viewmodels.EventViewModel;
+import it.fadeout.risckit.viewmodels.GisViewModel;
 
 import javax.servlet.ServletConfig;
 import javax.ws.rs.Consumes;
@@ -30,6 +38,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -139,40 +149,8 @@ public class EventResource {
 
 			String sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
 			
-			//TODO: da modificare usando la reflection, ora ho fatto così per fare un pò prima
-			if (sNameProperty == "waveHeightInspire")
-				oEvent.setWaveHeightInspire(sPathRepository);
-			if (sNameProperty == "waveHeightTimeSeries")
-				oEvent.setWaveHeightTimeSeries(sPathRepository);
-			if (sNameProperty == "waveDirectionInspire")
-				oEvent.setWaveDirectionInspire(sPathRepository);
-			if (sNameProperty == "waveDirectionTimeSeries")
-				oEvent.setWaveDirectionTimeSeries(sPathRepository);
-			if (sNameProperty == "windIntensityInspire")
-				oEvent.setWindIntensityInspire(sPathRepository);
-			if (sNameProperty == "windIntensitySeries")
-				oEvent.setWindIntensitySeries(sPathRepository);
-			if (sNameProperty == "windDirectionInspire")
-				oEvent.setWindDirectionInspire(sPathRepository);
-			if (sNameProperty == "windDirectionTimeSeries")
-				oEvent.setWindDirectionTimeSeries(sPathRepository);
-			if (sNameProperty == "peakWaterInpire")
-				oEvent.setPeakWaterInspire(sPathRepository);
-			if (sNameProperty == "peakWaterTimeSeries")
-				oEvent.setPeakWaterTimeSeries(sPathRepository);
-			if (sNameProperty == "floodHeightInspire")
-				oEvent.setFloodHeightInspire(sPathRepository);
-			if (sNameProperty == "floodHeightTimeSeries")
-				oEvent.setFloodHeightTimeSeries(sPathRepository);
-			if (sNameProperty == "reporedCasualtiesInspire")
-				oEvent.setReporedCasualtiesInspire(sPathRepository);
-			if (sNameProperty == "reporedCasualtiesTimeSeries")
-				oEvent.setReporedCasualtiesTimeSeries(sPathRepository);
-			if (sNameProperty == "damageToBuildingsInspire")
-				oEvent.setDamageToBuildingsInspire(sPathRepository);
-			if (sNameProperty == "damageToBuildingsTimeSeries")
-				oEvent.setDamageToBuildingsTimeSeries(sPathRepository);
-
+			oEvent.setPathRepository(sNameProperty, sPathRepository);
+			
 			oRepo.Update(oEvent);
 
 			return sPathRepository;
@@ -223,6 +201,100 @@ public class EventResource {
 		}
 		
 		return oReturnList;
+	}
+	
+	@GET
+	@Path("/download/{idEvent}/{parameter}")
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response getFile(@PathParam("idEvent") int iIdEvent, @PathParam("parameter") String sParameter) throws Exception {
+
+		EventRepository oEventRepository = new EventRepository();
+		Event oEvent = oEventRepository.Select(iIdEvent, Event.class); 
+		
+		UserRepository oUserRepo = new UserRepository();
+		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
+		
+		String sRepoFile = oEvent.getPathRepository(sParameter);
+		String[] sSplitString = sRepoFile.split("/");
+		final String sTemp = sSplitString[sSplitString.length - 1];
+		
+		//Delete File if present
+		SVNUtils oSvnUtils = new SVNUtils();
+		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
+		OutputStream oOut = new FileOutputStream(oFile);
+		
+		oSvnUtils.GetFile(
+				oUser.getUserName(),
+				servletConfig.getInitParameter("SvnUser"), 
+				servletConfig.getInitParameter("SvnPwd"), 
+				servletConfig.getInitParameter("SvnUserDomain"), 
+				oEvent.getPathRepository(sParameter), 
+				servletConfig.getInitParameter("SvnRepository"),
+				oOut);
+		
+		
+		ResponseBuilder response = Response.ok(oFile);
+		response.header("Content-Disposition", "attachment; filename=\""
+				+ sTemp + "\"");
+		return response.build();
+		
+	}
+	
+	@POST
+	@Path("/delete/{idEvent}/{parameter}")
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces({"application/json"})
+	public EventViewModel Delete(@PathParam("idEvent") int iIdEvent, @PathParam("parameter") String sParameter) {
+
+		EventViewModel oReturnValue = null;
+		EventRepository oRepo = new EventRepository();
+		try
+		{
+			Event oEvent = oRepo.Select(iIdEvent, Event.class);
+			String sPathFile = oEvent.getPathRepository(sParameter);
+			if (oEvent != null)
+			{
+				oEvent.setPathRepository(sParameter, null);
+				oRepo.Update(oEvent);
+				
+				CountryRepository oCountryRepo = new CountryRepository();
+				List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
+				Country oCountry = oCountryRepo.Select(oEvent.getCountryId(), Country.class);
+				
+				if (oEvent != null)
+					oReturnValue = oEvent.getViewModel(oCountries);
+				
+				String sLocation = oCountry.getCountryCode() + "_" + oCountry.getName();
+				DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+				String sStartDate = dateFormatter.format(oEvent.getStartDate());
+
+				UserRepository oUserRepo = new UserRepository();
+				User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
+
+				//Delete File if present
+				SVNUtils oSvnUtils = new SVNUtils();
+
+				oSvnUtils.Delete(
+						oUser.getUserName(),
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						sPathFile, 
+						servletConfig.getInitParameter("SvnRepository"),
+						sStartDate,
+						sLocation);
+			}
+
+
+		}
+		catch(Exception oEx)
+		{
+			oEx.printStackTrace();
+
+		}
+
+		return oReturnValue;
 	}
 
 }
