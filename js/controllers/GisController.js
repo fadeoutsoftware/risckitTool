@@ -13,8 +13,7 @@ var GisController = (function() {
         this.m_oGisService = oGisService;
         this.m_sGisFilePath = null;
         this.m_sInspireFilePath = null;
-        this.m_oUploadingGis = false;
-        this.m_oUploadingInspire = false;
+        this.m_oUploading= false;
         this.m_oGISFiles;
         this.m_oInspireFiles;
         this.uploadRightAway = true;
@@ -73,10 +72,8 @@ var GisController = (function() {
         $scope.start = function (index) {
             $scope.progress[index] = 0;
             $scope.errorMsg = null;
-            if ($scope.type)
-                $scope.m_oController.m_oUploadingGis = true;
-            else
-                $scope.m_oController.m_oUploadingInspire = true;
+
+            $scope.m_oController.m_oUploading = true;
 
             $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function (data) {
                 $scope.m_oController.m_oSharedService.getEvent().id = data.id;
@@ -85,8 +82,7 @@ var GisController = (function() {
                     $scope.m_oController.m_oSharedService.getEvent().GIS = data;
                     $scope.m_oController.m_oEventService.UploadGis($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.m_oSharedService.getEvent().GIS, $scope.selectedFiles[index], $scope.type).success(function (data) {
                         $scope.m_oController.m_oSharedService.getEvent().GIS = data;
-                        $scope.m_oController.m_oUploadingGis = false;
-                        $scope.m_oController.m_oUploadingInspire = false;
+                        $scope.m_oController.m_oUploading = false;
 
                     });
                 });
@@ -105,19 +101,10 @@ var GisController = (function() {
 
     };
 
-    GisController.prototype.downloadGisPath  = function () {
-        if (this.m_oScope.m_oController.m_oSharedService.getEvent().GIS != null)
-            return this.m_oScope.m_oController.m_oSharedService.getEvent().GIS.downloadGisPath;
+    GisController.prototype.DownloadGis = function(type) {
 
-        return null;
+        return this.m_oGisService.DownloadGis(this.m_oScope.m_oController.m_oSharedService.getEvent().GIS.id, type);
 
-    };
-
-    GisController.prototype.downloadInspirePath  = function () {
-        if (this.m_oScope.m_oController.m_oSharedService.getEvent().GIS != null)
-            return this.m_oScope.m_oController.m_oSharedService.getEvent().GIS.downloadInspirePath;
-
-        return null;
     };
 
     GisController.$inject = [

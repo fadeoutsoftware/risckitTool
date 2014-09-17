@@ -3,8 +3,8 @@
  */
 angular.module('risckit.eventService', []).
     service('EventService',  ['$http', '$upload', function ($http, $upload) {
-        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        this.APIURL = 'http://localhost:8080/risckit/rest';
+        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        //this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
         this.m_oCountries = null;
         this.m_oEvents = [];
@@ -120,6 +120,18 @@ angular.module('risckit.eventService', []).
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
+
+        };
+
+        this.DownloadAttachment = function (idEvent, parameter) {
+
+            return this.APIURL + '/events/download/' + idEvent + '/' + parameter;
+
+        };
+
+        this.DeleteAttachment = function (idEvent, parameter) {
+
+            return this.m_oHttp.post(this.APIURL + '/events/delete/' + idEvent + '/' + parameter);
 
         };
 

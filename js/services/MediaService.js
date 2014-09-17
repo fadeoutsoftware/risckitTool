@@ -3,8 +3,8 @@
  */
 angular.module('risckit.mediaService', []).
     service('MediaService',  ['$http', '$upload', function ($http) {
-        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        this.APIURL = 'http://localhost:8080/risckit/rest';
+        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        //this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
 
         this.LoadMedia = function (idEvent) {
