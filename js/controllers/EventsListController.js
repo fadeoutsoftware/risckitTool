@@ -104,6 +104,27 @@ var EventsListController = (function() {
 
     };
 
+    EventsListController.prototype.deleteEvent = function(idEvent) {
+        var oController = this;
+        var oRetValue = this.m_oEventService.DeleteEvent(idEvent);
+        if (oRetValue != null)  {
+            oRetValue.success(function(data){
+
+                if (data < 0) {
+                   alert('Error deleting event');
+                }
+
+                //Reload Event
+                oController.m_oEventService.LoadEvents(oController.m_oLoginService.getUserId()).success(function (data) {
+                    oController.m_oEventList = data;
+                });
+
+            });
+        }
+
+
+    };
+
 
         EventsListController.$inject = [
         '$scope',

@@ -20,6 +20,7 @@ riskit.config(function($routeProvider) {
         $routeProvider.when('/eventslist', {templateUrl: 'partials/eventslist.html', controller: 'EventsListController'});
         $routeProvider.when('/map', {templateUrl: 'partials/map.html', controller: 'MapController'});
         $routeProvider.when('/media', {templateUrl: 'partials/media.html', controller: 'MediaController'});
+        $routeProvider.when('/media/:idmedia', {templateUrl: 'partials/media.html', controller: 'MediaController'});
         $routeProvider.otherwise({redirectTo: '/'});
     }
 );

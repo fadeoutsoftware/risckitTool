@@ -477,6 +477,11 @@ var EventController = (function() {
         return true;
     };
 
+    EventController.prototype.OpenMedia = function (idmedia) {
+        this.m_oLocation.path('/media/' + idmedia);
+    };
+
+
 
     EventController.$inject = [
             '$scope',

@@ -14,5 +14,6 @@ angular.module('risckit.sharedService', [])
             return $rootScope.Event;
         };
 
+
         return service;
     });

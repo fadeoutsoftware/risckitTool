@@ -6,7 +6,7 @@
  */
 var MediaController = (function() {
 
-    function MediaController($scope, $location, oSharedService, oEventService, oMediaService) {
+    function MediaController($scope, $location, oSharedService, oEventService, oMediaService, $routeParams) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
@@ -22,8 +22,12 @@ var MediaController = (function() {
         this.m_oPositionMark = null;
         this.Marker;
         this.Media = [];
+        this.m_oRouteParams = $routeParams;
+        this.m_oMediaService.setUnchanged();
 
         var oRootScope = this.m_oScope;
+
+        var iIdMedia = this.m_oRouteParams.idmedia;
 
         var map_canvas = document.getElementById('media_map_canvas');
         var map_options = {
@@ -56,47 +60,28 @@ var MediaController = (function() {
         }
 
         var oEvent = this.m_oSharedService.getEvent();
-        if (oEvent != null)
-        {
-            if (oEvent.Media == null && oEvent.id != null) {
-                this.m_oMediaService.LoadMedia(oEvent.id).success(function (data) {
+        if (oEvent != null) {
+            if (iIdMedia != null) {
+                this.m_oMediaService.getMedia(iIdMedia).success(function (data) {
 
                     //add marker
-                    for (var i = 0; i < data.length; i++) {
-                        var myLatlng = new google.maps.LatLng(data[i].lat, data[i].lon);
-                        $scope.m_oController.m_oPositionMark = myLatlng;
-                        // To add the marker to the map, use the 'map' property
-                        var marker = new google.maps.Marker({
-                            position: myLatlng,
-                            map: map
-                        });
-
-                        oEvent.Media = data;
-                    }
-
-                    $scope.m_oController.description = oEvent.Media[0].description;
-                    $scope.m_oController.date = oEvent.Media[0].date;
-                });
-            }
-            else if (oEvent.Media != null)
-            {
-                //add marker
-                for (var i = 0; i < oEvent.Media.length; i++) {
-                    var myLatlng = new google.maps.LatLng(oEvent.Media[i].lat, oEvent.Media[i].lon);
+                    var myLatlng = new google.maps.LatLng(data.lat, data.lon);
                     $scope.m_oController.m_oPositionMark = myLatlng;
                     // To add the marker to the map, use the 'map' property
                     var marker = new google.maps.Marker({
                         position: myLatlng,
                         map: map
-                    });
-                }
 
-                if (oEvent.Media.length > 0) {
-                    $scope.m_oController.description = oEvent.Media[0].description;
-                    $scope.m_oController.date = oEvent.Media[0].date;
-                }
+                    });
+
+                    $scope.m_oController.NewMedia = data;
+                    $scope.m_oController.description = data.description;
+                    $scope.m_oController.date = data.date;
+
+                });
+
             }
-    }
+        }
 
         $scope.$watch('m_oController.m_sFilePath', function(newVal, oldVal) {
             if (newVal !== oldVal) {
@@ -110,7 +95,7 @@ var MediaController = (function() {
                 $scope.m_oController.NewMedia.date = $scope.m_oController.date;
                 if ($scope.m_oController.m_oSharedService.getEvent().Media == null)
                     $scope.m_oController.m_oSharedService.getEvent().Media = new Array();
-                $scope.m_oController.m_oSharedService.getEvent().Media.push($scope.m_oController.NewMedia);
+                //$scope.m_oController.m_oSharedService.getEvent().Media.push($scope.m_oController.NewMedia);
                 //$scope.m_oController.Files.push(newVal);
             }
         });
@@ -161,11 +146,11 @@ var MediaController = (function() {
                 $scope.m_oController.m_oSharedService.getEvent().id = data.id;
                 $scope.m_oController.NewMedia.eventId = data.id;
                 $scope.m_oController.m_oEventService.SaveMedia($scope.m_oController.NewMedia).success(function(data){
-                    $scope.m_oController.NewMedia.id = data.id;
+                    $scope.m_oController.NewMedia = data;
                     if ($scope.selectedFiles[index] != null) {
                         $scope.m_oController.m_oEventService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function (data) {
-                            $scope.m_oController.m_oSharedService.getEvent().Media = data;
-                            $scope.m_oController.NewMedia = null;
+                            $scope.m_oController.NewMedia = data;
+                            $scope.m_oController.m_oSharedService.getEvent().Media.push(data);
                             $scope.m_oController.m_oUploading = false;
                         });
                     }
@@ -208,11 +193,6 @@ var MediaController = (function() {
 
     };
 
-    MediaController.prototype.getMedia = function() {
-        return this.m_oSharedService.getEvent().Media;
-
-    };
-
     MediaController.prototype.canUpload = function() {
         return this.m_oScope.m_oController.m_oPositionMark != null &&
             this.m_oScope.m_oController.description != null &&
@@ -220,15 +200,11 @@ var MediaController = (function() {
 
     };
 
-    MediaController.prototype.DeleteMedia = function(idMedia, idEvent) {
+    MediaController.prototype.DownloadMedia = function(idMedia) {
 
-        this.m_oMediaService.DeleteMedia(idMedia, idEvent).success(function(data){
-            this.m_oSharedService.getEvent().Media = data;
-        });
+        return this.m_oMediaService.DownloadMedia(idMedia);
 
     };
-
-
 
 
     MediaController.$inject = [
@@ -236,7 +212,8 @@ var MediaController = (function() {
         '$location',
         'SharedService',
         'EventService',
-        'MediaService'
+        'MediaService',
+        '$routeParams'
     ];
 
 

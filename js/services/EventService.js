@@ -22,10 +22,7 @@ angular.module('risckit.eventService', []).
         };
 
         this.LoadEvents = function (idUser) {
-
-
             return this.m_oHttp({method: 'GET', url: this.APIURL + '/events/user/' + idUser});
-
         };
 
         this.getEvents = function() {
@@ -131,7 +128,19 @@ angular.module('risckit.eventService', []).
 
         this.DeleteAttachment = function (idEvent, parameter) {
 
-            return this.m_oHttp.post(this.APIURL + '/events/delete/' + idEvent + '/' + parameter);
+            return this.m_oHttp.post(this.APIURL + '/events/deleteattach/' + idEvent + '/' + parameter);
+
+        };
+
+        this.DeleteEvent = function (idEvent) {
+
+            var answer = confirm("Are you sure to delete?");
+            if (answer) {
+                return this.m_oHttp.post(this.APIURL + '/events/delete/' + idEvent);
+            }
+            else{
+                return null;
+            }
 
         };
 
