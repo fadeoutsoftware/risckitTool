@@ -1,13 +1,16 @@
 package it.fadeout.risckit.data;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.tmatesoft.svn.core.SVNException;
 
 import it.fadeout.risckit.business.Gis;
 import it.fadeout.risckit.business.Media;
+import it.fadeout.risckit.business.SVNUtils;
 
 public class GisRepository extends Repository<Gis>{
 	
@@ -46,6 +49,26 @@ public class GisRepository extends Repository<Gis>{
 		}
 
 		return oGis;
+	}
+	
+	public void DeleteGisFile(String sUserName, String sSvnUser, String sSvnPwd,
+			String sSvnUserDomain, String sRepoFile,String sSvnRepository, String sStartDate, String sLocation) throws SVNException, IOException
+	{
+		//Delete File if present
+		SVNUtils oSvnUtils = new SVNUtils();
+
+		if (sRepoFile != null)
+		{
+			oSvnUtils.Delete(
+					sUserName,
+					sSvnUser, 
+					sSvnPwd, 
+					sSvnUserDomain, 
+					sRepoFile, 
+					sSvnRepository,
+					sStartDate,
+					sLocation);
+		}
 	}
 
 }

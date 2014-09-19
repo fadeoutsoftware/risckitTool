@@ -43,6 +43,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.tmatesoft.svn.core.SVNException;
 
 
 @Path("/events")
@@ -75,7 +76,7 @@ public class EventResource {
 					oEvent.setId(oViewModel.getId());
 					oRepo.Update(oEvent);
 				}
-				
+
 				if (oEvent != null)
 				{
 					oViewModel.setId(oEvent.getId());
@@ -83,12 +84,12 @@ public class EventResource {
 					CountryRepository oRepoCountry = new CountryRepository();
 					oEvent.setCountry(oRepoCountry.Select(oEvent.getCountryId(), Country.class));
 					//csv
-					
+
 					String sLocation = oViewModel.getCountryCode() + "_" + oViewModel.getRegionName();
-					
+
 					DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 					String sStartDate = dateFormatter.format(oEvent.getStartDate());
-					
+
 					SVNUtils oSvnUtils = new SVNUtils();
 					String sDirPath = oViewModel.getLogin() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 					//csv
@@ -111,12 +112,12 @@ public class EventResource {
 			oEx.printStackTrace();
 			if (oEvent == null)
 				oViewModel = null;
-				
+
 		}
 
 		return oViewModel;
 	}
-	
+
 	@SuppressWarnings("unused")
 	@POST
 	@Path("/upload")
@@ -128,14 +129,14 @@ public class EventResource {
 			//Carico il progetto e lo aggiorno con il nuovo path
 			EventRepository oRepo = new EventRepository();
 			Event oEvent = oRepo.Select(iEventId, Event.class);
-			
+
 			String sLocation = sCountryCode + "_" + sRegionName;
-			
+
 			SVNUtils oSvnUtils = new SVNUtils();
 			String sDirPath = sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			sStartDate = dateFormatter.format(oEvent.getStartDate());
-			
+
 			//csv
 			oSvnUtils.Commit(file,
 					sUserLogin,
@@ -148,9 +149,9 @@ public class EventResource {
 					sLocation);
 
 			String sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
-			
+
 			oEvent.setPathRepository(sNameProperty, sPathRepository);
-			
+
 			oRepo.Update(oEvent);
 
 			return sPathRepository;
@@ -161,36 +162,36 @@ public class EventResource {
 			return null;
 		}
 	}
-	
+
 	@GET
 	@Path("/{id}")
 	@Produces({"application/json", "application/xml", "text/xml"})
 	public EventViewModel getEvent(@PathParam("id") int iIdEvent) {
-		
+
 		EventRepository oRepo = new EventRepository();
 		Event oEvent = oRepo.Select(iIdEvent, Event.class);
-		
+
 		CountryRepository oCountryRepo = new CountryRepository();
 		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
-		
+
 		if (oEvent != null)
-				return oEvent.getViewModel(oCountries);
+			return oEvent.getViewModel(oCountries);
 		else
 			return null;
 	}
-	
+
 	@GET
 	@Path("/user/{iduser}")
 	@Produces({"application/json", "application/xml", "text/xml"})
 	public List<EventViewModel> getEventList(@PathParam("iduser") int iIdUser) {
-		
+
 		List<EventViewModel> oReturnList = null;
 		EventRepository oRepo = new EventRepository();
 		List<Event> oEvents = oRepo.SelectByUser(iIdUser);
-		
+
 		CountryRepository oCountryRepo = new CountryRepository();
 		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
-		
+
 		if (oEvents != null)
 		{
 			oReturnList = new ArrayList<EventViewModel>();
@@ -199,10 +200,10 @@ public class EventResource {
 				oReturnList.add(oEventViewModel);
 			}
 		}
-		
+
 		return oReturnList;
 	}
-	
+
 	@GET
 	@Path("/download/{idEvent}/{parameter}")
 	@Consumes({"application/xml", "application/json", "text/xml"})
@@ -211,19 +212,19 @@ public class EventResource {
 
 		EventRepository oEventRepository = new EventRepository();
 		Event oEvent = oEventRepository.Select(iIdEvent, Event.class); 
-		
+
 		UserRepository oUserRepo = new UserRepository();
 		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
-		
+
 		String sRepoFile = oEvent.getPathRepository(sParameter);
 		String[] sSplitString = sRepoFile.split("/");
 		final String sTemp = sSplitString[sSplitString.length - 1];
-		
+
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
 		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
 		OutputStream oOut = new FileOutputStream(oFile);
-		
+
 		oSvnUtils.GetFile(
 				oUser.getUserName(),
 				servletConfig.getInitParameter("SvnUser"), 
@@ -232,20 +233,20 @@ public class EventResource {
 				oEvent.getPathRepository(sParameter), 
 				servletConfig.getInitParameter("SvnRepository"),
 				oOut);
-		
-		
+
+
 		ResponseBuilder response = Response.ok(oFile);
 		response.header("Content-Disposition", "attachment; filename=\""
 				+ sTemp + "\"");
 		return response.build();
-		
+
 	}
-	
+
 	@POST
-	@Path("/delete/{idEvent}/{parameter}")
+	@Path("/deleteattach/{idEvent}/{parameter}")
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
-	public EventViewModel Delete(@PathParam("idEvent") int iIdEvent, @PathParam("parameter") String sParameter) {
+	public EventViewModel DeleteAttach(@PathParam("idEvent") int iIdEvent, @PathParam("parameter") String sParameter) {
 
 		EventViewModel oReturnValue = null;
 		EventRepository oRepo = new EventRepository();
@@ -257,14 +258,14 @@ public class EventResource {
 			{
 				oEvent.setPathRepository(sParameter, null);
 				oRepo.Update(oEvent);
-				
+
 				CountryRepository oCountryRepo = new CountryRepository();
 				List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
 				Country oCountry = oCountryRepo.Select(oEvent.getCountryId(), Country.class);
-				
+
 				if (oEvent != null)
 					oReturnValue = oEvent.getViewModel(oCountries);
-				
+
 				String sLocation = oCountry.getCountryCode() + "_" + oCountry.getName();
 				DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 				String sStartDate = dateFormatter.format(oEvent.getStartDate());
@@ -272,10 +273,7 @@ public class EventResource {
 				UserRepository oUserRepo = new UserRepository();
 				User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 
-				//Delete File if present
-				SVNUtils oSvnUtils = new SVNUtils();
-
-				oSvnUtils.Delete(
+				oRepo.DeleteEventFile(
 						oUser.getUserName(),
 						servletConfig.getInitParameter("SvnUser"), 
 						servletConfig.getInitParameter("SvnPwd"), 
@@ -296,5 +294,97 @@ public class EventResource {
 
 		return oReturnValue;
 	}
+
+	@POST
+	@Path("/delete/{idEvent}")
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces({"application/json"})
+	public Integer Delete(@PathParam("idEvent") int iIdEvent) {
+
+		EventRepository oRepo = new EventRepository();
+		boolean bError = false;
+		try
+		{
+			Event oEvent = oRepo.Select(iIdEvent, Event.class);
+			//Provo a cancellare tutti i file
+
+			if (oEvent != null)
+			{
+
+				CountryRepository oCountryRepo = new CountryRepository();
+				List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
+				Country oCountry = oCountryRepo.Select(oEvent.getCountryId(), Country.class);
+
+				String sLocation = oCountry.getCountryCode() + "_" + oCountry.getName();
+				DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+				String sStartDate = dateFormatter.format(oEvent.getStartDate());
+
+				UserRepository oUserRepo = new UserRepository();
+				User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
+
+				for (String sPathFile : oEvent.getPathRepository()) {
+					try
+					{
+						oRepo.DeleteEventFile(
+								oUser.getUserName(),
+								servletConfig.getInitParameter("SvnUser"), 
+								servletConfig.getInitParameter("SvnPwd"), 
+								servletConfig.getInitParameter("SvnUserDomain"), 
+								sPathFile, 
+								servletConfig.getInitParameter("SvnRepository"),
+								sStartDate,
+								sLocation);
+					}
+					catch(SVNException oEx)
+					{
+
+					}
+				}
+
+				//Delete csv
+				String sCsvDirPath = oUser.getUserName() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
+				try
+				{
+					oRepo.DeleteEventFile(
+							oUser.getUserName(),
+							servletConfig.getInitParameter("SvnUser"), 
+							servletConfig.getInitParameter("SvnPwd"), 
+							servletConfig.getInitParameter("SvnUserDomain"), 
+							sCsvDirPath, 
+							servletConfig.getInitParameter("SvnRepository"),
+							sStartDate,
+							sLocation);
+				}
+				catch(SVNException oEx)
+				{
+
+				}
+
+
+				//Delete Event
+				return oRepo.Delete(oEvent, oUser.getUserName(), 
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						servletConfig.getInitParameter("SvnRepository"),
+						sStartDate,
+						sLocation);
+
+			}
+
+
+		}
+		catch(Exception oEx)
+		{
+			oEx.printStackTrace();
+			bError = true;
+		}
+
+		if (bError)
+			return -1;
+
+		return 0;
+	}
+
 
 }

@@ -193,15 +193,18 @@ public class GisResource {
 				//Delete File if present
 				SVNUtils oSvnUtils = new SVNUtils();
 
-				oSvnUtils.Delete(
-						oUser.getUserName(),
-						servletConfig.getInitParameter("SvnUser"), 
-						servletConfig.getInitParameter("SvnPwd"), 
-						servletConfig.getInitParameter("SvnUserDomain"), 
-						sPathFile, 
-						servletConfig.getInitParameter("SvnRepository"),
-						sStartDate,
-						sLocation);
+				if (sPathFile != null)
+				{
+					oRepo.DeleteGisFile(
+							oUser.getUserName(),
+							servletConfig.getInitParameter("SvnUser"), 
+							servletConfig.getInitParameter("SvnPwd"), 
+							servletConfig.getInitParameter("SvnUserDomain"), 
+							sPathFile, 
+							servletConfig.getInitParameter("SvnRepository"),
+							sStartDate,
+							sLocation);
+				}
 			}
 
 
@@ -214,8 +217,8 @@ public class GisResource {
 
 		return oReturnValue;
 	}
-	
-	
+
+
 	@GET
 	@Path("/download/{idgis}/{type}")
 	@Consumes({"application/xml", "application/json", "text/xml"})
@@ -224,10 +227,10 @@ public class GisResource {
 
 		GisRepository oGisRepository = new GisRepository();
 		Gis oGis = oGisRepository.Select(iIdGis, Gis.class); 
-		
+
 		EventRepository oEventRepo = new EventRepository();
 		Event oEvent =  oEventRepo.Select(oGis.getEventId(), Event.class);
-		
+
 		UserRepository oUserRepo = new UserRepository();
 		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 		String sRepoFile = null;
@@ -237,12 +240,12 @@ public class GisResource {
 			sRepoFile = oGis.getInspireFile();
 		String[] sSplitString = sRepoFile.split("/");
 		final String sTemp = sSplitString[sSplitString.length - 1];;
-		
+
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
 		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
 		OutputStream oOut = new FileOutputStream(oFile);
-		
+
 
 		oSvnUtils.GetFile(
 				oUser.getUserName(),
@@ -252,13 +255,13 @@ public class GisResource {
 				oGis.getGisFile(), 
 				servletConfig.getInitParameter("SvnRepository"),
 				oOut);
-		
-		
+
+
 		ResponseBuilder response = Response.ok(oFile);
 		response.header("Content-Disposition", "attachment; filename=\""
 				+ sTemp + "\"");
 		return response.build();
-		
+
 
 	}
 }

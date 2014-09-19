@@ -92,11 +92,11 @@ public class MediaResource {
 	@POST
 	@Path("/upload")
 	@Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
-	public List<MediaViewModel> UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("mediaid") Integer iMediaId, @FormDataParam("file") FormDataContentDisposition fileDetail,@FormDataParam("login") String sUserLogin, @FormDataParam("startDate") String sStartDate, @FormDataParam("regionName") String sRegionName, @FormDataParam("countryCode") String sCountryCode) throws IOException
+	public MediaViewModel UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("mediaid") Integer iMediaId, @FormDataParam("file") FormDataContentDisposition fileDetail,@FormDataParam("login") String sUserLogin, @FormDataParam("startDate") String sStartDate, @FormDataParam("regionName") String sRegionName, @FormDataParam("countryCode") String sCountryCode) throws IOException
 	{
 		try
 		{
-			List<MediaViewModel> oReturnViewModel = null;
+			MediaViewModel oReturnViewModel = null;
 			MediaRepository oRepo = new MediaRepository();
 			Media oMedia = oRepo.Select(iMediaId, Media.class);
 			String sLocation = sCountryCode + "_" + sRegionName;
@@ -118,14 +118,7 @@ public class MediaResource {
 			oRepo.Update(oMedia);
 			if (oMedia != null)
 			{
-				List<Media> oMediaList = oRepo.SelectByEvent(oMedia.getEventId());
-				if (oMediaList != null && oMediaList.size() > 0)
-				{
-					oReturnViewModel = new ArrayList<MediaViewModel>();
-					for (Media media : oMediaList) {
-						oReturnViewModel.add(media.getViewModel());
-					}
-				}
+				oReturnViewModel = oMedia.getViewModel();
 			}
 
 			return oReturnViewModel;
@@ -152,6 +145,19 @@ public class MediaResource {
 		return oReturnList;
 	}
 
+	@GET
+	@Path("/{idmedia}")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public MediaViewModel getMedia(@PathParam("idmedia") int iIdMedia) {
+
+		MediaViewModel oReturnValue = null;
+		MediaRepository oMediaRepository = new MediaRepository();
+		Media oMedia = oMediaRepository.Select(iIdMedia, Media.class);
+		if (oMedia != null)
+			oReturnValue = oMedia.getViewModel();
+		return oReturnValue;
+	}
+
 	@POST
 	@Path("/delete/{idmedia}/{idevent}")
 	@Consumes({"application/xml", "application/json", "text/xml"})
@@ -166,7 +172,7 @@ public class MediaResource {
 			if (oMedia != null)
 			{
 				String sRepoFile = oMedia.getFile();
-				
+
 				boolean bRet = oRepo.Delete(oMedia);
 
 				if (bRet)
@@ -180,22 +186,21 @@ public class MediaResource {
 					String sLocation = oCountry.getCountryCode() + "_" + oCountry.getName();
 					DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 					String sStartDate = dateFormatter.format(oEvent.getStartDate());
-					
+
 					UserRepository oUserRepo = new UserRepository();
 					User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 
-					//Delete File if present
-					SVNUtils oSvnUtils = new SVNUtils();
-
-					oSvnUtils.Delete(
-							oUser.getUserName(),
-							servletConfig.getInitParameter("SvnUser"), 
-							servletConfig.getInitParameter("SvnPwd"), 
-							servletConfig.getInitParameter("SvnUserDomain"), 
-							sRepoFile, 
-							servletConfig.getInitParameter("SvnRepository"),
-							sStartDate,
-							sLocation);
+					if (sRepoFile != null)
+					{
+						oRepo.DeleteMediaFile(oUser.getUserName(),
+								servletConfig.getInitParameter("SvnUser"),
+								servletConfig.getInitParameter("SvnPwd"),
+								servletConfig.getInitParameter("SvnUserDomain"),
+								sRepoFile,
+								servletConfig.getInitParameter("SvnRepository"),
+								sStartDate,
+								sLocation);
+					}
 				}
 			}
 
@@ -218,6 +223,8 @@ public class MediaResource {
 	}
 
 
+
+
 	@GET
 	@Path("/download/{idMedia}")
 	@Consumes({"application/xml", "application/json", "text/xml"})
@@ -226,22 +233,22 @@ public class MediaResource {
 
 		MediaRepository oMediaRepository = new MediaRepository();
 		Media oMedia = oMediaRepository.Select(iIdMedia, Media.class); 
-		
+
 		EventRepository oEventRepo = new EventRepository();
 		Event oEvent =  oEventRepo.Select(oMedia.getEventId(), Event.class);
-		
+
 		UserRepository oUserRepo = new UserRepository();
 		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
-		
+
 		String sRepoFile = oMedia.getFile();
 		String[] sSplitString = sRepoFile.split("/");
 		final String sTemp = sSplitString[sSplitString.length - 1];;
-		
+
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
 		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
 		OutputStream oOut = new FileOutputStream(oFile);
-		
+
 
 		oSvnUtils.GetFile(
 				oUser.getUserName(),
@@ -251,13 +258,13 @@ public class MediaResource {
 				oMedia.getFile(), 
 				servletConfig.getInitParameter("SvnRepository"),
 				oOut);
-		
-		
+
+
 		ResponseBuilder response = Response.ok(oFile);
 		response.header("Content-Disposition", "attachment; filename=\""
 				+ sTemp + "\"");
 		return response.build();
-		
+
 	}
 
 }

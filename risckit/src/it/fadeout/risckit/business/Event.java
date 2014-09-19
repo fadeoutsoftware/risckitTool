@@ -177,7 +177,7 @@ public class Event {
 	@Column(name="userid")
 	private Integer m_iUserId;
 
-	@OneToOne(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
 	@JoinColumn(name="countryid", nullable=true, insertable=false, updatable=false)
 	private Country m_oCountry;
 
@@ -1101,41 +1101,85 @@ public class Event {
 		if (sNameProperty.equals("waveHeightInspire"))
 			return this.getWaveHeightInspire();
 		if (sNameProperty.equals("waveHeightTimeSeries"))
-			this.getWaveHeightTimeSeries();
+			return this.getWaveHeightTimeSeries();
 		if (sNameProperty.equals("waveDirectionInspire"))
-			this.getWaveDirectionInspire();
+			return this.getWaveDirectionInspire();
 		if (sNameProperty.equals("waveDirectionTimeSeries"))
-			this.getWaveDirectionTimeSeries();
+			return this.getWaveDirectionTimeSeries();
 		if (sNameProperty.equals("windIntensityInspire"))
-			this.getWindIntensityInspire();
+			return this.getWindIntensityInspire();
 		if (sNameProperty.equals("windIntensitySeries"))
-			this.getWindIntensitySeries();
+			return this.getWindIntensitySeries();
 		if (sNameProperty.equals("windDirectionInspire"))
-			this.getWindDirectionInspire();
+			return this.getWindDirectionInspire();
 		if (sNameProperty.equals("windDirectionTimeSeries"))
-			this.getWindDirectionTimeSeries();
+			return this.getWindDirectionTimeSeries();
 		if (sNameProperty.equals("waterLevelInspire"))
-			this.getWaterLevelInspire();
+			return this.getWaterLevelInspire();
 		if (sNameProperty.equals("waterLevelTimeSeries"))
-			this.getWaterLevelTimeSeries();
+			return this.getWaterLevelTimeSeries();
 		if (sNameProperty.equals("peakWaterInpire"))
-			this.getPeakWaterInspire();
+			return this.getPeakWaterInspire();
 		if (sNameProperty.equals("peakWaterTimeSeries"))
-			this.getPeakWaterTimeSeries();
+			return this.getPeakWaterTimeSeries();
 		if (sNameProperty.equals("floodHeightInspire"))
-			this.getFloodHeightInspire();
+			return this.getFloodHeightInspire();
 		if (sNameProperty.equals("floodHeightTimeSeries"))
-			this.getFloodHeightTimeSeries();
+			return this.getFloodHeightTimeSeries();
 		if (sNameProperty.equals("reporedCasualtiesInspire"))
-			this.getReporedCasualtiesInspire();
+			return this.getReporedCasualtiesInspire();
 		if (sNameProperty.equals("reporedCasualtiesTimeSeries"))
-			this.getReporedCasualtiesTimeSeries();
+			return this.getReporedCasualtiesTimeSeries();
 		if (sNameProperty.equals("damageToBuildingsInspire"))
-			this.getDamageToBuildingsInspire();
+			return this.getDamageToBuildingsInspire();
 		if (sNameProperty.equals("damageToBuildingsTimeSeries"))
-			this.getDamageToBuildingsTimeSeries();
+			return this.getDamageToBuildingsTimeSeries();
 		
 		return null;
+	}
+	
+	public ArrayList<String> getPathRepository()
+	{
+		ArrayList<String> oList = new ArrayList<String>();
+		
+		if (this.getWaveHeightInspire() != null)
+			oList.add(this.getWaveHeightInspire());
+		if (this.getWaveHeightTimeSeries() != null)
+			oList.add(this.getWaveHeightTimeSeries());
+		if (this.getWaveDirectionInspire() != null)
+			oList.add(this.getWaveDirectionInspire());
+		if (this.getWaveDirectionTimeSeries() != null)
+			oList.add(this.getWaveDirectionTimeSeries());
+		if (this.getWindIntensityInspire() != null)
+			oList.add(this.getWindIntensityInspire());
+		if (this.getWindIntensitySeries() != null)
+			oList.add(this.getWindIntensitySeries());
+		if (this.getWindDirectionInspire() != null)
+			oList.add(this.getWindDirectionInspire());
+		if (this.getWindDirectionTimeSeries() != null)
+			oList.add(this.getWindDirectionTimeSeries());
+		if (this.getWaterLevelInspire() != null)
+			oList.add(this.getWaterLevelInspire());
+		if (this.getWaterLevelTimeSeries() != null)
+			oList.add(this.getWaterLevelTimeSeries());
+		if (this.getPeakWaterInspire() != null)
+			oList.add(this.getPeakWaterInspire());
+		if (this.getPeakWaterTimeSeries() != null)
+			oList.add(this.getPeakWaterTimeSeries());
+		if (this.getFloodHeightInspire() != null)
+			oList.add(this.getFloodHeightInspire());
+		if (this.getFloodHeightTimeSeries() != null)
+			oList.add(this.getFloodHeightTimeSeries());
+		if (this.getReporedCasualtiesInspire() != null)
+			oList.add(this.getReporedCasualtiesInspire());
+		if (this.getReporedCasualtiesTimeSeries() != null)
+			oList.add(this.getReporedCasualtiesTimeSeries());
+		if (this.getDamageToBuildingsInspire() != null)
+			oList.add(this.getDamageToBuildingsInspire());
+		if (this.getDamageToBuildingsTimeSeries() != null)
+			oList.add(this.getDamageToBuildingsTimeSeries());
+		
+		return oList;
 	}
 
 }
