@@ -6,32 +6,34 @@
     <div class="row col-lg-8">
         <div class="row">
             <label class="col-xs-offset-1 control-label">Description</label>
-            <textarea class="col-xs-offset-1 col-xs-2 form-control" rows="2" placeholder="Description" ng-model="m_oController.description"></textarea>
+            <textarea class="col-xs-offset-1 col-xs-2 form-control" rows="2" ng-change="m_oController.m_oMediaService.isModified()" placeholder="Description" ng-model="m_oController.description"></textarea>
             <div class="col-xs-7"></div>
         </div>
         <div class="row">
             <label class="col-xs-offset-1 control-label">Date</label>
-            <input class="col-xs-offset-1 col-xs-2 form-control" type="date" ng-model="m_oController.date">
+            <input class="col-xs-offset-1 col-xs-2 form-control" type="date" ng-change="m_oController.m_oMediaService.isModified()" ng-model="m_oController.date">
         </div>
-        <div class="row" ng-show="m_oController.canUpload()">
+        <div class="row">
             <br/>
             <div class="row">
                 <label class="col-xs-offset-1 control-label">Attachment</label>
             </div>
             <br/>
-            <table class="col-xs-offset-1 table table-bordered table-condensed">
-                <tr ng-repeat="oTableRow in m_oController.getMedia()">
+            <table class="col-xs-offset-1 table table-bordered table-condensed" ng-show="m_oController.NewMedia.downloadPath != null">
+                <tr>
                     <td>
-                        <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Delete">
-                            <img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, oTableRow.eventId)">
-                        </div>
+                        <a ng-href="{{m_oController.DownloadMedia(m_oController.NewMedia.id)}}">
+                            <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
+                                <img src="img/download.png" tooltip="Download">
+                            </div>
+                        </a>
                         <div class="delete">
-                            <a ng-href="{{oTableRow.downloadPath}}">{{oTableRow.shortDownloadPath}}</a>
+                            <a>{{m_oController.NewMedia.shortDownloadPath}}</a>
                         </div>
                     </td>
                 </tr>
             </table>
-            <div class="row col-lg-offset-1 col-lg-1">
+            <div class="row col-lg-offset-1 col-lg-1" ng-show="m_oController.canUpload()">
                 <div class="loading" ng-show="m_oController.m_oUploading">
                     <img src="img/Spinner.gif" class="loading"/>
                 </div>

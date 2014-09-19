@@ -870,7 +870,7 @@
     <div class="col-sm-12">
         <table class="table" ng-hide="m_oController.m_oEvent.Media.length == 0">
             <tr>
-                <td rowspan="{{m_oController.m_oEvent.Media.length}}"><label class="control-label">Media</label></td>
+                <td><label class="control-label">Media</label></td>
                 <td><label class="control-label">Attachments</label></td>
                 <td><label class="control-label">Lat</label></td>
                 <td><label class="control-label">Lon</label></td>
@@ -888,13 +888,13 @@
                             </div>
                         </a>
                         <div class="delete">
-                            <a href="{{oTableRow.downloadPath}}">{{oTableRow.shortDownloadPath}}</a>
+                            <a href ng-click="m_oController.OpenMedia(oTableRow.id)">{{oTableRow.shortDownloadPath}}</a>
                         </div>
                     </td>
-                    <td ng-hide="$index > 0">
+                    <td>
                         <label class="control-label">{{oTableRow.lat}}</label>
                     </td>
-                    <td ng-hide="$index > 0">
+                    <td>
                         <label class="control-label">{{oTableRow.lon}}</label>
                     </td>
                 </tr>
@@ -919,7 +919,7 @@
                         </div>
                     </a>
                     <div class="delete">
-                        <a href="{{m_oController.m_oEvent.GIS.downloadGisPath}}">{{m_oController.m_oEvent.GIS.shortGisFile}}</a>
+                        <a>{{m_oController.m_oEvent.GIS.shortGisFile}}</a>
                     </div>
                 </td>
                 <td></td>
@@ -936,7 +936,7 @@
                         </div>
                     </a>
                     <div class="delete">
-                        <a href="{{m_oController.m_oEvent.GIS.downloadInspirePath}}">{{m_oController.m_oEvent.GIS.shortInspireFile}}</a>
+                        <a>{{m_oController.m_oEvent.GIS.shortInspireFile}}</a>
                     </div>
                 </td>
                 <td></td>

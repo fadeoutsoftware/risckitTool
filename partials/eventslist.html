@@ -11,6 +11,7 @@
         <table class="table">
             <thead>
                 <th></th>
+                <th></th>
                 <th>Country</th>
                 <th>Region</th>
                 <th>Start Date</th>
@@ -18,6 +19,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="oItem in m_oController.m_oEventList | pagination : m_oController.currentPage*m_oController.itemsPerPage | limitTo: m_oController.itemsPerPage">
+                    <td><button type="button" tooltip-popup-delay="500" tooltip="Delete" class="btn btn-danger" ng-click="m_oController.deleteEvent(oItem.id)">Del</button></td>
                     <td><button type="button" tooltip-popup-delay="500" tooltip="Edit" class="btn btn-primary" ng-click="m_oController.openEvent(oItem.id)">Edit</button></td>
                     <td>{{oItem.countryCode}}</td>
                     <td>{{oItem.regionName}}</td>
