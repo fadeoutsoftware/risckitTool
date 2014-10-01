@@ -12,10 +12,12 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.Event;
+import it.fadeout.risckit.business.EventsByCountries;
 import it.fadeout.risckit.business.Gis;
 import it.fadeout.risckit.business.Media;
 import it.fadeout.risckit.business.SVNUtils;
@@ -24,10 +26,14 @@ import it.fadeout.risckit.data.CountryRepository;
 import it.fadeout.risckit.data.EventRepository;
 import it.fadeout.risckit.data.GisRepository;
 import it.fadeout.risckit.data.MediaRepository;
+import it.fadeout.risckit.data.Repository;
 import it.fadeout.risckit.data.UserRepository;
 import it.fadeout.risckit.viewmodels.CountryViewModel;
+import it.fadeout.risckit.viewmodels.EventByCountryViewModel;
+import it.fadeout.risckit.viewmodels.EventByRegionViewModel;
 import it.fadeout.risckit.viewmodels.EventViewModel;
 import it.fadeout.risckit.viewmodels.GisViewModel;
+import it.fadeout.risckit.viewmodels.MediaViewModel;
 
 import javax.servlet.ServletConfig;
 import javax.ws.rs.Consumes;
@@ -93,15 +99,22 @@ public class EventResource {
 					SVNUtils oSvnUtils = new SVNUtils();
 					String sDirPath = oViewModel.getLogin() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 					//csv
-					oSvnUtils.Commit(oEvent.GetCsvInputStream(), 
-							oViewModel.getLogin(),
-							servletConfig.getInitParameter("SvnUser"), 
-							servletConfig.getInitParameter("SvnPwd"), 
-							servletConfig.getInitParameter("SvnUserDomain"), 
-							sDirPath + "Event.csv", 
-							servletConfig.getInitParameter("SvnRepository"),
-							sStartDate,
-							sLocation);
+					try
+					{
+						oSvnUtils.Commit(oEvent.GetCsvInputStream(), 
+								oViewModel.getLogin(),
+								servletConfig.getInitParameter("SvnUser"), 
+								servletConfig.getInitParameter("SvnPwd"), 
+								servletConfig.getInitParameter("SvnUserDomain"), 
+								sDirPath + "Event.csv", 
+								servletConfig.getInitParameter("SvnRepository"),
+								sStartDate,
+								sLocation);
+					}
+					catch(SVNException oEx)
+					{
+
+					}
 				}
 				else
 					oViewModel = null;	
@@ -110,9 +123,6 @@ public class EventResource {
 		catch(Exception oEx)
 		{
 			oEx.printStackTrace();
-			if (oEvent == null)
-				oViewModel = null;
-
 		}
 
 		return oViewModel;
@@ -136,23 +146,30 @@ public class EventResource {
 			String sDirPath = sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			sStartDate = dateFormatter.format(oEvent.getStartDate());
-
-			//csv
-			oSvnUtils.Commit(file,
-					sUserLogin,
-					servletConfig.getInitParameter("SvnUser"), 
-					servletConfig.getInitParameter("SvnPwd"), 
-					servletConfig.getInitParameter("SvnUserDomain"), 
-					sDirPath + fileDetail.getFileName(), 
-					servletConfig.getInitParameter("SvnRepository"),
-					sStartDate,
-					sLocation);
-
-			String sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
-
-			oEvent.setPathRepository(sNameProperty, sPathRepository);
-
-			oRepo.Update(oEvent);
+			boolean bError = false;
+			try
+			{
+				oSvnUtils.Commit(file,
+						sUserLogin,
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						sDirPath + fileDetail.getFileName(), 
+						servletConfig.getInitParameter("SvnRepository"),
+						sStartDate,
+						sLocation);
+			}
+			catch(SVNException oEx)
+			{
+				bError = true;
+			}
+			String sPathRepository = null;
+			if (!bError)
+			{
+				sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
+				oEvent.setPathRepository(sNameProperty, sPathRepository);
+				oRepo.Update(oEvent);
+			}
 
 			return sPathRepository;
 		}
@@ -181,7 +198,7 @@ public class EventResource {
 	}
 
 	@GET
-	@Path("/user/{iduser}")
+	@Path("/all/{iduser}")
 	@Produces({"application/json", "application/xml", "text/xml"})
 	public List<EventViewModel> getEventList(@PathParam("iduser") int iIdUser) {
 
@@ -198,6 +215,118 @@ public class EventResource {
 			for (Event event : oEvents) {
 				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
 				oReturnList.add(oEventViewModel);
+			}
+		}
+
+		return oReturnList;
+	}
+
+	@GET
+	@Path("/byregion/{countryid}")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public List<EventViewModel> getEventListMap(@PathParam("countryid") Integer iCountryId) {
+
+		List<EventViewModel> oReturnList = null;
+		EventRepository oRepo = new EventRepository();
+		MediaRepository oMediaRepo = new MediaRepository();
+		List<Event> oEvents = oRepo.SelectByRegion(iCountryId);
+
+		CountryRepository oCountryRepo = new CountryRepository();
+		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
+
+		if (oEvents != null)
+		{
+			oReturnList = new ArrayList<EventViewModel>();
+			for (Event event : oEvents) {
+				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
+				List<Media> oMediaList = oMediaRepo.SelectByEvent(event.getId());
+				if (oMediaList != null)
+				{
+					for (Media media : oMediaList) {
+						if (oEventViewModel.getMedia() == null)
+							oEventViewModel.setMedia(new ArrayList<MediaViewModel>());
+						oEventViewModel.getMedia().add(media.getViewModel());
+					}
+				}
+				oReturnList.add(oEventViewModel);
+			}
+		}
+
+		return oReturnList;
+	}
+	
+	@GET
+	@Path("/bycountry/{countrycode}")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public List<EventByRegionViewModel> getEventByCountry(@PathParam("countrycode") String sCountryCode) {
+
+		List<EventByRegionViewModel> oReturnList = null;
+		EventRepository oRepo = new EventRepository();
+		List<Event> oEvents = oRepo.SelectByCountries(sCountryCode);
+		CountryRepository oCountryRepo = new CountryRepository();
+		
+		HashMap<Integer, EventByRegionViewModel> oMap = new HashMap<Integer, EventByRegionViewModel>();
+		
+		if (oEvents != null)
+		{
+			oReturnList = new ArrayList<EventByRegionViewModel>();
+			for (Event event : oEvents) {
+				if (!oMap.containsKey(event.getCountryId()))
+				{
+					Country oCountry = oCountryRepo.Select(event.getCountryId(), Country.class);
+					EventByRegionViewModel oViewModel = new EventByRegionViewModel();
+					if (event.getLat() != null && event.getLon() != null)
+					{
+						oViewModel.setLat(event.getLat());
+						oViewModel.setLon(event.getLon());
+					}
+					oViewModel.setRegionName(oCountry.getName());
+					oViewModel.setRegionId(oCountry.getId());
+					oViewModel.setEventsCount(1);
+					oMap.put(event.getCountryId(), oViewModel);
+				}
+				else
+				{
+					if (event.getLat() != null && event.getLon() != null)
+					{
+						oMap.get(event.getCountryId()).setLat(event.getLat());
+						oMap.get(event.getCountryId()).setLon(event.getLon());
+					}
+					oMap.get(event.getCountryId()).setEventsCount(oMap.get(event.getCountryId()).getEventsCount()+1);
+				}
+				
+			}
+			
+			for (Integer key : oMap.keySet()) {
+				oReturnList.add(oMap.get(key));
+			}
+		}
+
+		return oReturnList;
+	}
+	
+	
+	@GET
+	@Path("/groupevent")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public List<EventByCountryViewModel> getEventByCountryForMap() {
+
+		List<EventByCountryViewModel> oReturnList = null;
+		Repository<EventsByCountries> oRepo = new Repository<EventsByCountries>();
+		List<EventsByCountries> oEvents = oRepo.SelectAll(EventsByCountries.class);
+
+		if (oEvents != null)
+		{
+			oReturnList = new ArrayList<EventByCountryViewModel>();
+			for (EventsByCountries event : oEvents) {
+				EventByCountryViewModel oViewModel = new EventByCountryViewModel();
+				oViewModel.setId(event.getId());
+				oViewModel.setCountryName(event.getName());
+				oViewModel.setCountryCode(event.getCountryCode());
+				oViewModel.setEventsCount(event.getEventCount());
+				oViewModel.setLat(event.getLat());
+				oViewModel.setLon(event.getLon());
+				oReturnList.add(oViewModel);
 			}
 		}
 
@@ -225,15 +354,21 @@ public class EventResource {
 		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
 		OutputStream oOut = new FileOutputStream(oFile);
 
-		oSvnUtils.GetFile(
-				oUser.getUserName(),
-				servletConfig.getInitParameter("SvnUser"), 
-				servletConfig.getInitParameter("SvnPwd"), 
-				servletConfig.getInitParameter("SvnUserDomain"), 
-				oEvent.getPathRepository(sParameter), 
-				servletConfig.getInitParameter("SvnRepository"),
-				oOut);
-
+		try{
+			oSvnUtils.GetFile(
+					oUser.getUserName(),
+					servletConfig.getInitParameter("SvnUser"), 
+					servletConfig.getInitParameter("SvnPwd"), 
+					servletConfig.getInitParameter("SvnUserDomain"), 
+					oEvent.getPathRepository(sParameter), 
+					servletConfig.getInitParameter("SvnRepository"),
+					oOut);
+		}
+		catch(SVNException oEx)
+		{
+			ResponseBuilder response = Response.noContent();
+			return response.build();
+		}
 
 		ResponseBuilder response = Response.ok(oFile);
 		response.header("Content-Disposition", "attachment; filename=\""
@@ -273,15 +408,22 @@ public class EventResource {
 				UserRepository oUserRepo = new UserRepository();
 				User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 
-				oRepo.DeleteEventFile(
-						oUser.getUserName(),
-						servletConfig.getInitParameter("SvnUser"), 
-						servletConfig.getInitParameter("SvnPwd"), 
-						servletConfig.getInitParameter("SvnUserDomain"), 
-						sPathFile, 
-						servletConfig.getInitParameter("SvnRepository"),
-						sStartDate,
-						sLocation);
+				try
+				{
+					oRepo.DeleteEventFile(
+							oUser.getUserName(),
+							servletConfig.getInitParameter("SvnUser"), 
+							servletConfig.getInitParameter("SvnPwd"), 
+							servletConfig.getInitParameter("SvnUserDomain"), 
+							sPathFile, 
+							servletConfig.getInitParameter("SvnRepository"),
+							sStartDate,
+							sLocation);
+				}
+				catch(SVNException oEx)
+				{
+					
+				}
 			}
 
 

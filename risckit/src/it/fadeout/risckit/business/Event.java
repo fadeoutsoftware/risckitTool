@@ -176,6 +176,12 @@ public class Event {
 	
 	@Column(name="userid")
 	private Integer m_iUserId;
+	
+	@Column(name="lat")
+	private String m_sLat;
+	
+	@Column(name="lon")
+	private String m_sLon;
 
 	@OneToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
 	@JoinColumn(name="countryid", nullable=true, insertable=false, updatable=false)
@@ -560,6 +566,23 @@ public class Event {
 	public void setCountry(Country m_oCountry) {
 		this.m_oCountry = m_oCountry;
 	}
+	
+	public String getLat() {
+		return m_sLat;
+	}
+
+	public void setLat(String m_sLat) {
+		this.m_sLat = m_sLat;
+	}
+
+	public String getLon() {
+		return m_sLon;
+	}
+
+	public void setLon(String m_sLon) {
+		this.m_sLon = m_sLon;
+	}
+
 
 	public InputStream GetCsvInputStream()
 	{
@@ -921,7 +944,10 @@ public class Event {
 	{
 		this.setCountryId(oViewModel.getCountryId());
 		this.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(oViewModel.getStartDate()));
-		this.setStartHour(new SimpleDateFormat("HH:mm").parse(oViewModel.getStartHour()));
+		if (oViewModel.getStartHour() != null)
+			this.setStartHour(new SimpleDateFormat("HH:mm").parse(oViewModel.getStartHour()));
+		else
+			this.setStartHour(null);
 		this.setDescription(oViewModel.getDescription());
 		this.setUnitHour(oViewModel.getUnitHour());
 		this.setUnitValue(oViewModel.getUnitValue());
@@ -969,6 +995,9 @@ public class Event {
 		this.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
 		this.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
 		
+		this.setLat(oViewModel.getLat());
+		this.setLon(oViewModel.getLon());
+		
 	}
 	
 	public EventViewModel getViewModel(List<Country> oCountries)
@@ -995,6 +1024,7 @@ public class Event {
 		oViewModel.setId(this.getId());
 		oViewModel.setCountryId(this.getCountryId());
 		oViewModel.setCountryCode(oCountry.getCountryCode());
+		oViewModel.setCountryName(oCountry.getName());
 		oViewModel.setRegionName(oRegion.getName());
 		if (this.m_oStartDate != null)
 		{
@@ -1052,6 +1082,8 @@ public class Event {
 		oViewModel.setWaterLevelInspire(this.getWaterLevelInspire());
 		oViewModel.setWaterLevelTimeSeries(this.getWaterLevelTimeSeries());
 		oViewModel.setUserId(this.getUserId());
+		oViewModel.setLat(this.getLat());
+		oViewModel.setLon(this.getLon());
 		
 		return oViewModel;
 	}
@@ -1062,18 +1094,24 @@ public class Event {
 			this.setWaveHeightInspire(sPathRepository);
 		if (sNameProperty.equals("waveHeightTimeSeries"))
 			this.setWaveHeightTimeSeries(sPathRepository);
-		if (sNameProperty.equals("waveDirectionInspire"))
+		if (sNameProperty.equals("wavewindDirectionInspire"))
+		{
 			this.setWaveDirectionInspire(sPathRepository);
-		if (sNameProperty.equals("waveDirectionTimeSeries"))
+			this.setWindDirectionInspire(sPathRepository);
+		}
+		if (sNameProperty.equals("wavewindDirectionTimeSeries"))
+		{
 			this.setWaveDirectionTimeSeries(sPathRepository);
+			this.setWindDirectionTimeSeries(sPathRepository);
+		}
 		if (sNameProperty.equals("windIntensityInspire"))
 			this.setWindIntensityInspire(sPathRepository);
 		if (sNameProperty.equals("windIntensitySeries"))
 			this.setWindIntensitySeries(sPathRepository);
-		if (sNameProperty.equals("windDirectionInspire"))
-			this.setWindDirectionInspire(sPathRepository);
-		if (sNameProperty.equals("windDirectionTimeSeries"))
-			this.setWindDirectionTimeSeries(sPathRepository);
+		//if (sNameProperty.equals("windDirectionInspire"))
+		//	this.setWindDirectionInspire(sPathRepository);
+		//if (sNameProperty.equals("windDirectionTimeSeries"))
+		//	this.setWindDirectionTimeSeries(sPathRepository);
 		if (sNameProperty.equals("waterLevelInspire"))
 			this.setWaterLevelInspire(sPathRepository);
 		if (sNameProperty.equals("waterLevelTimeSeries"))
@@ -1102,18 +1140,18 @@ public class Event {
 			return this.getWaveHeightInspire();
 		if (sNameProperty.equals("waveHeightTimeSeries"))
 			return this.getWaveHeightTimeSeries();
-		if (sNameProperty.equals("waveDirectionInspire"))
+		if (sNameProperty.equals("wavewindDirectionInspire"))
 			return this.getWaveDirectionInspire();
-		if (sNameProperty.equals("waveDirectionTimeSeries"))
+		if (sNameProperty.equals("wavewindDirectionInspire"))
 			return this.getWaveDirectionTimeSeries();
 		if (sNameProperty.equals("windIntensityInspire"))
 			return this.getWindIntensityInspire();
 		if (sNameProperty.equals("windIntensitySeries"))
 			return this.getWindIntensitySeries();
-		if (sNameProperty.equals("windDirectionInspire"))
-			return this.getWindDirectionInspire();
-		if (sNameProperty.equals("windDirectionTimeSeries"))
-			return this.getWindDirectionTimeSeries();
+		//if (sNameProperty.equals("windDirectionInspire"))
+		//	return this.getWindDirectionInspire();
+		//if (sNameProperty.equals("windDirectionTimeSeries"))
+		//	return this.getWindDirectionTimeSeries();
 		if (sNameProperty.equals("waterLevelInspire"))
 			return this.getWaterLevelInspire();
 		if (sNameProperty.equals("waterLevelTimeSeries"))
@@ -1154,10 +1192,10 @@ public class Event {
 			oList.add(this.getWindIntensityInspire());
 		if (this.getWindIntensitySeries() != null)
 			oList.add(this.getWindIntensitySeries());
-		if (this.getWindDirectionInspire() != null)
-			oList.add(this.getWindDirectionInspire());
-		if (this.getWindDirectionTimeSeries() != null)
-			oList.add(this.getWindDirectionTimeSeries());
+		//if (this.getWindDirectionInspire() != null)
+		//	oList.add(this.getWindDirectionInspire());
+		//if (this.getWindDirectionTimeSeries() != null)
+		//	oList.add(this.getWindDirectionTimeSeries());
 		if (this.getWaterLevelInspire() != null)
 			oList.add(this.getWaterLevelInspire());
 		if (this.getWaterLevelTimeSeries() != null)

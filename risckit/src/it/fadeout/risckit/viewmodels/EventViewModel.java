@@ -27,7 +27,9 @@ public class EventViewModel {
 	
 	private String countryCode;
 	
-	private int countryId;
+	private String countryName;
+	
+	private Integer countryId;
 	
 	private String startDate;
 	
@@ -41,7 +43,7 @@ public class EventViewModel {
 	
 	private Boolean unitApproximated;
 	
-	private int waveHeightType;
+	private Integer waveHeightType;
 	
 	private BigDecimal waveHeightValue;
 	
@@ -49,7 +51,7 @@ public class EventViewModel {
 	
 	private String waveHeightTimeSeries;
 	
-	private int waveDirectionType;
+	private Integer waveDirectionType;
 	
 	private BigDecimal waveDirectionDegree;
 	
@@ -59,7 +61,7 @@ public class EventViewModel {
 	
 	private String waveDirectionTimeSeries;
 	
-	private int windIntensityType;
+	private Integer windIntensityType;
 	
 	private BigDecimal windIntensityValue;
 	
@@ -67,7 +69,7 @@ public class EventViewModel {
 	
 	private String windIntensitySeries;
 	
-	private int windDirectionType;
+	private Integer windDirectionType;
 	
 	private BigDecimal windDirectionDegree;
 	
@@ -89,7 +91,7 @@ public class EventViewModel {
 	
 	private String floodHeightTimeSeries;
 	
-	private int reporedCasualtiesNumber;
+	private Integer reporedCasualtiesNumber;
 	
 	private String reporedCasualtiesDescription;
 	
@@ -105,7 +107,7 @@ public class EventViewModel {
 	
 	private String damageToBuildingsTimeSeries;
 	
-	private int costDetail;
+	private Integer costDetail;
 	
 	private String descriptionOfMeasure;
 	
@@ -121,9 +123,13 @@ public class EventViewModel {
 	
 	private String waterLevelTimeSeries;
 	
-	private int userId;
+	private Integer userId;
 	
 	private ArrayList<MediaViewModel> media;
+	
+	private String lat;
+	
+	private String lon;
 	
 	public Integer getId() {
 		return id;
@@ -141,11 +147,11 @@ public class EventViewModel {
 		this.countryCode = m_sCountryCode;
 	}
 
-	public int getCountryId() {
+	public Integer getCountryId() {
 		return countryId;
 	}
 
-	public void setCountryId(int m_iCountryId) {
+	public void setCountryId(Integer m_iCountryId) {
 		this.countryId = m_iCountryId;
 	}   
 	
@@ -221,11 +227,11 @@ public class EventViewModel {
 		this.unitApproximated = m_bUnitApproximated;
 	}
 
-	public int getWaveHeightType() {
+	public Integer getWaveHeightType() {
 		return waveHeightType;
 	}
 
-	public void setWaveHeightType(int m_iWaveHeightType) {
+	public void setWaveHeightType(Integer m_iWaveHeightType) {
 		this.waveHeightType = m_iWaveHeightType;
 	}
 
@@ -253,11 +259,11 @@ public class EventViewModel {
 		this.waveHeightTimeSeries = m_sWaveHeightTimeSeries;
 	}
 
-	public int getWaveDirectionType() {
+	public Integer getWaveDirectionType() {
 		return waveDirectionType;
 	}
 
-	public void setWaveDirectionType(int m_iWaveDirectionType) {
+	public void setWaveDirectionType(Integer m_iWaveDirectionType) {
 		this.waveDirectionType = m_iWaveDirectionType;
 	}
 
@@ -293,11 +299,11 @@ public class EventViewModel {
 		this.waveDirectionTimeSeries = m_sWaveDirectionTimeSeries;
 	}
 
-	public int getWindIntensityType() {
+	public Integer getWindIntensityType() {
 		return windIntensityType;
 	}
 
-	public void setWindIntensityType(int m_iWindIntensityType) {
+	public void setWindIntensityType(Integer m_iWindIntensityType) {
 		this.windIntensityType = m_iWindIntensityType;
 	}
 
@@ -325,11 +331,11 @@ public class EventViewModel {
 		this.windIntensitySeries = m_sWindIntensitySeries;
 	}
 
-	public int getWindDirectionType() {
+	public Integer getWindDirectionType() {
 		return windDirectionType;
 	}
 
-	public void setWindDirectionType(int m_iWindDirectionType) {
+	public void setWindDirectionType(Integer m_iWindDirectionType) {
 		this.windDirectionType = m_iWindDirectionType;
 	}
 
@@ -413,11 +419,11 @@ public class EventViewModel {
 		this.floodHeightTimeSeries = m_sFloodHeightTimeSeries;
 	}
 
-	public int getReporedCasualtiesNumber() {
+	public Integer getReporedCasualtiesNumber() {
 		return reporedCasualtiesNumber;
 	}
 
-	public void setReporedCasualtiesNumber(int m_iReporedCasualtiesNumber) {
+	public void setReporedCasualtiesNumber(Integer m_iReporedCasualtiesNumber) {
 		this.reporedCasualtiesNumber = m_iReporedCasualtiesNumber;
 	}
 
@@ -481,11 +487,11 @@ public class EventViewModel {
 		this.damageToBuildingsTimeSeries = m_sDamageToBuildingsTimeSeries;
 	}
 
-	public int getCostDetail() {
+	public Integer getCostDetail() {
 		return costDetail;
 	}
 
-	public void setCostDetail(int m_iCostDetail) {
+	public void setCostDetail(Integer m_iCostDetail) {
 		this.costDetail = m_iCostDetail;
 	}
 
@@ -545,11 +551,11 @@ public class EventViewModel {
 		this.waterLevelTimeSeries = waterLevelTimeSeries;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -559,6 +565,30 @@ public class EventViewModel {
 
 	public void setMedia(ArrayList<MediaViewModel> media) {
 		this.media = media;
+	}
+	
+	public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getLon() {
+		return lon;
+	}
+
+	public void setLon(String lon) {
+		this.lon = lon;
+	}
+
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
 	}
 	
 }

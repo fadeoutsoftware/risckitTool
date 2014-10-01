@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -94,6 +95,81 @@ public class EventRepository extends Repository<Event>{
 
 		return aoList;
 	}
+	
+	public List<Event> SelectByCountries(String sCountryCode) {
+
+		Session oSession = null;
+
+		List<Event> aoList = null;
+
+		try {				
+			oSession = HibernateUtils.getSessionFactory().openSession();
+			aoList = oSession.createQuery("select e from Event e join e.m_oCountry c where c.CountryCode = '" + sCountryCode + "'").list();
+		}
+		catch(Throwable oEx) {
+			System.err.println(oEx.toString());
+			oEx.printStackTrace();
+
+
+			try {
+
+			}
+			catch(Throwable oEx2) {
+				System.err.println(oEx2.toString());
+				oEx2.printStackTrace();					
+			}			
+		}		
+		finally {
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
+
+		}
+
+		return aoList;
+	}
+	
+	
+	public List<Event> SelectByRegion(Integer iIdRegion) {
+
+		Session oSession = null;
+
+		List<Event> aoList = null;
+
+		try {				
+			oSession = HibernateUtils.getSessionFactory().openSession();
+			aoList = oSession.createQuery("select e from Event e where e.m_iCountryId = " + iIdRegion + "order by e.m_oStartDate desc").list();
+		}
+		catch(Throwable oEx) {
+			System.err.println(oEx.toString());
+			oEx.printStackTrace();
+
+
+			try {
+
+			}
+			catch(Throwable oEx2) {
+				System.err.println(oEx2.toString());
+				oEx2.printStackTrace();					
+			}			
+		}		
+		finally {
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
+
+		}
+
+		return aoList;
+	}
+
+	
+	
+	
 
 	public void DeleteEventFile(String sUserName, String sSvnUser, String sSvnPwd,
 			String sSvnUserDomain, String sRepoFile, String sSvnRepository, String sStartDate, String sLocation) throws SVNException, IOException

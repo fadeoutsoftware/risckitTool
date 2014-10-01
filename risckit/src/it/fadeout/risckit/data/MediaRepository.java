@@ -1,12 +1,22 @@
 package it.fadeout.risckit.data;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.ImagingOpException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FilenameUtils;
 import org.hibernate.Criteria;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.imgscalr.Scalr;
 import org.tmatesoft.svn.core.SVNException;
 
 import it.fadeout.risckit.business.Country;
@@ -52,10 +62,10 @@ public class MediaRepository extends Repository<Media>{
 
 		return oList;
 	}
-	
+
 	public void DeleteMediaFile(String sUserName, String sSvnUser, String sSvnPwd,
 			String sSvnUserDomain, String sRepoFile, String sSvnRepository, String sStartDate, String sLocation) throws SVNException, IOException
-	{
+			{
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
 
@@ -71,6 +81,66 @@ public class MediaRepository extends Repository<Media>{
 					sStartDate,
 					sLocation);
 		}
-	}
+			}
 
+	public String CreateThumb(InputStream uploadedInputStream, String sProjectPath, Media oMedia, String sFileName)
+	{
+		// Create Temp Dir
+		File oTempDir = null;
+		oTempDir = new File(sProjectPath);
+		if (!oTempDir.exists())
+		{
+			try
+			{
+				if (oTempDir.mkdirs())
+					oTempDir.setWritable(true, false);
+			}
+			catch(Exception oEx)
+			{
+				return "-1";
+			}
+		}
+
+		String sRelativePath = oMedia.getId().toString() + "/";
+		sProjectPath += sRelativePath;
+		oTempDir = new File(sProjectPath);
+		try
+		{
+			if (oTempDir.mkdirs())
+				oTempDir.setWritable(true, false);
+		}
+		catch(Exception oEx)
+		{
+			return "-1";
+		}
+
+		try {
+
+			// save it on local
+			String uploadedFileLocation = sProjectPath + sFileName;
+			String sExtension = FilenameUtils.getExtension(uploadedFileLocation);
+			BufferedImage thumbnail =
+					Scalr.resize(ImageIO.read(uploadedInputStream), Scalr.Method.QUALITY, 50, 50, Scalr.OP_ANTIALIAS);
+
+			File outputfile = new File(uploadedFileLocation);
+			ImageIO.write(thumbnail, sExtension, outputfile);
+
+		} catch (IllegalArgumentException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return "-1";
+		} catch (ImagingOpException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return "-1";
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return "-1";
+		}
+
+		return sRelativePath + sFileName;
+
+
+	}
 }

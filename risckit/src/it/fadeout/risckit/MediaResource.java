@@ -3,6 +3,7 @@ package it.fadeout.risckit;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +32,7 @@ import it.fadeout.risckit.viewmodels.EventViewModel;
 import it.fadeout.risckit.viewmodels.MediaViewModel;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -47,12 +49,16 @@ import javax.ws.rs.core.StreamingOutput;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.tmatesoft.svn.core.SVNException;
 
 @Path("/media")
 public class MediaResource {
 
 	@Context
 	ServletConfig servletConfig;
+	
+	@Context 
+	ServletContext serveletContext;
 
 	@POST
 	@Path("/save")
@@ -96,26 +102,66 @@ public class MediaResource {
 	{
 		try
 		{
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+			// Fake code simulating the copy
+			// You can generally do better with nio if you need...
+			// And please, unlike me, do something about the Exceptions :D
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = file.read(buffer)) > -1 ) {
+			    baos.write(buffer, 0, len);
+			}
+			baos.flush();
+
+			// Open new InputStreams using the recorded bytes
+			// Can be repeated as many times as you wish
+			InputStream isImage = new ByteArrayInputStream(baos.toByteArray()); 
+			InputStream isOpenEarth = new ByteArrayInputStream(baos.toByteArray()); 
+			
+			
 			MediaViewModel oReturnViewModel = null;
 			MediaRepository oRepo = new MediaRepository();
 			Media oMedia = oRepo.Select(iMediaId, Media.class);
 			String sLocation = sCountryCode + "_" + sRegionName;
-
+			//Thumb
+			String sProjectPath = servletConfig.getInitParameter("ProjectPath");
+			String mimeType = serveletContext.getMimeType(fileDetail.getFileName());
+			if (mimeType.startsWith("image"))
+			{
+				//Write Thumb
+				String sThumbPath = oRepo.CreateThumb(isImage, sProjectPath, oMedia, fileDetail.getFileName());
+				if (sThumbPath != "-1")
+				{
+					oMedia.setThumbnail(sThumbPath);
+				}
+			}
+			
 			SVNUtils oSvnUtils = new SVNUtils();
 			String sDirPath = sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
-			oSvnUtils.Commit(file,
-					sUserLogin,
-					servletConfig.getInitParameter("SvnUser"), 
-					servletConfig.getInitParameter("SvnPwd"), 
-					servletConfig.getInitParameter("SvnUserDomain"), 
-					sDirPath + fileDetail.getFileName(), 
-					servletConfig.getInitParameter("SvnRepository"),
-					sStartDate,
-					sLocation);
-			String sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
-			oMedia.setFile(sPathRepository);
-
-			oRepo.Update(oMedia);
+			boolean bError = false;
+			try{
+				
+				oSvnUtils.Commit(isOpenEarth,
+						sUserLogin,
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						sDirPath + fileDetail.getFileName(), 
+						servletConfig.getInitParameter("SvnRepository"),
+						sStartDate,
+						sLocation);
+			}
+			catch(SVNException oEx)
+			{
+				bError = true;
+			}
+			if (!bError)
+			{
+				String sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
+				oMedia.setFile(sPathRepository);
+				oRepo.Update(oMedia);
+			}
 			if (oMedia != null)
 			{
 				oReturnViewModel = oMedia.getViewModel();
@@ -250,15 +296,22 @@ public class MediaResource {
 		OutputStream oOut = new FileOutputStream(oFile);
 
 
-		oSvnUtils.GetFile(
-				oUser.getUserName(),
-				servletConfig.getInitParameter("SvnUser"), 
-				servletConfig.getInitParameter("SvnPwd"), 
-				servletConfig.getInitParameter("SvnUserDomain"), 
-				oMedia.getFile(), 
-				servletConfig.getInitParameter("SvnRepository"),
-				oOut);
-
+		try
+		{
+			oSvnUtils.GetFile(
+					oUser.getUserName(),
+					servletConfig.getInitParameter("SvnUser"), 
+					servletConfig.getInitParameter("SvnPwd"), 
+					servletConfig.getInitParameter("SvnUserDomain"), 
+					oMedia.getFile(), 
+					servletConfig.getInitParameter("SvnRepository"),
+					oOut);
+		}
+		catch (SVNException oEx)
+		{
+			ResponseBuilder response = Response.noContent();
+			return response.build();
+		}
 
 		ResponseBuilder response = Response.ok(oFile);
 		response.header("Content-Disposition", "attachment; filename=\""

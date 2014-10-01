@@ -22,10 +22,10 @@ public class Media {
 	@Id
 	@GeneratedValue
 	@Column(name="id")
-	private int m_iId;
+	private Integer m_iId;
 	
 	@Column(name="eventid")
-	private int m_iEventId;
+	private Integer m_iEventId;
 	
 	@Column(name="file")
 	private String m_sFile;
@@ -41,12 +41,15 @@ public class Media {
 	
 	@Column(name="description")
 	private String m_sDescription;
+	
+	@Column(name="thumbnail")
+	private String m_sThumbnail;
 
-	public int getId() {
+	public Integer getId() {
 		return m_iId;
 	}
 
-	public void setId(int m_iId) {
+	public void setId(Integer m_iId) {
 		this.m_iId = m_iId;
 	}
 
@@ -74,11 +77,11 @@ public class Media {
 		this.m_sLon = m_sLon;
 	}
 
-	public int getEventId() {
+	public Integer getEventId() {
 		return m_iEventId;
 	}
 
-	public void setEventId(int m_iEventId) {
+	public void setEventId(Integer m_iEventId) {
 		this.m_iEventId = m_iEventId;
 	}
 
@@ -98,6 +101,14 @@ public class Media {
 		this.m_sDescription = m_sDescription;
 	}
 	
+	public String getThumbnail() {
+		return m_sThumbnail;
+	}
+
+	public void setThumbnail(String m_sThumbnail) {
+		this.m_sThumbnail = m_sThumbnail;
+	}
+	
 	public void setEntity(MediaViewModel oMediaViewModel) throws ParseException
 	{
 		this.setEventId(oMediaViewModel.getEventId());
@@ -106,6 +117,7 @@ public class Media {
 		this.setFile(oMediaViewModel.getDownloadPath());
 		this.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(oMediaViewModel.getDate()));
 		this.setDescription(oMediaViewModel.getDescription());
+		this.setThumbnail(oMediaViewModel.getThumbnail());
 	}
 	
 	public MediaViewModel getViewModel()
@@ -124,7 +136,10 @@ public class Media {
 		}
 			
 		oViewModel.setDescription(this.getDescription());
+		oViewModel.setThumbnail(this.getThumbnail());
 		return oViewModel;
 	}
+
+	
 	
 }

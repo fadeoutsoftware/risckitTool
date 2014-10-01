@@ -35,6 +35,12 @@ public class Country {
 	@Column(name="countrycode")
 	private String CountryCode;
 	
+	@Column(name="lat")
+	private String m_sLat;
+	
+	@Column(name="lon")
+	private String m_sLon;
+	
 	public Integer getId() {
 		return Id;
 	}
@@ -73,6 +79,22 @@ public class Country {
 
 	public void setCountryCode(String countryCode) {
 		CountryCode = countryCode;
+	}
+	
+	public String getLat() {
+		return m_sLat;
+	}
+
+	public void setLat(String m_sLat) {
+		this.m_sLat = m_sLat;
+	}
+
+	public String getLon() {
+		return m_sLon;
+	}
+
+	public void setLon(String m_sLon) {
+		this.m_sLon = m_sLon;
 	}
 
 	

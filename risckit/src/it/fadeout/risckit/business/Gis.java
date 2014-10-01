@@ -17,10 +17,10 @@ public class Gis {
 	@Id
 	@GeneratedValue
 	@Column(name="id")
-	private int m_iId;
+	private Integer m_iId;
 	
 	@Column(name="eventid")
-	private int m_iEventId;
+	private Integer m_iEventId;
 	
 	@Column(name="gisfile")
 	private String m_sGisFile;
@@ -44,19 +44,19 @@ public class Gis {
 		this.m_sInspireFile = m_sInspireFile;
 	}
 
-	public int getEventId() {
+	public Integer getEventId() {
 		return m_iEventId;
 	}
 
-	public void setEventId(int m_iEventId) {
+	public void setEventId(Integer m_iEventId) {
 		this.m_iEventId = m_iEventId;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return m_iId;
 	}
 
-	public void setId(int m_iId) {
+	public void setId(Integer m_iId) {
 		this.m_iId = m_iId;
 	}
 	

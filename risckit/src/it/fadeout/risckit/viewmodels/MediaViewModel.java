@@ -32,6 +32,8 @@ public class MediaViewModel {
 	
 	private String shortDownloadPath;
 	
+	private String thumbnail;
+	
 	public String getLat() {
 		return lat;
 	}
@@ -114,6 +116,14 @@ public class MediaViewModel {
 
 	public void setShortDownloadPath(String shortDownloadPath) {
 		this.shortDownloadPath = shortDownloadPath;
+	}
+
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(String thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 		
 }
