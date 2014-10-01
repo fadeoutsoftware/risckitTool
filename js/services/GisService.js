@@ -3,8 +3,8 @@
  */
 angular.module('risckit.gisService', []).
     service('GisService',  ['$http', '$upload', function ($http) {
-        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        //this.APIURL = 'http://localhost:8080/risckit/rest';
+        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
 
         this.LoadGis = function (idEvent) {
@@ -15,7 +15,13 @@ angular.module('risckit.gisService', []).
 
         this.DeleteGis = function (idGis, idEvent, type) {
 
-            return this.m_oHttp.post(this.APIURL + '/gis/delete/' + idGis + '/' + idEvent + '/' + type);
+            var answer = confirm("Are you sure to delete?");
+            if (answer) {
+                return this.m_oHttp.post(this.APIURL + '/gis/delete/' + idGis + '/' + idEvent + '/' + type);
+            }
+            else{
+                return null;
+            }
 
         };
 

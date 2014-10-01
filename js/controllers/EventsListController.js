@@ -21,8 +21,6 @@ var EventsListController = (function() {
             this.m_oScope.m_oController.m_oEventService.LoadEvents(this.m_oLoginService.getUserId()).success(function(data){
                 $scope.m_oController.m_oEventList = data;
             });
-
-
     };
 
     EventsListController.prototype.getEvents = function () {
@@ -57,6 +55,8 @@ var EventsListController = (function() {
         start = oScope.m_oController.currentPage;
         if ( start > this.pageCount()-rangeSize ) {
             start = this.pageCount()-rangeSize+1;
+            if (start < 0)
+                start = 0;
         }
         for (var i=start; i<start+rangeSize; i++) {
             ps.push(i);

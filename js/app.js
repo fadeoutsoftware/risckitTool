@@ -11,7 +11,8 @@ var riskit = angular.module('riskitapp',[
     'risckit.mediaService',
     'risckit.gisService',
     'angularFileUpload',
-    'riskitapp.directives']);
+    'riskitapp.directives',
+    'ngSanitize']);
 
 
 
