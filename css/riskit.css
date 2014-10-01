@@ -166,6 +166,9 @@ body{
 }
 
 .loading {
+    position: absolute;
+    z-index: 1001;
+    display: inline;
     width: 30px;
     height: 30px;
 }
@@ -178,4 +181,21 @@ body{
 
 .logo-wrapper {
     display: inline-block;
+}
+
+hr{
+    margin: 2px;
+}
+
+.labels-map {
+    color: #000000;
+    font-family: "Lucida Grande", "Arial", sans-serif;
+    font-size: 12px;
+    text-align: center;
+    width: 52px;
+    white-space: nowrap;
+}
+
+.selected-menu-item {
+    font-weight: bold;
 }
