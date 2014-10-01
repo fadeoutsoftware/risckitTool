@@ -40,11 +40,12 @@
 		<init-param>
 			<param-name>SvnRepository</param-name>
 			<param-value>https://svn.oss.deltares.nl/repos/openearthrawdata/trunk/</param-value>
-			<!-- <param-value>https://github.com/fadeoutsoftware/omirl/trunk/</param-value>  -->
+			<!-- <param-value>https://github.com/fadeoutsoftware/risckitTool/</param-value>  -->
 		</init-param>
 		<init-param>
 			<param-name>SvnUser</param-name>
 			<param-value>risckit</param-value>
+			<!-- <param-value>ibamer</param-value> --> 
 		</init-param>
 		<init-param>
 			<param-name>SvnUserDomain</param-name>
@@ -53,7 +54,13 @@
 		<init-param>
 			<param-name>SvnPwd</param-name>
 			<param-value>7m6dcdJM</param-value>
+			<!-- <param-value>vera9102</param-value> -->
 		</init-param>
+		<init-param>
+			<param-name>ProjectPath</param-name>
+			<param-value>C:/Codice/risckitTool.git/trunk/img/thumb/</param-value>
+		</init-param>
+		
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
