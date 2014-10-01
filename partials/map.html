@@ -1,4 +1,22 @@
 <div class="container-fluid">
-    <div id="map_canvas" class="col-xs-12" style="height: 500px;"></div>
+    <div class="row">
+        <div id="map_canvas" class="col-sm-9" style="height: 600px;"></div>
+        <div class="col-xs-3" style="height: 300px; border: 2px solid; border-color: #fc0;padding-left: 5px; padding-right: 5px; overflow-y: scroll;">
+            <p style="font-size:16px;" align="center">Event List</p>
+            <table>
+                <tbody>
+                    <tr ng-repeat="oItem in m_oController.m_oEventList">
+                        <td>
+                            <a style="font-size:12px" ng-class="{ 'selected-menu-item': oItem.id == m_oController.m_iSelectedEventId}" href ng-click="m_oController.ShowMedia(oItem)">{{oItem.regionName}} - {{oItem.startDate}}</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xs-3" style="height: 300px; border: 2px solid; border-color: #fc0;padding-left: 5px; padding-right: 5px; overflow-y: scroll;">
+            <p style="font-size:16px;" align="center">Event Detail</p>
+            <p style="font-size:12px" ng-bind-html="m_oController.EventHtml"></p>
+        </div>
+    </div>
 </div>
 

@@ -2,20 +2,24 @@
 <form class="form-horizontal" role="form">
     <div class="form-group">
         <label class="col-sm-2 control-label">Country</label>
-        <div class="col-sm-8">
-            <select class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
+        <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryCode == null || m_oController.m_oEvent.countryCode == ''}">
+            <select id="select_country_code" class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryCode != null && m_oController.m_oEvent.countryCode != 0" tooltip="Select a country" style="margin-right: 30px;"></span>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">Region</label>
-        <div class="col-sm-8">
+        <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryId == null || m_oController.m_oEvent.countryId == 0}">
             <select class="form-control" ng-model="m_oController.m_oEvent.countryId" ng-options="Region.id as Region.countryname for Region in m_oController.m_oRegions"></select>
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryId != null && m_oController.m_oEvent.countryId != 0" tooltip="Select a region" style="margin-right: 30px;"></span>
         </div>
     </div>
+
     <div class="form-group">
-        <label class="col-sm-2 control-label">Start Date</label>
-        <div class="col-sm-3">
-            <input type="date" class="form-control" ng-model="m_oController.m_oEvent.startDate" >
+        <label class="col-sm-2 control-label" for="inpute_date">Start Date</label>
+        <div class="col-sm-3" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.startDate == null}">
+            <input type="date" id="inpute_date" class="form-control" ng-model="m_oController.m_oEvent.startDate" >
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.startDate != null" tooltip="Insert a start date"></span>
         </div>
         <label class="col-sm-2 control-label">Start Hour</label>
         <div class="col-sm-3">
@@ -23,10 +27,11 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" >
         <label class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-8">
-            <textarea class="form-control" rows="2" placeholder="Description" ng-model="m_oController.m_oEvent.description"></textarea>
+        <div class="col-sm-8" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.description == null || m_oController.m_oEvent.description == ''}">
+            <textarea class="form-control" rows="2"  placeholder="Description" ng-model="m_oController.m_oEvent.description"></textarea>
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.description != null && m_oController.m_oEvent.description != ''" tooltip="Insert a description"></span>
         </div>
     </div>
 
@@ -253,14 +258,14 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wavedirection-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()" />
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveDirectionInspire')}}">
+                        <input id="wavedirection-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()" />
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')}}">
                             <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.m_oEvent.waveDirectionInspire">
                                 <img src="img/download.png" >
                             </div>
                         </a>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.m_oEvent.waveDirectionInspire">
-                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveDirectionInspire')" >
+                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" >
                         </div>
                     </div>
                 </td>
@@ -276,14 +281,14 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wavedirection-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveDirectionTimeSeries')}}">
+                        <input id="wavedirection-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')}}">
                             <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.m_oEvent.waveDirectionTimeSeries">
                                 <img src="img/download.png" >
                             </div>
                         </a>
-                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController..m_oEvent.waveDirectionTimeSeries">
-                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveDirectionTimeSeries')" >
+                        <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.m_oEvent.waveDirectionTimeSeries">
+                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" >
                         </div>
                     </div>
                 </td>
@@ -461,14 +466,14 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windDirectionInspire')}}">
+                        <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')}}">
                             <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.m_oEvent.windDirectionInspire">
                                 <img src="img/download.png" >
                             </div>
                         </a>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.m_oEvent.windDirectionInspire">
-                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windDirectionInspire')" >
+                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" >
                         </div>
                     </div>
                 </td>
@@ -484,14 +489,14 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windDirectionTimeSeries')}}">
+                        <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')}}">
                             <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.m_oEvent.windDirectionTimeSeries">
                                 <img src="img/download.png" >
                             </div>
                         </a>
                         <div class="div-td project-icon" tooltip-popup-delay="500" tooltip="Delete" ng-show="m_oController.m_oEvent.windDirectionTimeSeries">
-                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windDirectionTimeSeries')" >
+                            <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" >
                         </div>
                     </div>
                 </td>
@@ -952,8 +957,9 @@
         <div class="col-sm-3">
             <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.AddGIS('sm')">Add supplementary GIS</button>
         </div>
-        <div class="col-sm-2">
-            <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()">Send</button>
+        <div class="col-sm-2" tooltip-popup-delay="500" tooltip="Send">
+            <div class="loading" ng-show="m_oController.m_bSaving" ><img class="loading" src="img/Spinner.gif"/></div>
+            <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()" ng-hide="m_oController.m_bSaving">Send</button>
         </div>
     </div>
     <div ng-show="selected"></div>
