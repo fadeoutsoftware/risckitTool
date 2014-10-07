@@ -10,6 +10,7 @@ var riskit = angular.module('riskitapp',[
     'risckit.sharedService',
     'risckit.mediaService',
     'risckit.gisService',
+    'risckit.socioimpactService',
     'angularFileUpload',
     'riskitapp.directives',
     'ngSanitize']);
@@ -22,6 +23,8 @@ riskit.config(function($routeProvider) {
         $routeProvider.when('/map', {templateUrl: 'partials/map.html', controller: 'MapController'});
         $routeProvider.when('/media', {templateUrl: 'partials/media.html', controller: 'MediaController'});
         $routeProvider.when('/media/:idmedia', {templateUrl: 'partials/media.html', controller: 'MediaController'});
+        $routeProvider.when('/socioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
+        $routeProvider.when('/socioimpact/:idsocioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
         $routeProvider.otherwise({redirectTo: '/'});
     }
 );

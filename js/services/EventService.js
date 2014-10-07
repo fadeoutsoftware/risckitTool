@@ -7,6 +7,7 @@ angular.module('risckit.eventService', []).
         this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
         this.m_oCountries = null;
+        this.m_oCategories = null;
         this.m_oRegions = null;
         this.m_oEvents = [];
         this.m_bModified = false;
@@ -83,14 +84,8 @@ angular.module('risckit.eventService', []).
               return this.m_oHttp.post(this.APIURL + '/events/save', Event);
         };
 
-        this.SaveMedia = function (Media) {
-            return this.m_oHttp.post(this.APIURL + '/media/save', Media);
-        };
 
 
-        this.SaveGis = function (Gis) {
-            return this.m_oHttp.post(this.APIURL + '/gis/save', Gis);
-        };
 
         this.isModified = function () {
             return this.m_bModified;
@@ -125,48 +120,6 @@ angular.module('risckit.eventService', []).
 
         };
 
-
-        this.UploadMedia = function (event, media, selectedfile) {
-            var Url = this.APIURL;
-            var oSelectedfile = selectedfile;
-            //Verifico se devo salvare prima l'evento
-            var fd = new FormData();
-            fd.append('file', oSelectedfile);
-            fd.append("mediaid", media.id);
-            fd.append("login", event.login);
-            fd.append("startDate", event.startDate);
-            fd.append("regionName", event.regionName);
-            fd.append("countryCode", event.countryCode);
-
-            return $http.post(Url + "/media/upload", fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            });
-
-
-        };
-
-
-        this.UploadGis = function (event, gis, selectedfile, type) {
-            var Url = this.APIURL;
-            var oSelectedfile = selectedfile;
-            //Verifico se devo salvare prima l'evento
-
-            var fd = new FormData();
-            fd.append('file', oSelectedfile);
-            fd.append("gisid", gis.id);
-            fd.append("type", type);
-            fd.append("login", event.login);
-            fd.append("startDate", event.startDate);
-            fd.append("regionName", event.regionName);
-            fd.append("countryCode", event.countryCode);
-
-            return $http.post(Url + "/gis/upload", fd, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
-            });
-
-        };
 
         this.DownloadAttachment = function (idEvent, parameter) {
 

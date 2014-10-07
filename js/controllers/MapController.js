@@ -292,9 +292,7 @@ var MapController = (function() {
 
         html = html + '<u><b>Wind Intensity</b></u><BR>';
         html = html + '<b>Type: </b>';
-        if (event.windIntensityType == null || event.windIntensityType == 0)
-            html = html + '<b>Type: </b>';
-        else
+        if (event.windIntensityType != null)
             html = html + oScope.m_oController.m_oEventService.GetWindIntensityTypeByIndex(event.windIntensityType).name;
         html = html + '<BR>';
 
@@ -324,8 +322,9 @@ var MapController = (function() {
         html = html + '<b>Type: </b>';
         if (event.waterLevelType != null && event.waterLevelType > 0)
             html = html + oScope.m_oController.m_oEventService.GetWaterLevelTypeByIndex(event.waterLevelType).name;
+        html = html + '<BR>';
         html = html + '<b>Value: </b>';
-        if (event.waterLevelType != null)
+        if (event.waterLevelValue != null)
             html = html + event.waterLevelValue;
         html = html + '<BR>';
         html = html + row;
@@ -339,6 +338,42 @@ var MapController = (function() {
         if (event.floodHeight != null)
             html = html + event.floodHeight;
         html = html + '<BR>';
+        html = html + row;
+
+        //socio impacts
+        html = html + '<u><b>Socio Impacts</b></u><BR>';
+        if (event.socioimpacts != null)
+        {
+            for (var iCount = 0; iCount < event.socioimpacts.length; iCount++) {
+                html = html + '<b>Category: </b>';
+                html = html + event.socioimpacts[iCount].category + '<BR>';
+                html = html + '<b>Subcategory: </b>';
+                html = html + event.socioimpacts[iCount].subcategory + '<BR>';
+                html = html + '<b>Description: </b>';
+                html = html + event.socioimpacts[iCount].description + '<BR>';
+                html = html + '<b>Unit of measure: </b>';
+                html = html + event.socioimpacts[iCount].unitMeasure + '<BR>';
+                html = html + '<b>Cost: </b>';
+                html = html + event.socioimpacts[iCount].cost + '<BR>';
+            }
+        }
+        html = html + row;
+
+        //media
+        html = html + '<u><b>Media</b></u><BR>';
+        if (event.media != null) {
+            for (var iCount = 0; iCount < event.media.length; iCount++) {
+                html = html + '<b>' + event.media[iCount].shortDownloadPath + '</b><BR>';
+            }
+        }
+        html = html + row;
+        //gis
+        html = html + '<u><b>Gis</b></u><BR>';
+        if (event.gis != null){
+            html = html + '<b>' + event.gis.shortGisFile + '</b><BR>';
+            html = html + '<b>' + event.gis.shortInspireFile + '</b><BR>';
+        }
+        html = html + row;
 
         oScope.m_oController.EventHtml = html;
 
@@ -354,7 +389,8 @@ var MapController = (function() {
             return;
 
         if (!this.clearMediaMarkers() && this.m_iSelectedEventId == event.id) {
-            this.m_iSelectedEventId = event.id;
+            this.m_iSelectedEventId = null;
+            this.EventHtml = '';
             return;
         }
 

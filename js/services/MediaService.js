@@ -44,6 +44,30 @@ angular.module('risckit.mediaService', []).
             this.m_bModified = false;
         };
 
+        this.SaveMedia = function (Media) {
+            return this.m_oHttp.post(this.APIURL + '/media/save', Media);
+        };
+
+        this.UploadMedia = function (event, media, selectedfile) {
+            var Url = this.APIURL;
+            var oSelectedfile = selectedfile;
+            //Verifico se devo salvare prima l'evento
+            var fd = new FormData();
+            fd.append('file', oSelectedfile);
+            fd.append("mediaid", media.id);
+            fd.append("login", event.login);
+            fd.append("startDate", event.startDate);
+            fd.append("regionName", event.regionName);
+            fd.append("countryCode", event.countryCode);
+
+            return $http.post(Url + "/media/upload", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+
+
+        };
+
 
     }]);
 

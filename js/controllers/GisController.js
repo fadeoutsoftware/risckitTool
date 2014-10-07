@@ -78,9 +78,9 @@ var GisController = (function() {
             $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function (data) {
                 $scope.m_oController.m_oSharedService.getEvent().id = data.id;
                 $scope.m_oController.m_oSharedService.getEvent().GIS.eventId = data.id;
-                $scope.m_oController.m_oEventService.SaveGis($scope.m_oController.m_oSharedService.getEvent().GIS).success(function (data) {
+                $scope.m_oController.m_oGisService.SaveGis($scope.m_oController.m_oSharedService.getEvent().GIS).success(function (data) {
                     $scope.m_oController.m_oSharedService.getEvent().GIS = data;
-                    $scope.m_oController.m_oEventService.UploadGis($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.m_oSharedService.getEvent().GIS, $scope.selectedFiles[index], $scope.type).success(function (data) {
+                    $scope.m_oController.m_oGisService.UploadGis($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.m_oSharedService.getEvent().GIS, $scope.selectedFiles[index], $scope.type).success(function (data) {
                         $scope.m_oController.m_oSharedService.getEvent().GIS = data;
                         $scope.m_oController.m_oUploading = false;
 

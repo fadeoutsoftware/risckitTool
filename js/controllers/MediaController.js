@@ -159,10 +159,10 @@ var MediaController = (function() {
             $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function (data) {
                 $scope.m_oController.m_oSharedService.getEvent().id = data.id;
                 $scope.m_oController.NewMedia.eventId = data.id;
-                $scope.m_oController.m_oEventService.SaveMedia($scope.m_oController.NewMedia).success(function (data) {
+                $scope.m_oController.m_oMediaService.SaveMedia($scope.m_oController.NewMedia).success(function (data) {
                     $scope.m_oController.NewMedia = data;
                     if ($scope.selectedFiles[index] != null) {
-                        $scope.m_oController.m_oEventService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function (data) {
+                        $scope.m_oController.m_oMediaService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function (data) {
                             $scope.m_oController.NewMedia = data;
                             $scope.m_oController.m_oSharedService.getEvent().Media.push(data);
                             $scope.m_oController.m_oUploading = false;
@@ -191,7 +191,7 @@ var MediaController = (function() {
         }
 
         var oController = this.m_oScope.m_oController;
-        this.m_oEventService.SaveMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
+        this.m_oMediaService.SaveMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
 
             if (data != null)
                 oController.m_oLocation.path('event');

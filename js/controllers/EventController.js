@@ -3,7 +3,7 @@
  */
 var EventController = (function() {
 
-    function EventController($scope, $location, $modal, oEventService, oSharedService, oLoginService, oMediaService, oGisService) {
+    function EventController($scope, $location, $modal, oEventService, oSharedService, oLoginService, oMediaService, oGisService, oSocioimpactService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
@@ -13,6 +13,7 @@ var EventController = (function() {
         this.m_oLoginService = oLoginService;
         this.m_oMediaService = oMediaService;
         this.m_oGisService = oGisService;
+        this.m_oSocioimpactService = oSocioimpactService;
         this.m_bSaving = false;
         this.Flooding = false;
 
@@ -24,27 +25,39 @@ var EventController = (function() {
         }
         else {
             this.m_oScope.m_oController.m_oEvent = this.m_oScope.m_oController.m_oSharedService.getEvent();
+            //Media
             if (this.m_oSharedService.getEvent().Media == null) {
                 //load Media
                 this.m_oMediaService.LoadMedia($scope.m_oController.m_oEvent.id).success(function (data) {
                     $scope.m_oController.m_oEvent.Media = data;
+                    $scope.m_oController.m_oEventService.setUnchanged();
                 });
-
             }
             else {
                 this.m_oScope.m_oController.m_oEvent.Media = this.m_oSharedService.getEvent().Media;
             }
-
+            //Gis
             if (this.m_oSharedService.getEvent().GIS == null) {
                 //load GIS
                 this.m_oGisService.LoadGis($scope.m_oController.m_oEvent.id).success(function (data) {
                     $scope.m_oController.m_oEvent.GIS = data;
+                    $scope.m_oController.m_oEventService.setUnchanged();
                 });
             }
             else {
                 this.m_oScope.m_oController.m_oEvent.GIS = this.m_oSharedService.getEvent().GIS;
             }
-
+            //Socio Impact
+            if (this.m_oSharedService.getEvent().SocioImpacts == null) {
+                //load GIS
+                this.m_oSocioimpactService.LoadSocioImpact($scope.m_oController.m_oEvent.id).success(function (data) {
+                    $scope.m_oController.m_oEvent.SocioImpacts = data;
+                    $scope.m_oController.m_oEventService.setUnchanged();
+                });
+            }
+            else {
+                this.m_oScope.m_oController.m_oEvent.SocioImpacts = this.m_oSharedService.getEvent().SocioImpacts;
+            }
             if (this.m_oScope.m_oController.m_oEvent.peakWaterDischarge != null || this.m_oScope.m_oController.m_oEvent.floodHeight != null)
                 this.Flooding = true;
 
@@ -66,6 +79,7 @@ var EventController = (function() {
                     $scope.m_oController.m_oEventService.setRegions(data);
                     if ($scope.m_oController.m_oSharedService.getEvent() != null) {
                         $scope.m_oController.m_oEvent.countryId = $scope.m_oController.m_oSharedService.getEvent().countryId;
+                        $scope.m_oController.m_oEventService.setUnchanged();
                     }
 
                 });
@@ -87,6 +101,7 @@ var EventController = (function() {
 
         $scope.$watch('m_oController.m_oEvent.countryCode', function (newVal, oldVal) {
             if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
                 //load regions
                 if ($scope.m_oController.m_oEvent.countryCode != null) {
                     $scope.m_oController.m_oEventService.GetAllRegions($scope.m_oController.m_oEvent.countryCode).success(function (data, status) {
@@ -104,7 +119,7 @@ var EventController = (function() {
 
         $scope.$watch('m_oController.m_oEvent.countryId', function (newVal, oldVal) {
             if (newVal != oldVal) {
-
+                $scope.m_oController.m_oEventService.setAsModified();
                 for (var iCount = 0; iCount < $scope.m_oController.m_oRegions.length; iCount++) {
                     if ($scope.m_oController.m_oRegions[iCount].id == $scope.m_oController.m_oEvent.countryId)
                         $scope.m_oController.m_oEvent.regionName = $scope.m_oController.m_oRegions[iCount].countryname;
@@ -112,20 +127,126 @@ var EventController = (function() {
             }
         });
 
-
-        /*
-        $scope.$watchCollection('m_oController.m_oEvent', function (newVal, oldVal) {
-            if (newVal === oldVal){}
-            else{
+        $scope.$watch('m_oController.m_oEvent.description', function (newVal, oldVal) {
+            if (newVal != oldVal) {
                 $scope.m_oController.m_oEventService.setAsModified();
             }
-
         });
-        */
+
+        $scope.$watch('m_oController.m_oEvent.startDate', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.startHour', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.unitHour', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.unitValue', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.unitApproximated', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.waveHeightType', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.waveHeightValue', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.waveDirectionType', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.waveDirectionClustered', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.windIntensityType', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.windIntensityValue', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.windDirectionType', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.windDirectionClustered', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.waterLevelType', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.waterLevelValue', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.Flooding', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.peakWaterDischarge', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+        $scope.$watch('m_oController.m_oEvent.floodHeight', function (newVal, oldVal) {
+            if (newVal != oldVal) {
+                $scope.m_oController.m_oEventService.setAsModified();
+            }
+        });
+
+
 
         $scope.onFileSelect = function ($files, parameter) {
 
             if ($files != null && $files.length > 0) {
+                $scope.m_oController.m_oEventService.setUnchanged();
                 if (parameter == 'waveHeightInspire') {
                     $scope.m_oController.m_oEvent.waveHeightInspire = $files[0].name;
                     $scope.m_oController.waveHeightInspireuploading = true;
@@ -357,9 +478,34 @@ var EventController = (function() {
 
     EventController.prototype.AddMedia = function (partial, size) {
 
-        if (this.m_oScope.m_oController.CheckAddMediaGis()) {
+        if (this.m_oScope.m_oController.Check()) {
             this.m_oSharedService.setEvent(this.m_oEvent);
             this.m_oLocation.path('media');
+        }
+    };
+
+    EventController.prototype.AddSocioimpact = function (partial, size) {
+        var oScope = this.m_oScope;
+        if (oScope.m_oController.Check()) {
+            if (oScope.m_oController.m_oEventService.isModified()) {
+                oScope.m_oController.m_bSaving = true;
+                //Save event
+                oScope.m_oController.m_oEventService.Save(oScope.m_oController.m_oEvent).success(function (data, status) {
+                    if (data != null) {
+                        oScope.m_oController.m_oSharedService.setEvent(data);
+                        oScope.m_oController.m_oEvent = data;
+                        oScope.m_oController.m_oEventService.setUnchanged();
+                        oScope.m_oController.m_oLocation.path('socioimpact');
+                    }
+
+                    oScope.m_oController.m_bSaving = false;
+                });
+            }
+            else
+            {
+                oScope.m_oController.m_oLocation.path('socioimpact');
+            }
+
         }
     };
 
@@ -449,7 +595,7 @@ var EventController = (function() {
 
     EventController.prototype.AddGIS = function (size) {
 
-        if(this.m_oScope.m_oController.CheckAddMediaGis()) {
+        if(this.m_oScope.m_oController.Check()) {
             this.m_oSharedService.setEvent(this.m_oEvent);
             var oScope = this.m_oScope;
 
@@ -472,23 +618,56 @@ var EventController = (function() {
         {
             if (this.m_oLoginService.isLogged()) {
                 this.m_oEvent.userId = this.m_oLoginService.getUserId();
-                if (this.m_oEvent.countryCode == null || this.m_oEvent.countryCode == '' ||
-                    this.m_oEvent.startDate == null || this.m_oEvent.description == null || this.m_oEvent.description == '') {
-                    alert('Insert mandatory fields');
-                    return;
-                }
 
-                //Geocoding
-                var oCountry = oScope.m_oController.m_oEventService.GetRegion(oScope.m_oController.m_oEvent.countryId);
-                if (oCountry != null) {
-                    var geocoder = new google.maps.Geocoder();
-                    geocoder.geocode({ 'address': oCountry.countryname }, function (results, status) {
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            oScope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
-                            oScope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
-                        }
+                if (oScope.m_oController.m_oEventService.isModified()) {
 
-                        oScope.m_oController.m_bSaving = true;
+                    if (!oScope.m_oController.Check()) {
+                        alert('Insert mandatory fields');
+                        return;
+                    }
+
+                    //Geocoding
+                    var oCountry = oScope.m_oController.m_oEventService.GetRegion(oScope.m_oController.m_oEvent.countryId);
+                    if (oCountry != null) {
+                        var geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({ 'address': oCountry.countryname }, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                oScope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
+                                oScope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
+                            }
+
+                            oScope.m_oController.m_bSaving = true;
+                            oScope.m_oController.m_oEventService.Save(oScope.m_oController.m_oEvent).success(function (data, status) {
+
+                                //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
+                                //di liste contenute
+                                if (data != null) {
+
+                                    if (data.id == null || data.id == 0) {
+                                        alert("Error saving event");
+                                        return;
+                                    }
+                                    oScope.m_oController.m_bSaving = false;
+                                    oScope.m_oController.m_oEventService.setUnchanged();
+
+                                    var answer = confirm("Do you want to insert another event?");
+                                    if (answer)
+                                        oScope.m_oController.m_oEvent = new Object();
+                                    else
+                                        oScope.m_oController.m_oLocation.path('eventslist');
+                                }
+                                else {
+
+                                    alert("Error saving event");
+                                }
+
+                                oScope.m_oController.m_bSaving = false;
+                                oScope.m_oController.m_oEventService.setUnchanged();
+                            });
+
+                        });
+                    }
+                    else {
                         oScope.m_oController.m_oEventService.Save(oScope.m_oController.m_oEvent).success(function (data, status) {
 
                             //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
@@ -499,9 +678,9 @@ var EventController = (function() {
                                     alert("Error saving event");
                                     return;
                                 }
+
                                 oScope.m_oController.m_bSaving = false;
                                 oScope.m_oController.m_oEventService.setUnchanged();
-
                                 var answer = confirm("Do you want to insert another event?");
                                 if (answer)
                                     oScope.m_oController.m_oEvent = new Object();
@@ -509,44 +688,17 @@ var EventController = (function() {
                                     oScope.m_oController.m_oLocation.path('eventslist');
                             }
                             else {
-
                                 alert("Error saving event");
                             }
 
                             oScope.m_oController.m_bSaving = false;
                             oScope.m_oController.m_oEventService.setUnchanged();
                         });
-
-                    });
+                    }
                 }
                 else
                 {
-                    oScope.m_oController.m_oEventService.Save(oScope.m_oController.m_oEvent).success(function (data, status) {
-
-                        //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
-                        //di liste contenute
-                        if (data != null) {
-
-                            if (data.id == null || data.id == 0) {
-                                alert("Error saving event");
-                                return;
-                            }
-
-                            oScope.m_oController.m_bSaving = false;
-                            oScope.m_oController.m_oEventService.setUnchanged();
-                            var answer = confirm("Do you want to insert another event?");
-                            if (answer)
-                                oScope.m_oController.m_oEvent = new Object();
-                            else
-                                oScope.m_oController.m_oLocation.path('eventslist');
-                        }
-                        else {
-                            alert("Error saving event");
-                        }
-
-                        oScope.m_oController.m_bSaving = false;
-                        oScope.m_oController.m_oEventService.setUnchanged();
-                    });
+                    oScope.m_oController.m_oLocation.path('eventslist');
                 }
 
             }
@@ -556,10 +708,15 @@ var EventController = (function() {
 
 
     EventController.prototype.Check = function () {
-        if (this.m_oScope.m_oController.m_oEvent.countryId == null || this.m_oScope.m_oController.m_oEvent.startDate == null) {
-            alert("Select country, region and start date, please!");
+        var oEvent = this.m_oScope.m_oController.m_oEvent;
+        if (oEvent.countryId == null || oEvent.startDate == null ||
+            oEvent.countryCode == null || oEvent.countryCode == '' ||
+            oEvent.startDate == null || oEvent.description == null || oEvent.description == '') {
+            alert("Insert mandatory fields!");
             event.preventDefault();
+            return false;
         }
+        return true;
     };
 
     EventController.prototype.CheckAddMediaGis = function () {
@@ -576,6 +733,32 @@ var EventController = (function() {
     };
 
 
+    EventController.prototype.DeleteSocioImpact = function (idsocio) {
+        var oScope = this.m_oScope;
+
+        this.m_oSocioimpactService.Delete(idsocio).success(function(data){
+            if (data != null)
+                oScope.m_oController.m_oEvent.SocioImpacts = data;
+        });
+    };
+
+    EventController.prototype.EditSocioImpact = function (idsocio) {
+        this.m_oLocation.path('/socioimpact/' + idsocio);
+    };
+
+    EventController.prototype.GetTotalCost = function () {
+        var totalCost = 0;
+        if (this.m_oScope.m_oController.m_oEvent != null) {
+            if (this.m_oScope.m_oController.m_oEvent.SocioImpacts != null) {
+                var socioimpacts = this.m_oScope.m_oController.m_oEvent.SocioImpacts;
+                for (var iCount = 0; iCount < socioimpacts.length; iCount++) {
+                    totalCost = totalCost + socioimpacts[iCount].cost;
+                }
+            }
+        }
+        return totalCost;
+    };
+
 
     EventController.$inject = [
             '$scope',
@@ -585,7 +768,8 @@ var EventController = (function() {
             'SharedService',
             'LoginService',
             'MediaService',
-            'GisService'
+            'GisService',
+            'SocioimpactService',
         ];
 
     return EventController;
