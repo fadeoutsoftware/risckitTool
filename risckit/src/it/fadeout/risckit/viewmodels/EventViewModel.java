@@ -127,6 +127,10 @@ public class EventViewModel {
 	
 	private ArrayList<MediaViewModel> media;
 	
+	private GisViewModel gis;
+	
+	private ArrayList<SocioImpactViewModel> socioimpacts;
+	
 	private String lat;
 	
 	private String lon;
@@ -589,6 +593,22 @@ public class EventViewModel {
 
 	public void setCountryName(String countryName) {
 		this.countryName = countryName;
+	}
+
+	public GisViewModel getGis() {
+		return gis;
+	}
+
+	public void setGis(GisViewModel gis) {
+		this.gis = gis;
+	}
+
+	public ArrayList<SocioImpactViewModel> getSocioimpacts() {
+		return socioimpacts;
+	}
+
+	public void setSocioimpacts(ArrayList<SocioImpactViewModel> socioimpacts) {
+		this.socioimpacts = socioimpacts;
 	}
 	
 }

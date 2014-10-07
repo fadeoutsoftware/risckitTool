@@ -1,6 +1,7 @@
 package it.fadeout.risckit.business;
 
 import it.fadeout.risckit.viewmodels.EventViewModel;
+import it.fadeout.risckit.viewmodels.SocioImpactViewModel;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,6 +25,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -173,19 +176,21 @@ public class Event {
 
 	@Column(name="waterleveltimeseries")
 	private String m_sWaterLevelTimeSeries;
-	
+
 	@Column(name="userid")
 	private Integer m_iUserId;
-	
+
 	@Column(name="lat")
 	private String m_sLat;
-	
+
 	@Column(name="lon")
 	private String m_sLon;
 
 	@OneToOne(cascade={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
 	@JoinColumn(name="countryid", nullable=true, insertable=false, updatable=false)
 	private Country m_oCountry;
+
+
 
 	public Integer getId() {
 		return m_iId;
@@ -566,7 +571,7 @@ public class Event {
 	public void setCountry(Country m_oCountry) {
 		this.m_oCountry = m_oCountry;
 	}
-	
+
 	public String getLat() {
 		return m_sLat;
 	}
@@ -584,7 +589,7 @@ public class Event {
 	}
 
 
-	public InputStream GetCsvInputStream()
+	public InputStream GetCsvInputStream(List<SocioImpact> oSocioImpacts)
 	{
 		ArrayList<String> oList = new ArrayList<String>();
 
@@ -622,210 +627,241 @@ public class Event {
 						"FloodHeight;" +
 						"FloodHeightInspire;" + 
 						"FloodHeightTimeSeries;" +
-						"ReporedCasualtiesNumber;" + 
-						"ReporedCasualtiesDescription;" +
-						"ReporedCasualtiesInspire;" + 
-						"ReporedCasualtiesTimeSeries;" + 
-						"DamageToBuildingsDescription;" +
-						"DamageToBuildingsCost;" + 
-						"DamageToBuildingsInspire;" + 
-						"DamageToBuildingsTimeSeries;" +
-						"CostDetail;" + 
-						"DescriptionOfMeasure;" + 
+						"Category;" +
+						"Subcategory;" +
+						"Description;" +
+						"UnitMeasure;" +
+						"Cost;" +
+						"Currency;" +
+						//"ReporedCasualtiesNumber;" + 
+						//"ReporedCasualtiesDescription;" +
+						//"ReporedCasualtiesInspire;" + 
+						//"ReporedCasualtiesTimeSeries;" + 
+						//"DamageToBuildingsDescription;" +
+						//"DamageToBuildingsCost;" + 
+						//"DamageToBuildingsInspire;" + 
+						//"DamageToBuildingsTimeSeries;" +
+						//"CostDetail;" + 
+						//"DescriptionOfMeasure;" + 
 						"\r\n";
 
 		oList.add(sHeader);
 
-		String sCountryName = "";
-		String sStartDate = "";
-		String sStartHour = "";
-		String sDescription = "";
-		String sUnit = "Hour";
-		String sUnitValue = "";
-		String sUnitType = "Approximate";
-		String sWaveHeightType = "";
-		String sWaveHeightValue = "";
-		String sWaveHeightInspire = "";
-		String sWaveHeightTimeSeries = "";
-		String sWaveDirectionType = "";
-		String sWaveDirectionValue = "";
-		String sWaveDirectionInspire = "";
-		String sWaveDirectionTimeSeries = "";
-		String sWindIntensityType = "";
-		String sWindIntensityValue = "";
-		String sWindIntensityInspire = "";
-		String sWindIntensityTimeSeries = "";
-		String sWindDirectionType = "";
-		String sWindDirectionValue = "";
-		String sWindDirectionInspire = "";
-		String sWindDirectionTimeSeries = "";
-		String sWaterLevelType = "";
-		String sWaterLevelValue = "";
-		String sWaterLevelInspire = "";
-		String sWaterLevelTimeSeries = "";
-		String sPeakWaterDischarge = "";
-		String sPeakWaterInpire = "";
-		String sPeakWaterTimeSeries = "";
-		String sFloodHeight = "";
-		String sFloodHeightInspire = "";
-		String sFloodHeightTimeSeries = "";
-		String sReporedCasualtiesNumber = "";
-		String sReporedCasualtiesDescription = "";
-		String sReporedCasualtiesInspire = "";
-		String sReporedCasualtiesTimeSeries = "";
-		String sDamageToBuildingsDescription = "";
-		String sDamageToBuildingsCost = "";
-		String sDamageToBuildingsInspire = "";
-		String sDamageToBuildingsTimeSeries = "";
-		String sCostDetail = "";
-		String sDescriptionOfMeasure = "";
-		if (this.getCountry() != null)
-			sCountryName = String.valueOf(this.getCountry().getName());
-
-		if (this.m_oStartDate != null)
+		int iCount = 0;
+		do
 		{
-			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-			sStartDate = dateFormatter.format(this.getStartDate());
-		}
-		if (this.m_oStartHour != null)
-		{
-			DateFormat dateFormatter = new SimpleDateFormat("hh:mm");
-			sStartHour = dateFormatter.format(this.getStartDate());
-		}
-		if (this.m_sDescription != null)
-			sDescription = String.valueOf(this.m_sDescription);
-		if (this.getUnitHour() == null || !this.getUnitHour())
-			sUnit = "Day";
-		if (this.getUnitApproximated() == null || !this.getUnitApproximated())
-			sUnitType = "Exact";
-		if(this.getUnitValue() != null)
-			sUnitValue = this.getUnitValue().toString();
+			String sCountryName = "";
+			String sStartDate = "";
+			String sStartHour = "";
+			String sDescription = "";
+			String sUnit = "Hour";
+			String sUnitValue = "";
+			String sUnitType = "Approximate";
+			String sWaveHeightType = "";
+			String sWaveHeightValue = "";
+			String sWaveHeightInspire = "";
+			String sWaveHeightTimeSeries = "";
+			String sWaveDirectionType = "";
+			String sWaveDirectionValue = "";
+			String sWaveDirectionInspire = "";
+			String sWaveDirectionTimeSeries = "";
+			String sWindIntensityType = "";
+			String sWindIntensityValue = "";
+			String sWindIntensityInspire = "";
+			String sWindIntensityTimeSeries = "";
+			String sWindDirectionType = "";
+			String sWindDirectionValue = "";
+			String sWindDirectionInspire = "";
+			String sWindDirectionTimeSeries = "";
+			String sWaterLevelType = "";
+			String sWaterLevelValue = "";
+			String sWaterLevelInspire = "";
+			String sWaterLevelTimeSeries = "";
+			String sPeakWaterDischarge = "";
+			String sPeakWaterInpire = "";
+			String sPeakWaterTimeSeries = "";
+			String sFloodHeight = "";
+			String sFloodHeightInspire = "";
+			String sFloodHeightTimeSeries = "";
+			String sCategory = "";
+			String sSubcategory = "";
+			String sSocioDescription = "";
+			String sUnitMeasure = "";
+			String sCost = "";
+			String sCurrency = "";
+			//String sReporedCasualtiesNumber = "";
+			//String sReporedCasualtiesDescription = "";
+			//String sReporedCasualtiesInspire = "";
+			//String sReporedCasualtiesTimeSeries = "";
+			//String sDamageToBuildingsDescription = "";
+			//String sDamageToBuildingsCost = "";
+			//String sDamageToBuildingsInspire = "";
+			//String sDamageToBuildingsTimeSeries = "";
+			//String sCostDetail = "";
+			//String sDescriptionOfMeasure = "";
+			if (this.getCountry() != null)
+				sCountryName = String.valueOf(this.getCountry().getName());
 
-		if (this.getWaveHeightType() != null)
-		{
-			if (this.getWaveHeightType() == 0)
-				sWaveHeightType = "Mean significant during event";
-			else if (this.getWaveHeightType() == 1)
-				sWaveHeightType = "Peak significant";
-			else
-				sWaveHeightType = "Maximum";
-		}
-		if (this.getWaveHeightValue() != null)
-			sWaveHeightValue = this.getWaveHeightValue().toString();
-
-		if (this.getWaveHeightInspire() != null)
-			sWaveHeightInspire = this.getWaveHeightInspire();
-
-		if (this.getWaveHeightTimeSeries() != null)
-			sWaveHeightTimeSeries = this.getWaveHeightTimeSeries();
-
-		if (this.getWaveDirectionType() != null)
-		{
-			if (this.getWaveDirectionType() == 0)
+			if (this.m_oStartDate != null)
 			{
-				sWaveDirectionType = "Degrees from N";
-				if (this.getWaveDirectionDegree() != null)
-					sWaveDirectionValue = this.getWaveDirectionDegree().toString();
+				DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+				sStartDate = dateFormatter.format(this.getStartDate());
 			}
-			else
+			if (this.m_oStartHour != null)
 			{
-				sWaveDirectionType = "Compass";
-				if (this.getWaveDirectionClustered() != null)
-					sWaveDirectionValue = this.getWaveDirectionClustered().toString();
+				DateFormat dateFormatter = new SimpleDateFormat("hh:mm");
+				sStartHour = dateFormatter.format(this.getStartDate());
 			}
-		}
+			if (this.m_sDescription != null)
+				sDescription = String.valueOf(this.m_sDescription);
+			if (this.getUnitHour() == null || !this.getUnitHour())
+				sUnit = "Day";
+			if (this.getUnitApproximated() == null || !this.getUnitApproximated())
+				sUnitType = "Exact";
+			if(this.getUnitValue() != null)
+				sUnitValue = this.getUnitValue().toString();
 
-		if (this.getWaveDirectionInspire() != null)
-			sWaveDirectionInspire = this.getWaveDirectionInspire();
-
-		if (this.getWaveDirectionTimeSeries() != null)
-			sWaveDirectionTimeSeries = this.getWaveDirectionTimeSeries();
-
-		if (this.getWindIntensityType() != null)
-		{
-			if (this.getWindIntensityType() == 0)
+			if (this.getWaveHeightType() != null)
 			{
-				sWindIntensityType = "Mean speed during event";
+				if (this.getWaveHeightType() == 0)
+					sWaveHeightType = "Mean significant during event";
+				else if (this.getWaveHeightType() == 1)
+					sWaveHeightType = "Peak significant";
+				else
+					sWaveHeightType = "Maximum";
 			}
-			else if (this.getWindIntensityType() == 1)
+			if (this.getWaveHeightValue() != null)
+				sWaveHeightValue = this.getWaveHeightValue().toString();
+
+			if (this.getWaveHeightInspire() != null)
+				sWaveHeightInspire = this.getWaveHeightInspire();
+
+			if (this.getWaveHeightTimeSeries() != null)
+				sWaveHeightTimeSeries = this.getWaveHeightTimeSeries();
+
+			if (this.getWaveDirectionType() != null)
 			{
-				sWindIntensityType = "Maximum speed";
+				if (this.getWaveDirectionType() == 0)
+				{
+					sWaveDirectionType = "Degrees from N";
+					if (this.getWaveDirectionDegree() != null)
+						sWaveDirectionValue = this.getWaveDirectionDegree().toString();
+				}
+				else
+				{
+					sWaveDirectionType = "Compass";
+					if (this.getWaveDirectionClustered() != null)
+						sWaveDirectionValue = this.getWaveDirectionClustered().toString();
+				}
 			}
-			else
-				sWindIntensityType = "Maximum gust";
-		}
 
-		if (this.getWindIntensityValue() != null)
-			sWindIntensityValue = this.getWindIntensityValue().toString();
+			if (this.getWaveDirectionInspire() != null)
+				sWaveDirectionInspire = this.getWaveDirectionInspire();
 
-		if (this.getWindIntensityInspire() != null)
-			sWindIntensityInspire = this.getWindIntensityInspire();
+			if (this.getWaveDirectionTimeSeries() != null)
+				sWaveDirectionTimeSeries = this.getWaveDirectionTimeSeries();
 
-		if (this.getWindIntensitySeries() != null)
-			sWindIntensityTimeSeries = this.getWindIntensitySeries();
-
-		if (this.getWindDirectionType() != null)
-		{
-			if (this.getWindDirectionType() == 0)
+			if (this.getWindIntensityType() != null)
 			{
-				sWindDirectionType = "Degrees from N";
-				if (this.getWindDirectionDegree() != null)
-					sWindDirectionValue = this.getWindDirectionDegree().toString();
+				if (this.getWindIntensityType() == 0)
+				{
+					sWindIntensityType = "Mean speed during event";
+				}
+				else if (this.getWindIntensityType() == 1)
+				{
+					sWindIntensityType = "Maximum speed";
+				}
+				else
+					sWindIntensityType = "Maximum gust";
 			}
-			else
+
+			if (this.getWindIntensityValue() != null)
+				sWindIntensityValue = this.getWindIntensityValue().toString();
+
+			if (this.getWindIntensityInspire() != null)
+				sWindIntensityInspire = this.getWindIntensityInspire();
+
+			if (this.getWindIntensitySeries() != null)
+				sWindIntensityTimeSeries = this.getWindIntensitySeries();
+
+			if (this.getWindDirectionType() != null)
 			{
-				sWindDirectionType = "Compass";
-				if (this.getWaveDirectionClustered() != null)
-					sWindDirectionValue = this.getWaveDirectionClustered().toString();
+				if (this.getWindDirectionType() == 0)
+				{
+					sWindDirectionType = "Degrees from N";
+					if (this.getWindDirectionDegree() != null)
+						sWindDirectionValue = this.getWindDirectionDegree().toString();
+				}
+				else
+				{
+					sWindDirectionType = "Compass";
+					if (this.getWaveDirectionClustered() != null)
+						sWindDirectionValue = this.getWaveDirectionClustered().toString();
+				}
+
 			}
 
-		}
+			if (this.getWindDirectionInspire() != null)
+				sWindDirectionInspire = this.getWindDirectionInspire();
 
-		if (this.getWindDirectionInspire() != null)
-			sWindDirectionInspire = this.getWindDirectionInspire();
+			if (this.getWindDirectionTimeSeries() != null)
+				sWindDirectionTimeSeries = this.getWindDirectionTimeSeries();
 
-		if (this.getWindDirectionTimeSeries() != null)
-			sWindDirectionTimeSeries = this.getWindDirectionTimeSeries();
-
-		if (this.getWaterLevelType() != null)
-		{
-			if (this.getWaterLevelType() == 0)
+			if (this.getWaterLevelType() != null)
 			{
-				sWaterLevelType = "Total water level";
+				if (this.getWaterLevelType() == 0)
+				{
+					sWaterLevelType = "Total water level";
+				}
+				else
+				{
+					sWaterLevelType = "Astronomical tide";
+				}
 			}
-			else
+
+			if (this.getWaterLevelValue() != null)
+				sWaterLevelValue = this.getWaterLevelValue().toString();
+
+			if (this.getWaterLevelInspire() != null)
+				sWaterLevelInspire = this.getWaterLevelInspire();
+
+			if (this.getWaterLevelTimeSeries() != null)
+				sWaterLevelTimeSeries = this.getWaterLevelTimeSeries();
+
+			if (this.getPeakWaterDischarge() != null)
+				sPeakWaterDischarge = this.getPeakWaterDischarge().toString();
+
+			if (this.getPeakWaterInspire() != null)
+				sPeakWaterInpire = this.getPeakWaterInspire();
+
+			if (this.getPeakWaterTimeSeries() != null)
+				sPeakWaterTimeSeries = this.getPeakWaterTimeSeries();
+
+			if (this.getFloodHeight() != null)
+				sFloodHeight = this.getFloodHeight().toString();
+
+			if (this.getFloodHeightInspire() != null)
+				sFloodHeightInspire = this.getFloodHeightInspire();
+
+			if (this.getFloodHeightTimeSeries() != null)
+				sFloodHeightTimeSeries = this.getFloodHeightTimeSeries();
+
+			if (oSocioImpacts != null)
 			{
-				sWaterLevelType = "Astronomical tide";
+				SocioImpact oSocioImpact =oSocioImpacts.get(iCount);
+				if (oSocioImpact.getSubCategory() != null)
+				{
+					sCategory = oSocioImpact.getSubCategory().getCategory().getDescription();
+					sSubcategory = oSocioImpact.getSubCategory().getDescription();
+				}
+				sSocioDescription = oSocioImpact.getDescription();
+				sUnitMeasure = oSocioImpact.getUnitMeasure();
+				sCost = oSocioImpact.getCost().toString();
+				if (oSocioImpact.getCurrency() != null)
+					sCurrency = oSocioImpact.getCurrency().getCurrency();
 			}
-		}
 
-		if (this.getWaterLevelValue() != null)
-			sWaterLevelValue = this.getWaterLevelValue().toString();
-
-		if (this.getWaterLevelInspire() != null)
-			sWaterLevelInspire = this.getWaterLevelInspire();
-
-		if (this.getWaterLevelTimeSeries() != null)
-			sWaterLevelTimeSeries = this.getWaterLevelTimeSeries();
-
-		if (this.getPeakWaterDischarge() != null)
-			sPeakWaterDischarge = this.getPeakWaterDischarge().toString();
-
-		if (this.getPeakWaterInspire() != null)
-			sPeakWaterInpire = this.getPeakWaterInspire();
-
-		if (this.getPeakWaterTimeSeries() != null)
-			sPeakWaterTimeSeries = this.getPeakWaterTimeSeries();
-
-		if (this.getFloodHeight() != null)
-			sFloodHeight = this.getFloodHeight().toString();
-
-		if (this.getFloodHeightInspire() != null)
-			sFloodHeightInspire = this.getFloodHeightInspire();
-
-		if (this.getFloodHeightTimeSeries() != null)
-			sFloodHeightTimeSeries = this.getFloodHeightTimeSeries();
-
+			/*
 		if (this.getReporedCasualtiesNumber() != null)
 			sReporedCasualtiesNumber = this.getReporedCasualtiesNumber().toString();
 
@@ -854,42 +890,49 @@ public class Event {
 			sCostDetail = this.getCostDetail().toString();
 
 		if (this.getDescriptionOfMeasure() != null)
-			sDescriptionOfMeasure = this.getDescriptionOfMeasure();
+			sDescriptionOfMeasure = this.getDescriptionOfMeasure();*/
 
-		String sRecord = 
-				sCountryName + ";" +
-						sStartDate + ";" +
-						sStartHour + ";" +
-						sDescription + ";" +
-						sUnit + ";" +
-						sUnitValue + ";" +
-						sUnitType + ";" + 
-						sWaveHeightType + ";" +
-						sWaveHeightValue + ";" +
-						sWaveHeightTimeSeries + ";" +
-						sWaveDirectionType + ";" +
-						sWaveDirectionValue + ";" + 
-						sWaveDirectionInspire + ";" + 
-						sWaveDirectionTimeSeries + ";" +
-						sWindIntensityType + ";" + 
-						sWindIntensityValue + ";" + 
-						sWindIntensityInspire + ";" + 
-						sWindIntensityTimeSeries + ";" + 
-						sWindDirectionType + ";" + 
-						sWindDirectionValue + ";" + 
-						sWindDirectionInspire + ";" + 
-						sWindDirectionTimeSeries + ";" + 
-						sWaterLevelType + ";" + 
-						sWaterLevelValue + ";" + 
-						sWaterLevelInspire + ";" + 
-						sWaterLevelTimeSeries + ";" + 
-						sPeakWaterDischarge + ";" + 
-						sPeakWaterInpire + ";" + 
-						sPeakWaterTimeSeries + ";" + 
-						sFloodHeight + ";" + 
-						sFloodHeightInspire + ";" + 
-						sFloodHeightTimeSeries + ";" +
-						sReporedCasualtiesNumber + ";" + 
+			String sRecord = 
+					sCountryName + ";" +
+							sStartDate + ";" +
+							sStartHour + ";" +
+							sDescription + ";" +
+							sUnit + ";" +
+							sUnitValue + ";" +
+							sUnitType + ";" + 
+							sWaveHeightType + ";" +
+							sWaveHeightValue + ";" +
+							sWaveHeightTimeSeries + ";" +
+							sWaveDirectionType + ";" +
+							sWaveDirectionValue + ";" + 
+							sWaveDirectionInspire + ";" + 
+							sWaveDirectionTimeSeries + ";" +
+							sWindIntensityType + ";" + 
+							sWindIntensityValue + ";" + 
+							sWindIntensityInspire + ";" + 
+							sWindIntensityTimeSeries + ";" + 
+							sWindDirectionType + ";" + 
+							sWindDirectionValue + ";" + 
+							sWindDirectionInspire + ";" + 
+							sWindDirectionTimeSeries + ";" + 
+							sWaterLevelType + ";" + 
+							sWaterLevelValue + ";" + 
+							sWaterLevelInspire + ";" + 
+							sWaterLevelTimeSeries + ";" + 
+							sPeakWaterDischarge + ";" + 
+							sPeakWaterInpire + ";" + 
+							sPeakWaterTimeSeries + ";" + 
+							sFloodHeight + ";" + 
+							sFloodHeightInspire + ";" + 
+							sFloodHeightTimeSeries + ";" +
+							sCategory + ";" +
+							sSubcategory + ";" +
+							sSocioDescription + ";" +
+							sUnitMeasure + ";" +
+							sCost + ";" + 
+							sCurrency + ";" +
+							"\r\n";
+							/*sReporedCasualtiesNumber + ";" + 
 						sReporedCasualtiesDescription + ";" +
 						sReporedCasualtiesInspire + ";" + 
 						sReporedCasualtiesTimeSeries + ";" + 
@@ -898,8 +941,10 @@ public class Event {
 						sDamageToBuildingsInspire + ";" +
 						sDamageToBuildingsTimeSeries + "" +
 						sCostDetail + "" +
-						sDescriptionOfMeasure + "";
-		oList.add(sRecord);
+						sDescriptionOfMeasure + ""*/;
+			oList.add(sRecord);
+			iCount++;
+		}while(oSocioImpacts != null && iCount < oSocioImpacts.size());
 
 		InputStream oInputStream;
 		try {
@@ -939,7 +984,7 @@ public class Event {
 	public void setUserId(Integer m_iUserId) {
 		this.m_iUserId = m_iUserId;
 	} 
-	
+
 	public void setEntity(EventViewModel oViewModel) throws ParseException
 	{
 		this.setCountryId(oViewModel.getCountryId());
@@ -975,7 +1020,7 @@ public class Event {
 		this.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
 		this.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
 		this.setUserId(oViewModel.getUserId());
-		
+
 		this.setWaveHeightInspire(oViewModel.getWaveHeightInspire());
 		this.setWaveHeightTimeSeries(oViewModel.getWaveHeightTimeSeries());
 		this.setWaveDirectionInspire(oViewModel.getWaveDirectionInspire());
@@ -994,12 +1039,12 @@ public class Event {
 		this.setDamageToBuildingsTimeSeries(oViewModel.getDamageToBuildingsTimeSeries());
 		this.setWaterLevelInspire(oViewModel.getWaterLevelInspire());
 		this.setWaterLevelTimeSeries(oViewModel.getWaterLevelTimeSeries());
-		
+
 		this.setLat(oViewModel.getLat());
 		this.setLon(oViewModel.getLon());
-		
+
 	}
-	
+
 	public EventViewModel getViewModel(List<Country> oCountries)
 	{
 		Country oCountry = new Country();
@@ -1011,7 +1056,7 @@ public class Event {
 				break;
 			}
 		}
-		
+
 		for (Country country : oCountries) {
 			if (country.getCountryCode().equals(oRegion.getCountryCode()) && country.getNutsLevel().equals("0"))
 			{
@@ -1019,7 +1064,7 @@ public class Event {
 				break;
 			}
 		}
-		
+
 		EventViewModel oViewModel = new EventViewModel();
 		oViewModel.setId(this.getId());
 		oViewModel.setCountryId(this.getCountryId());
@@ -1038,7 +1083,7 @@ public class Event {
 			String sStartHour = dateFormatter.format(this.getStartHour());
 			oViewModel.setStartHour(sStartHour);
 		}
-		
+
 		oViewModel.setDescription(this.getDescription());
 		oViewModel.setUnitHour(this.getUnitHour());
 		oViewModel.setUnitValue(this.getUnitValue());
@@ -1084,10 +1129,10 @@ public class Event {
 		oViewModel.setUserId(this.getUserId());
 		oViewModel.setLat(this.getLat());
 		oViewModel.setLon(this.getLon());
-		
+
 		return oViewModel;
 	}
-	
+
 	public void setPathRepository(String sNameProperty, String sPathRepository)
 	{
 		if (sNameProperty.equals("waveHeightInspire"))
@@ -1133,7 +1178,7 @@ public class Event {
 		if (sNameProperty.equals("damageToBuildingsTimeSeries"))
 			this.setDamageToBuildingsTimeSeries(sPathRepository);
 	}
-	
+
 	public String getPathRepository(String sNameProperty)
 	{
 		if (sNameProperty.equals("waveHeightInspire"))
@@ -1172,14 +1217,14 @@ public class Event {
 			return this.getDamageToBuildingsInspire();
 		if (sNameProperty.equals("damageToBuildingsTimeSeries"))
 			return this.getDamageToBuildingsTimeSeries();
-		
+
 		return null;
 	}
-	
+
 	public ArrayList<String> getPathRepository()
 	{
 		ArrayList<String> oList = new ArrayList<String>();
-		
+
 		if (this.getWaveHeightInspire() != null)
 			oList.add(this.getWaveHeightInspire());
 		if (this.getWaveHeightTimeSeries() != null)
@@ -1216,7 +1261,7 @@ public class Event {
 			oList.add(this.getDamageToBuildingsInspire());
 		if (this.getDamageToBuildingsTimeSeries() != null)
 			oList.add(this.getDamageToBuildingsTimeSeries());
-		
+
 		return oList;
 	}
 

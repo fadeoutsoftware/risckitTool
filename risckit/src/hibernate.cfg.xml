@@ -29,5 +29,7 @@
 		<mapping class="it.fadeout.risckit.business.EventsByCountries" />
 		<mapping class="it.fadeout.risckit.business.Category" />
 		<mapping class="it.fadeout.risckit.business.SubCategory" />
+		<mapping class="it.fadeout.risckit.business.SocioImpact" />
+		<mapping class="it.fadeout.risckit.business.Currency" />
 	</session-factory>
 </hibernate-configuration>

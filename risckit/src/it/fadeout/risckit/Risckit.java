@@ -18,6 +18,8 @@ public class Risckit extends Application{
         classes.add(EventResource.class);
         classes.add(MediaResource.class);
         classes.add(UserResource.class);
+        classes.add(SocioImpactResource.class);
+        classes.add(CategoryResource.class);
         return classes;
 	}
 }

@@ -21,12 +21,14 @@ import it.fadeout.risckit.business.EventsByCountries;
 import it.fadeout.risckit.business.Gis;
 import it.fadeout.risckit.business.Media;
 import it.fadeout.risckit.business.SVNUtils;
+import it.fadeout.risckit.business.SocioImpact;
 import it.fadeout.risckit.business.User;
 import it.fadeout.risckit.data.CountryRepository;
 import it.fadeout.risckit.data.EventRepository;
 import it.fadeout.risckit.data.GisRepository;
 import it.fadeout.risckit.data.MediaRepository;
 import it.fadeout.risckit.data.Repository;
+import it.fadeout.risckit.data.SocioImpactRepository;
 import it.fadeout.risckit.data.UserRepository;
 import it.fadeout.risckit.viewmodels.CountryViewModel;
 import it.fadeout.risckit.viewmodels.EventByCountryViewModel;
@@ -34,6 +36,7 @@ import it.fadeout.risckit.viewmodels.EventByRegionViewModel;
 import it.fadeout.risckit.viewmodels.EventViewModel;
 import it.fadeout.risckit.viewmodels.GisViewModel;
 import it.fadeout.risckit.viewmodels.MediaViewModel;
+import it.fadeout.risckit.viewmodels.SocioImpactViewModel;
 
 import javax.servlet.ServletConfig;
 import javax.ws.rs.Consumes;
@@ -89,8 +92,11 @@ public class EventResource {
 					//Load Country
 					CountryRepository oRepoCountry = new CountryRepository();
 					oEvent.setCountry(oRepoCountry.Select(oEvent.getCountryId(), Country.class));
-					//csv
-
+					
+					//socio impacts
+					SocioImpactRepository oSocioRepo = new SocioImpactRepository();
+					List<SocioImpact> oSocioImpacts = oSocioRepo.SelectByEvent(oEvent.getId());
+					
 					String sLocation = oViewModel.getCountryCode() + "_" + oViewModel.getRegionName();
 
 					DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -98,10 +104,11 @@ public class EventResource {
 
 					SVNUtils oSvnUtils = new SVNUtils();
 					String sDirPath = oViewModel.getLogin() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
+					
 					//csv
 					try
 					{
-						oSvnUtils.Commit(oEvent.GetCsvInputStream(), 
+						oSvnUtils.Commit(oEvent.GetCsvInputStream(oSocioImpacts), 
 								oViewModel.getLogin(),
 								servletConfig.getInitParameter("SvnUser"), 
 								servletConfig.getInitParameter("SvnPwd"), 
@@ -226,9 +233,13 @@ public class EventResource {
 	@Produces({"application/json", "application/xml", "text/xml"})
 	public List<EventViewModel> getEventListMap(@PathParam("countryid") Integer iCountryId) {
 
+
+
 		List<EventViewModel> oReturnList = null;
 		EventRepository oRepo = new EventRepository();
 		MediaRepository oMediaRepo = new MediaRepository();
+		GisRepository oGisRepo = new GisRepository();
+		SocioImpactRepository oSocioRepo = new SocioImpactRepository();
 		List<Event> oEvents = oRepo.SelectByRegion(iCountryId);
 
 		CountryRepository oCountryRepo = new CountryRepository();
@@ -236,25 +247,51 @@ public class EventResource {
 
 		if (oEvents != null)
 		{
-			oReturnList = new ArrayList<EventViewModel>();
-			for (Event event : oEvents) {
-				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
-				List<Media> oMediaList = oMediaRepo.SelectByEvent(event.getId());
-				if (oMediaList != null)
-				{
-					for (Media media : oMediaList) {
-						if (oEventViewModel.getMedia() == null)
-							oEventViewModel.setMedia(new ArrayList<MediaViewModel>());
-						oEventViewModel.getMedia().add(media.getViewModel());
+			try
+			{
+				oReturnList = new ArrayList<EventViewModel>();
+				for (Event event : oEvents) {
+					EventViewModel oEventViewModel =  event.getViewModel(oCountries);
+					List<Media> oMediaList = oMediaRepo.SelectByEvent(event.getId());
+					if (oMediaList != null)
+					{
+						for (Media media : oMediaList) {
+							if (oEventViewModel.getMedia() == null)
+								oEventViewModel.setMedia(new ArrayList<MediaViewModel>());
+							oEventViewModel.getMedia().add(media.getViewModel());
+						}
 					}
+
+					Gis oGis = oGisRepo.SelectByEvent(event.getId());
+					if (oGis != null)
+					{
+						if (oEventViewModel.getGis() == null)
+							oEventViewModel.setGis(new GisViewModel());
+						oEventViewModel.setGis(oGis.getViewModel());
+					}
+					List<SocioImpact> oImpacts = oSocioRepo.SelectByEvent(event.getId());
+					if (oImpacts != null)
+					{
+						for (SocioImpact socioImpact : oImpacts) {
+							if (oEventViewModel.getSocioimpacts() == null)
+								oEventViewModel.setSocioimpacts(new ArrayList<SocioImpactViewModel>());
+							oEventViewModel.getSocioimpacts().add(socioImpact.GetViewModel());
+						}
+					}
+					oReturnList.add(oEventViewModel);
 				}
-				oReturnList.add(oEventViewModel);
+			}
+			finally
+			{
+				
 			}
 		}
 
+
+
 		return oReturnList;
 	}
-	
+
 	@GET
 	@Path("/bycountry/{countrycode}")
 	@Produces({"application/json", "application/xml", "text/xml"})
@@ -264,9 +301,9 @@ public class EventResource {
 		EventRepository oRepo = new EventRepository();
 		List<Event> oEvents = oRepo.SelectByCountries(sCountryCode);
 		CountryRepository oCountryRepo = new CountryRepository();
-		
+
 		HashMap<Integer, EventByRegionViewModel> oMap = new HashMap<Integer, EventByRegionViewModel>();
-		
+
 		if (oEvents != null)
 		{
 			oReturnList = new ArrayList<EventByRegionViewModel>();
@@ -294,9 +331,9 @@ public class EventResource {
 					}
 					oMap.get(event.getCountryId()).setEventsCount(oMap.get(event.getCountryId()).getEventsCount()+1);
 				}
-				
+
 			}
-			
+
 			for (Integer key : oMap.keySet()) {
 				oReturnList.add(oMap.get(key));
 			}
@@ -304,8 +341,8 @@ public class EventResource {
 
 		return oReturnList;
 	}
-	
-	
+
+
 	@GET
 	@Path("/groupevent")
 	@Produces({"application/json", "application/xml", "text/xml"})
@@ -422,7 +459,7 @@ public class EventResource {
 				}
 				catch(SVNException oEx)
 				{
-					
+
 				}
 			}
 
