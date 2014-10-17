@@ -199,3 +199,15 @@ hr{
 .selected-menu-item {
     font-weight: bold;
 }
+
+.searchclear {
+    position:absolute;
+    right:-6px;
+    bottom:0;
+    height:1em;
+    margin:auto;
+    font-size:20px;
+    cursor:pointer;
+    color: #e82945;
+}
+.searchclear:hover {color: #7fbbda; }

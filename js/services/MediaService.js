@@ -3,8 +3,8 @@
  */
 angular.module('risckit.mediaService', []).
     service('MediaService',  ['$http', '$upload', function ($http) {
-        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        this.APIURL = 'http://localhost:8080/risckit/rest';
+        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        //this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
         this.m_bModified = false;
 
@@ -29,6 +29,12 @@ angular.module('risckit.mediaService', []).
         this.DownloadMedia = function (idMedia) {
 
             return this.APIURL + '/media/download/' + idMedia;
+
+        };
+
+        this.PreviewMedia = function (idMedia) {
+
+            return this.m_oHttp({method: 'GET', url: this.APIURL + '/media/preview/' + idMedia});
 
         };
 

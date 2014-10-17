@@ -12,6 +12,14 @@ var EventsListController = (function() {
         this.m_oSharedService = oSharedService;
         this.m_oLoginService = oLoginService;
         this.m_oEventList = [];
+        this.countryCode;
+        this.regionName;
+
+        this.m_bShowClearFilterYear = false;
+        this.m_bShowClearFilterMonth = false;
+        this.m_bShowClearFilterDay = false;
+        this.m_bShowClearFilterCountry = false;
+        this.m_bShowClearFilterRegion = false;
 
         //------pagination------
         this.itemsPerPage = 5;
@@ -21,10 +29,27 @@ var EventsListController = (function() {
             this.m_oScope.m_oController.m_oEventService.LoadEvents(this.m_oLoginService.getUserId()).success(function(data){
                 $scope.m_oController.m_oEventList = data;
             });
+
+        //Carico i country
+        this.m_oEventService.LoadCountries();
+
     };
 
     EventsListController.prototype.getEvents = function () {
         return this.m_oEventList;
+
+    };
+
+    EventsListController.prototype.LoadRegion = function () {
+        //load regions
+        var oScope = this.m_oScope;
+        this.m_bShowClearFilterCountry = true;
+        if (oScope.search.countryCode != null || oScope.search.countryCode != "") {
+            oScope.m_oController.m_oEventService.GetAllRegions(oScope.search.countryCode).success(function (data, status) {
+                oScope.m_oController.m_oRegions = data;
+
+            });
+        }
 
     };
 
@@ -125,6 +150,65 @@ var EventsListController = (function() {
 
     };
 
+    EventsListController.prototype.GetCountries = function() {
+        return this.m_oEventService.GetCountries();
+
+    };
+
+    EventsListController.prototype.clearFilterCountry = function() {
+        this.m_bShowClearFilterCountry = false;
+        this.m_oScope.search.countryCode = "";
+
+    };
+
+    EventsListController.prototype.clearFilterRegion = function() {
+        this.m_bShowClearFilterRegion = false;
+        this.m_oScope.search.regionName = "";
+
+    };
+
+    EventsListController.prototype.clearFilterYear = function() {
+        this.m_bShowClearFilterYear = false;
+        this.m_oScope.search.year = null;
+
+    };
+
+    EventsListController.prototype.clearFilterMonth = function() {
+        this.m_bShowClearFilterMonth = false;
+        this.m_oScope.search.month = null;
+
+    };
+
+    EventsListController.prototype.clearFilterDay = function() {
+        this.m_bShowClearFilterDay = false;
+        this.m_oScope.search.day = null;
+
+    };
+
+
+    EventsListController.prototype.SelectRegion = function() {
+        this.m_bShowClearFilterRegion = true;
+
+
+    };
+
+    EventsListController.prototype.YearChange = function() {
+        this.m_bShowClearFilterYear = true;
+
+
+    };
+
+    EventsListController.prototype.MonthChange = function() {
+        this.m_bShowClearFilterMonth = true;
+
+
+    };
+
+    EventsListController.prototype.DayChange = function() {
+        this.m_bShowClearFilterDay = true;
+
+
+    };
 
         EventsListController.$inject = [
         '$scope',

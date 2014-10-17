@@ -3,8 +3,8 @@
  */
 angular.module('risckit.eventService', []).
     service('EventService',  ['$http', '$upload', function ($http, $upload) {
-        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        this.APIURL = 'http://localhost:8080/risckit/rest';
+        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        //this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
         this.m_oCountries = null;
         this.m_oCategories = null;
@@ -84,7 +84,15 @@ angular.module('risckit.eventService', []).
               return this.m_oHttp.post(this.APIURL + '/events/save', Event);
         };
 
+        this.CreatePdf = function (html) {
+            var oObject = {html: html};
+            return this.m_oHttp.post(this.APIURL + '/events/pdf', oObject);
+        };
 
+        this.CreatePdf2 = function (idEvent) {
+
+            return this.APIURL + '/events/pdf/' + idEvent;
+        };
 
 
         this.isModified = function () {
@@ -151,7 +159,7 @@ angular.module('risckit.eventService', []).
         };
 
         this.GetWaveHeightTypeByIndex = function(index) {
-            return this.m_aGetWaveHeightType[index];
+            return this.m_aGetWaveHeightType[index - 1];
 
         };
 
@@ -162,7 +170,7 @@ angular.module('risckit.eventService', []).
         };
 
         this.GetWaveDiectionTypeByIndex = function(index) {
-            return this.m_aGetWaveDiectionType[index];
+            return this.m_aGetWaveDiectionType[index - 1];
 
         };
 
@@ -172,7 +180,7 @@ angular.module('risckit.eventService', []).
         };
 
         this.GetWindDiectionTypeByIndex = function(index) {
-            return this.m_aGetWindDiectionType[index];
+            return this.m_aGetWindDiectionType[index - 1];
 
         };
 
@@ -182,7 +190,7 @@ angular.module('risckit.eventService', []).
         };
 
         this.GetWaterLevelTypeByIndex = function(index) {
-            return this.m_aGetWaterLevelType[index];
+            return this.m_aGetWaterLevelType[index - 1];
 
         };
 
@@ -192,7 +200,7 @@ angular.module('risckit.eventService', []).
         };
 
         this.GetWindIntensityTypeByIndex = function(index) {
-            return this.m_aGetWindIntensityType[index];
+            return this.m_aGetWindIntensityType[index - 1];
 
         };
 
@@ -202,7 +210,7 @@ angular.module('risckit.eventService', []).
         };
 
         this.GetCostDetailsByIndex = function(index) {
-            return this.m_aGetCostDetails[index];
+            return this.m_aGetCostDetails[index - 1];
 
         };
 

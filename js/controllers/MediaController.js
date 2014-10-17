@@ -188,6 +188,8 @@ var MediaController = (function() {
         if (this.m_oScope.m_oController.NewMedia != null) {
             this.m_oScope.m_oController.NewMedia.description = this.m_oScope.m_oController.description;
             this.m_oScope.m_oController.NewMedia.date = this.m_oScope.m_oController.date;
+            this.m_oScope.m_oController.NewMedia.lat = this.m_oScope.m_oController.m_oPositionMark.lat();
+            this.m_oScope.m_oController.NewMedia.lon = this.m_oScope.m_oController.m_oPositionMark.lng();
         }
 
         var oController = this.m_oScope.m_oController;

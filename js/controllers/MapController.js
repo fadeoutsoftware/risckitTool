@@ -5,7 +5,7 @@ var MapController = (function() {
 
 
 
-    function MapController($scope, $location, oEventService, oLigingService, oMediaService, oSanitize) {
+    function MapController($scope, $location, oEventService, oLigingService, oMediaService, oSanitize, oModal) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
@@ -19,6 +19,7 @@ var MapController = (function() {
         this.eventMarkers = [];
         this.m_iSelectedEventId;
         this.m_oMap;
+        this.m_oModal = oModal;
 
         var infowindow = new google.maps.InfoWindow({maxWidth: 300});
 
@@ -139,6 +140,7 @@ var MapController = (function() {
                     $scope.m_oController.EventHtml = '';
                     $scope.m_oController.m_iSelectedEventId = null;
                     $scope.m_oController.m_oEventList = data;
+                    $scope.m_oController.clearMediaMarkers();
                 });
             });
         }
@@ -190,17 +192,47 @@ var MapController = (function() {
             }
             return bRet;
         }
+
     }
 
     MapController.prototype.DownloadMedia = function (mediaMarker, media)
     {
         var localMedia = media;
         var oScope = this.m_oScope;
+        var oModal = this.m_oModal;
         google.maps.event.addListener(mediaMarker, 'click', function () {
 
-            var a = document.createElement('a');
-            a.href = oScope.m_oController.m_oMediaService.DownloadMedia(localMedia.id);
-            a.click();
+            oScope.m_oController.m_oMediaService.PreviewMedia(localMedia.id).success(function(data){
+                if (data != null && data != "") {
+
+                    var templ = "<div class='modal-body'>" +
+                        "<img src= 'img/thumb/temp/" + data + "'>" +
+                        "</div>" +
+                        "<div class='modal-footer'>" +
+                        "<button class='col-xs-2 btn btn-warning' ng-click='m_oController.close()'>Close</button>" +
+                        "<a ng-href='img/thumb/temp/" + data + "' download>" +
+                        "<button class='col-lg-offset-1 col-xs-2 btn btn-primary'>Download</button>" +
+                        "</a>" +
+                        "</div>";
+
+                    //preview se è un'immagine
+                    var modalInstance = oModal.open({
+                        template: templ,
+                        controller: 'PreviewController',
+                        size: 'lg'
+                    });
+
+                }
+                else
+                {
+                    //download per tutti gli altri files
+                    var a = document.createElement('a');
+                    a.href = oScope.m_oController.m_oMediaService.DownloadMedia(localMedia.id);
+                    a.click();
+                }
+            });
+
+
 
         });
     };
@@ -221,157 +253,157 @@ var MapController = (function() {
 
         oScope.m_oController.mediaMarkers = [];
         return bRet;
-    }
+    };
 
 
     MapController.prototype.EventToHtml = function(event){
 
         var oScope = this.m_oScope;
 
-        var row = '<hr align="center" size="1">';
-        var html = '<b>Country: </b>' + event.countryCode + '<BR>'+
-            '<b>Region: </b>' + event.regionName + '<BR>'+
-            '<b>Start Date: </b>' + event.startDate + '<BR>';
+        var row = '<hr align="center" size="1"><hr/>';
+        var html = '<b>Country: </b><body>' + event.countryCode + '</body><br/>'+
+            '<b>Region: </b><body>' + event.regionName + '</body><br/>'+
+            '<b>Start Date: </b><body>' + event.startDate + '</body><br/>';
 
         html = html + '<b>Start Hour: </b>';
         if (event.startHour != null)
-            html = html + event.startHour;
-        html = html + '<BR>';
+            html = html + '<body>' + event.startHour + '</body>';
+        html = html + '<br/>';
 
-        html = html + '<b>Description: </b>' + event.description + '<BR>';
+        html = html + '<b>Description: </b><body>' + event.description + '</body><br/>';
         html = html + row;
 
-        html = html + '<u><b>Duration</b></u><BR>';
+        html = html + '<h4><b>Duration</b></h4><br/>';
 
         html = html + '<b>Unit: </b>';
         if (event.unitHour == true)
-            html = html + 'Hours';
+            html = html + '<body>Hours</body>';
         else if (event.unitHour == false)
-            html = html + 'Days';
-        html = html + '<BR>';
+            html = html + '<body>Days<body>';
+        html = html + '<br/>';
 
         html = html + '<b>Value: </b>';
         if (event.unitValue != null)
-            html = html + event.unitValue;
-        html = html + '<BR>';
+            html = html + '<body>' + event.unitValue + '</body>';
+        html = html + '<br/>';
 
         html = html + '<b>Type: </b>';
         if (event.unitApproximated == true)
-            html = html + 'Approximate';
+            html = html + '<body>Approximate</body>';
         else if (event.unitHour == false)
-            html = html + 'Exact';
-        html = html + '<BR>';
+            html = html + '<body>Exact</body>';
+        html = html + '<br/>';
         html = html + row;
 
 
-        html = html + '<u><b>Wave Height</b></u><BR>';
+        html = html + '<h4><b>Wave Height</b></h4><br/>';
         html = html + '<b>Type: </b>';
         if (event.waveHeightType != null && event.waveHeightType > 0)
-            html = html + oScope.m_oController.m_oEventService.GetWaveHeightTypeByIndex(event.waveHeightType).name;
-        html = html + '<BR>';
+            html = html + '<body>' + oScope.m_oController.m_oEventService.GetWaveHeightTypeByIndex(event.waveHeightType).name + '</body>';
+        html = html + '<br/>';
         html = html + '<b>Value: </b>';
         if (event.waveHeightValue != null)
-            html = html + event.waveHeightValue;
-        html = html + '<BR>';
+            html = html + '<body>' +  event.waveHeightValue + '</body>';
+        html = html + '<br/>';
         html = html + row;
 
-        html = html + '<u><b>Wave Direction</b></u><BR>';
+        html = html + '<h4><b>Wave Direction</b></h4><br/>';
         if (event.waveDirectionType == null || event.waveDirectionType == 0)
         {
-            html = html + '<b>Type: </b><BR>';
-            html = html + '<b>Value: </b><BR>';
+            html = html + '<b>Type: </b><br/>';
+            html = html + '<b>Value: </b><br/>';
         }
         else {
-            html = html + '<b>Type: </b>' + oScope.m_oController.m_oEventService.GetWaveDiectionTypeByIndex(event.waveDirectionType).name + '<BR>';
+            html = html + '<b>Type: </b>' + '<body>' + oScope.m_oController.m_oEventService.GetWaveDiectionTypeByIndex(event.waveDirectionType).name + '</body><br/>';
             if (event.waveDirectionType == 1)
-                html = html + '<b>Value: </b>'+ event.waveDirectionDegree + '<BR>';
+                html = html + '<b>Value: </b><body>'+ event.waveDirectionDegree + '</body><br/>';
             else
-                html = html + '<b>Value: </b>'+ event.waveDirectionClustered + '<BR>';
+                html = html + '<b>Value: </b><body>'+ event.waveDirectionClustered + '</body><br/>';
         }
         html = html + row;
 
-        html = html + '<u><b>Wind Intensity</b></u><BR>';
+        html = html + '<h4><b>Wind Intensity</b></h4><br/>';
         html = html + '<b>Type: </b>';
-        if (event.windIntensityType != null)
-            html = html + oScope.m_oController.m_oEventService.GetWindIntensityTypeByIndex(event.windIntensityType).name;
-        html = html + '<BR>';
+        if (event.windIntensityType != null && event.windIntensityType > 0)
+            html = html + '<body>' + oScope.m_oController.m_oEventService.GetWindIntensityTypeByIndex(event.windIntensityType).name + '</body>';
+        html = html + '<br/>';
 
         html = html + '<b>Value: </b>';
         if (event.windIntensityValue != null)
-            html = html + event.windIntensityValue;
-        html = html + '<BR>';
+            html = html + '<body>' + event.windIntensityValue + '</body>';
+        html = html + '<br/>';
         html = html + row;
 
-        html = html + '<u><b>Wind Direction</b></u><BR>';
+        html = html + '<h4><b>Wind Direction</b></h4><br/>';
         if (event.windDirectionType == null || event.windDirectionType == 0)
         {
-            html = html + '<b>Type: </b><BR>';
-            html = html + '<b>Value: </b><BR>';
+            html = html + '<b>Type: </b><br/>';
+            html = html + '<b>Value: </b><br/>';
         }
         else {
-            html = html + '<b>Type: </b>' + oScope.m_oController.m_oEventService.GetWindDiectionTypeByIndex(event.windDirectionType).name + '<BR>';
+            html = html + '<b>Type: </b><body>' + oScope.m_oController.m_oEventService.GetWindDiectionTypeByIndex(event.windDirectionType).name + '<body><br/>';
             if (event.windDirectionType == 1)
-                html = html + '<b>Value: </b>'+ event.windDirectionDegree + '<BR>';
+                html = html + '<b>Value: </b><body>'+ event.windDirectionDegree + '</body><br/>';
             else
-                html = html + '<b>Value: </b>'+ event.windDirectionClustered + '<BR>';
+                html = html + '<b>Value: </b><body>'+ event.windDirectionClustered + '</body><br/>';
         }
         html = html + row;
 
 
-        html = html + '<u><b>Water Level</b></u><BR>';
+        html = html + '<h4><b>Water Level</b></h4><br/>';
         html = html + '<b>Type: </b>';
         if (event.waterLevelType != null && event.waterLevelType > 0)
-            html = html + oScope.m_oController.m_oEventService.GetWaterLevelTypeByIndex(event.waterLevelType).name;
-        html = html + '<BR>';
+            html = html + '<body>' + oScope.m_oController.m_oEventService.GetWaterLevelTypeByIndex(event.waterLevelType).name + '</body>';
+        html = html + '<br/>';
         html = html + '<b>Value: </b>';
         if (event.waterLevelValue != null)
-            html = html + event.waterLevelValue;
-        html = html + '<BR>';
+            html = html + '<body>' + event.waterLevelValue + '</body>';
+        html = html + '<br/>';
         html = html + row;
 
-        html = html + '<u><b>River Flooding</b></u><BR>';
+        html = html + '<h4><b>River Flooding</b></h4><br/>';
         html = html + '<b>Peak Water discharge: </b>';
         if (event.peakWaterDischarge != null)
-            html = html + event.peakWaterDischarge;
-        html = html + '<BR>';
+            html = html + '<body>' + event.peakWaterDischarge + '</body>';
+        html = html + '<br/>';
         html = html + '<b>Flood Height: </b>';
         if (event.floodHeight != null)
-            html = html + event.floodHeight;
-        html = html + '<BR>';
+            html = html + '<body>' + event.floodHeight + '</body>';
+        html = html + '<br/>';
         html = html + row;
 
         //socio impacts
-        html = html + '<u><b>Socio Impacts</b></u><BR>';
+        html = html + '<h4><b>Impacts</b></h4><br/>';
         if (event.socioimpacts != null)
         {
             for (var iCount = 0; iCount < event.socioimpacts.length; iCount++) {
                 html = html + '<b>Category: </b>';
-                html = html + event.socioimpacts[iCount].category + '<BR>';
+                html = html + '<body>' + event.socioimpacts[iCount].category + '</body><br/>';
                 html = html + '<b>Subcategory: </b>';
-                html = html + event.socioimpacts[iCount].subcategory + '<BR>';
+                html = html + '<body>' + event.socioimpacts[iCount].subcategory + '</body><br/>';
                 html = html + '<b>Description: </b>';
-                html = html + event.socioimpacts[iCount].description + '<BR>';
+                html = html + '<body>' + event.socioimpacts[iCount].description + '</body><br/>';
                 html = html + '<b>Unit of measure: </b>';
-                html = html + event.socioimpacts[iCount].unitMeasure + '<BR>';
+                html = html + '<body>' + event.socioimpacts[iCount].unitMeasure + '</body><br/>';
                 html = html + '<b>Cost: </b>';
-                html = html + event.socioimpacts[iCount].cost + '<BR>';
+                html = html + '<body>' + event.socioimpacts[iCount].cost + '</body><br/>';
             }
         }
         html = html + row;
 
         //media
-        html = html + '<u><b>Media</b></u><BR>';
+        html = html + '<h4><b>Media</b></h4><br/>';
         if (event.media != null) {
             for (var iCount = 0; iCount < event.media.length; iCount++) {
-                html = html + '<b>' + event.media[iCount].shortDownloadPath + '</b><BR>';
+                html = html + '<b><body>' + event.media[iCount].shortDownloadPath + '</body></b><br/>';
             }
         }
         html = html + row;
         //gis
-        html = html + '<u><b>Gis</b></u><BR>';
+        html = html + '<h4><b>Gis</b></h4><br/>';
         if (event.gis != null){
-            html = html + '<b>' + event.gis.shortGisFile + '</b><BR>';
-            html = html + '<b>' + event.gis.shortInspireFile + '</b><BR>';
+            html = html + '<b><body>' + event.gis.shortGisFile + '</body></b><br/>';
+            html = html + '<b><body>' + event.gis.shortInspireFile + '</body></b><br/>';
         }
         html = html + row;
 
@@ -391,12 +423,15 @@ var MapController = (function() {
         if (!this.clearMediaMarkers() && this.m_iSelectedEventId == event.id) {
             this.m_iSelectedEventId = null;
             this.EventHtml = '';
+            this.m_oPdfLink = '';
             return;
         }
 
         this.m_iSelectedEventId = event.id;
 
         this.EventToHtml(event);
+
+        //this.createPdf();
 
         if (event != null) {
 
@@ -432,13 +467,27 @@ var MapController = (function() {
     };
 
 
+    MapController.prototype.createPdf = function() {
+        var oScope = this.m_oScope;
+        /*
+        oScope.m_oController.m_oEventService.CreatePdf(oScope.m_oController.EventHtml).success(function (data) {
+            window.open("pdf/" + data, 'pdf');
+        });
+        */
+
+        return oScope.m_oController.m_oEventService.CreatePdf2(oScope.m_oController.m_iSelectedEventId);
+
+    };
+
+
     MapController.$inject = [
         '$scope',
         '$location',
         'EventService',
         'LoginService',
         'MediaService',
-        '$sanitize'
+        '$sanitize',
+        '$modal'
 
     ];
 

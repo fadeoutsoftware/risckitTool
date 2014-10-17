@@ -627,10 +627,17 @@ var EventController = (function() {
                     }
 
                     //Geocoding
-                    var oCountry = oScope.m_oController.m_oEventService.GetRegion(oScope.m_oController.m_oEvent.countryId);
-                    if (oCountry != null) {
+                    var oCountry = '';
+                    var oCountries = oScope.m_oController.GetCountries();
+                    for(var iCount = 0; iCount < oCountries.length; iCount++)
+                    {
+                        if (oScope.m_oController.m_oEvent.countryCode == oCountries[iCount].countryCode)
+                            oCountry = oCountries[iCount].countryname;
+                    }
+                    var oRegion = oScope.m_oController.m_oEventService.GetRegion(oScope.m_oController.m_oEvent.countryId);
+                    if (oRegion != null) {
                         var geocoder = new google.maps.Geocoder();
-                        geocoder.geocode({ 'address': oCountry.countryname }, function (results, status) {
+                        geocoder.geocode({ 'address': oCountry + ' ' + oRegion.countryname }, function (results, status) {
                             if (status == google.maps.GeocoderStatus.OK) {
                                 oScope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
                                 oScope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
