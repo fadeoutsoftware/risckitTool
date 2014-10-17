@@ -58,7 +58,7 @@
 		</init-param>
 		<init-param>
 			<param-name>ProjectPath</param-name>
-			<param-value>C:/Codice/risckitTool.git/trunk/img/thumb/</param-value>
+			<param-value>C:/Codice/risckitTool.git/trunk/</param-value>
 		</init-param>
 		
 		<load-on-startup>1</load-on-startup>
