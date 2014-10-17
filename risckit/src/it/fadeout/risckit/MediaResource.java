@@ -56,7 +56,7 @@ public class MediaResource {
 
 	@Context
 	ServletConfig servletConfig;
-	
+
 	@Context 
 	ServletContext serveletContext;
 
@@ -110,7 +110,7 @@ public class MediaResource {
 			byte[] buffer = new byte[1024];
 			int len;
 			while ((len = file.read(buffer)) > -1 ) {
-			    baos.write(buffer, 0, len);
+				baos.write(buffer, 0, len);
 			}
 			baos.flush();
 
@@ -118,14 +118,14 @@ public class MediaResource {
 			// Can be repeated as many times as you wish
 			InputStream isImage = new ByteArrayInputStream(baos.toByteArray()); 
 			InputStream isOpenEarth = new ByteArrayInputStream(baos.toByteArray()); 
-			
-			
+
+
 			MediaViewModel oReturnViewModel = null;
 			MediaRepository oRepo = new MediaRepository();
 			Media oMedia = oRepo.Select(iMediaId, Media.class);
 			String sLocation = sCountryCode + "_" + sRegionName;
 			//Thumb
-			String sProjectPath = servletConfig.getInitParameter("ProjectPath");
+			String sProjectPath = servletConfig.getInitParameter("ProjectPath") + "img/thumb/";
 			String mimeType = serveletContext.getMimeType(fileDetail.getFileName());
 			if (mimeType.startsWith("image"))
 			{
@@ -136,12 +136,12 @@ public class MediaResource {
 					oMedia.setThumbnail(sThumbPath);
 				}
 			}
-			
+
 			SVNUtils oSvnUtils = new SVNUtils();
 			String sDirPath = sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 			boolean bError = false;
 			try{
-				
+
 				oSvnUtils.Commit(isOpenEarth,
 						sUserLogin,
 						servletConfig.getInitParameter("SvnUser"), 
@@ -247,9 +247,18 @@ public class MediaResource {
 								sStartDate,
 								sLocation);
 					}
+
 				}
 			}
 
+		}
+		catch(Exception oEx)
+		{
+			oEx.printStackTrace();
+
+		}
+		finally
+		{
 			List<Media> oMediaList = oRepo.SelectByEvent(iIdEvent);
 			if (oMediaList != null)
 			{
@@ -258,11 +267,6 @@ public class MediaResource {
 					oReturnList.add(oItem.getViewModel());
 				}
 			}
-		}
-		catch(Exception oEx)
-		{
-			oEx.printStackTrace();
-
 		}
 
 		return oReturnList;
@@ -288,13 +292,12 @@ public class MediaResource {
 
 		String sRepoFile = oMedia.getFile();
 		String[] sSplitString = sRepoFile.split("/");
-		final String sTemp = sSplitString[sSplitString.length - 1];;
+		final String sTemp = sSplitString[sSplitString.length - 1];
 
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
 		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
 		OutputStream oOut = new FileOutputStream(oFile);
-
 
 		try
 		{
@@ -319,5 +322,59 @@ public class MediaResource {
 		return response.build();
 
 	}
+
+	@GET
+	@Path("/preview/{idMedia}")
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public String getFilePreview(@PathParam("idMedia") int iIdMedia ) throws Exception {
+
+		MediaRepository oMediaRepository = new MediaRepository();
+		Media oMedia = oMediaRepository.Select(iIdMedia, Media.class); 
+
+		EventRepository oEventRepo = new EventRepository();
+		Event oEvent =  oEventRepo.Select(oMedia.getEventId(), Event.class);
+
+		UserRepository oUserRepo = new UserRepository();
+		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
+
+		String sRepoFile = oMedia.getFile();
+		String[] sSplitString = sRepoFile.split("/");
+		final String sTemp = sSplitString[sSplitString.length - 1];
+
+		SVNUtils oSvnUtils = new SVNUtils();
+		File oFile = new File(servletConfig.getInitParameter("ProjectPath") + "img/thumb/temp/" + sTemp);
+
+		if (!oFile.exists())
+		{
+			OutputStream oOut = new FileOutputStream(oFile);
+			try
+			{
+				oSvnUtils.GetFile(
+						oUser.getUserName(),
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						oMedia.getFile(), 
+						servletConfig.getInitParameter("SvnRepository"),
+						oOut);
+			}
+			catch (SVNException oEx)
+			{
+				return null;
+			}
+		}
+
+		//Ritorno il path solo se è un'immagine
+		String mimeType = serveletContext.getMimeType(oFile.getName());
+		if (mimeType.startsWith("image"))
+		{
+			return sTemp;
+		}
+
+		return null;
+
+	}
+
 
 }

@@ -17,7 +17,7 @@ public class CurrencyResource {
 	@GET
 	@Path("/")
 	@Produces({"application/json"})
-	public ArrayList<CurrencyViewModel> getCategories() {
+	public ArrayList<CurrencyViewModel> getCurrencies() {
 
 		ArrayList<CurrencyViewModel> oReturnValue = null;
 		Repository<Currency> oRepo = new Repository<Currency>();

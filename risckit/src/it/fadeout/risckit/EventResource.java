@@ -14,12 +14,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.Event;
 import it.fadeout.risckit.business.EventsByCountries;
 import it.fadeout.risckit.business.Gis;
 import it.fadeout.risckit.business.Media;
+import it.fadeout.risckit.business.PdfCreator;
 import it.fadeout.risckit.business.SVNUtils;
 import it.fadeout.risckit.business.SocioImpact;
 import it.fadeout.risckit.business.User;
@@ -35,10 +37,12 @@ import it.fadeout.risckit.viewmodels.EventByCountryViewModel;
 import it.fadeout.risckit.viewmodels.EventByRegionViewModel;
 import it.fadeout.risckit.viewmodels.EventViewModel;
 import it.fadeout.risckit.viewmodels.GisViewModel;
+import it.fadeout.risckit.viewmodels.HtmlViewModel;
 import it.fadeout.risckit.viewmodels.MediaViewModel;
 import it.fadeout.risckit.viewmodels.SocioImpactViewModel;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -54,12 +58,20 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.tmatesoft.svn.core.SVNException;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.html.simpleparser.HTMLWorker;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
+
 
 @Path("/events")
 public class EventResource {
 
 	@Context
 	ServletConfig servletConfig;
+	
+	@Context 
+	ServletContext serveletContext;
 
 
 	@POST
@@ -211,8 +223,9 @@ public class EventResource {
 
 		List<EventViewModel> oReturnList = null;
 		EventRepository oRepo = new EventRepository();
+		SocioImpactRepository oSocioImpactsRepo = new SocioImpactRepository();
 		List<Event> oEvents = oRepo.SelectByUser(iIdUser);
-
+		
 		CountryRepository oCountryRepo = new CountryRepository();
 		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
 
@@ -220,7 +233,12 @@ public class EventResource {
 		{
 			oReturnList = new ArrayList<EventViewModel>();
 			for (Event event : oEvents) {
+				long iCount = oSocioImpactsRepo.SelectCount(event.getId());
+				boolean bHas = false;
+				if (iCount > 0)
+					bHas = true;
 				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
+				oEventViewModel.setHasSocioImpacts(bHas);
 				oReturnList.add(oEventViewModel);
 			}
 		}
@@ -565,5 +583,76 @@ public class EventResource {
 		return 0;
 	}
 
+	@POST
+	@Path("/pdf")
+	@Consumes({"application/json"})
+	@Produces({"application/json"})
+	public String CretePdf(HtmlViewModel oHtml) {
+
+		String sFileName = UUID.randomUUID().toString() + ".pdf";
+		File oFile = new File(servletConfig.getInitParameter("ProjectPath") + "pdf/" + sFileName);
+		OutputStream oOut = null;
+		try
+		{
+			oOut = new FileOutputStream(oFile);
+			Document document = new Document();
+			PdfWriter oPdfWriter = PdfWriter.getInstance(document, oOut);
+			document.open();
+			InputStream is = new ByteArrayInputStream(oHtml.getHtml().getBytes());
+			XMLWorkerHelper.getInstance().parseXHtml(oPdfWriter, document, is);
+			document.close();
+			oOut.flush();
+			oOut.close();
+		}
+		catch (Exception oEx)
+		{
+			try {
+				oOut.flush();
+				oOut.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return null;
+			
+		}
+		
+		return sFileName;
+	}
+	
+	
+	@GET
+	@Path("/pdf/{idevent}")
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response CretePdf2(@PathParam("idevent") int iIdEvent) {
+
+		String sFileName = UUID.randomUUID().toString() + ".pdf";
+		File oFile = new File(servletConfig.getInitParameter("ProjectPath") + "pdf/" + sFileName);
+		
+		try
+		{
+			PdfCreator oPdfCreator = new PdfCreator(servletConfig.getInitParameter("ProjectPath"),
+					servletConfig.getInitParameter("SvnUser"), 
+					servletConfig.getInitParameter("SvnPwd"), 
+					servletConfig.getInitParameter("SvnUserDomain"),
+					servletConfig.getInitParameter("SvnRepository"));
+			oPdfCreator.CreatePdf(iIdEvent, oFile, serveletContext);
+			
+		}
+		catch(Exception oEx)
+		{
+		ResponseBuilder response = Response.noContent();
+		return response.build();
+		}
+	
+		ResponseBuilder response = Response.ok(oFile);
+		response.header("Content-Disposition", "attachment; filename=\""
+				+ sFileName + "\"");
+		response.header("content-type", "application/pdf");
+		response.header("Content-lenght", oFile.length());
+		return response.build();
+	}
 
 }

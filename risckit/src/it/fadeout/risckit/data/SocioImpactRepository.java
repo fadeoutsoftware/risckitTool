@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import it.fadeout.risckit.business.Currency;
@@ -93,5 +95,44 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 		
 		return oEntity;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public long SelectCount(int iIdEvent) {
+		
+		Session oSession = null;
+		
+		long iCount = 0;
+		
+		try {				
+			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
+			Criteria oCriteria = oSession.createCriteria(SocioImpact.class);
+			oCriteria = oCriteria.add(Restrictions.eq("IdEvent", iIdEvent));
+			iCount = (long)oCriteria.setProjection(Projections.rowCount()).uniqueResult();
+			oSession.getTransaction().commit();
+		}
+		catch(Throwable oEx) {
+			System.err.println(oEx.toString());
+			oEx.printStackTrace();
+			
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Throwable oEx2) {
+				System.err.println(oEx2.toString());
+				oEx2.printStackTrace();					
+			}			
+		}		
+		finally {
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
+		}
+		
+		return iCount;
+	}
+
 	
 }

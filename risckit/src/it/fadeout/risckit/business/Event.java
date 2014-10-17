@@ -654,9 +654,9 @@ public class Event {
 			String sStartDate = "";
 			String sStartHour = "";
 			String sDescription = "";
-			String sUnit = "Hour";
+			String sUnit = "";
 			String sUnitValue = "";
-			String sUnitType = "Approximate";
+			String sUnitType = "";
 			String sWaveHeightType = "";
 			String sWaveHeightValue = "";
 			String sWaveHeightInspire = "";
@@ -716,19 +716,23 @@ public class Event {
 				sDescription = String.valueOf(this.m_sDescription);
 			if (this.getUnitHour() == null || !this.getUnitHour())
 				sUnit = "Day";
+			else
+				sUnit = "Hour";
 			if (this.getUnitApproximated() == null || !this.getUnitApproximated())
 				sUnitType = "Exact";
+			else
+				sUnitType = "Approximate";
 			if(this.getUnitValue() != null)
 				sUnitValue = this.getUnitValue().toString();
 
 			if (this.getWaveHeightType() != null)
 			{
-				if (this.getWaveHeightType() == 0)
-					sWaveHeightType = "Mean significant during event";
-				else if (this.getWaveHeightType() == 1)
-					sWaveHeightType = "Peak significant";
-				else
-					sWaveHeightType = "Maximum";
+				if (this.getWaveHeightType() == 1)
+					sWaveHeightType = "Mean significant wave height";
+				else if (this.getWaveHeightType() == 2)
+					sWaveHeightType = "Peak significant wave height";
+				else if (this.getWaveHeightType() == 3)
+					sWaveHeightType = "Maximum wave height";
 			}
 			if (this.getWaveHeightValue() != null)
 				sWaveHeightValue = this.getWaveHeightValue().toString();
@@ -741,13 +745,13 @@ public class Event {
 
 			if (this.getWaveDirectionType() != null)
 			{
-				if (this.getWaveDirectionType() == 0)
+				if (this.getWaveDirectionType() == 1)
 				{
 					sWaveDirectionType = "Degrees from N";
 					if (this.getWaveDirectionDegree() != null)
 						sWaveDirectionValue = this.getWaveDirectionDegree().toString();
 				}
-				else
+				else if (this.getWaveDirectionType() == 2)
 				{
 					sWaveDirectionType = "Compass";
 					if (this.getWaveDirectionClustered() != null)
@@ -763,16 +767,16 @@ public class Event {
 
 			if (this.getWindIntensityType() != null)
 			{
-				if (this.getWindIntensityType() == 0)
+				if (this.getWindIntensityType() == 1)
 				{
-					sWindIntensityType = "Mean speed during event";
+					sWindIntensityType = "Mean wind speed";
 				}
-				else if (this.getWindIntensityType() == 1)
+				else if (this.getWindIntensityType() == 2)
 				{
-					sWindIntensityType = "Maximum speed";
+					sWindIntensityType = "Maximum wind speed";
 				}
-				else
-					sWindIntensityType = "Maximum gust";
+				else if (this.getWindIntensityType() == 3)
+					sWindIntensityType = "Maximum wind gust";
 			}
 
 			if (this.getWindIntensityValue() != null)
@@ -786,13 +790,13 @@ public class Event {
 
 			if (this.getWindDirectionType() != null)
 			{
-				if (this.getWindDirectionType() == 0)
+				if (this.getWindDirectionType() == 1)
 				{
 					sWindDirectionType = "Degrees from N";
 					if (this.getWindDirectionDegree() != null)
 						sWindDirectionValue = this.getWindDirectionDegree().toString();
 				}
-				else
+				else if (this.getWindDirectionType() == 2)
 				{
 					sWindDirectionType = "Compass";
 					if (this.getWaveDirectionClustered() != null)
@@ -809,13 +813,13 @@ public class Event {
 
 			if (this.getWaterLevelType() != null)
 			{
-				if (this.getWaterLevelType() == 0)
+				if (this.getWaterLevelType() == 1)
 				{
-					sWaterLevelType = "Total water level";
+					sWaterLevelType = "Maximum total water level";
 				}
-				else
+				else if (this.getWaterLevelType() == 2)
 				{
-					sWaterLevelType = "Astronomical tide";
+					sWaterLevelType = "Maximum astronomical tide";
 				}
 			}
 
@@ -1042,7 +1046,7 @@ public class Event {
 
 		this.setLat(oViewModel.getLat());
 		this.setLon(oViewModel.getLon());
-
+		
 	}
 
 	public EventViewModel getViewModel(List<Country> oCountries)
@@ -1074,8 +1078,14 @@ public class Event {
 		if (this.m_oStartDate != null)
 		{
 			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			DateFormat yearFormatter = new SimpleDateFormat("yyyy");
+			DateFormat monthFormatter = new SimpleDateFormat("MM");
+			DateFormat dayFormatter = new SimpleDateFormat("dd");
 			String sStartDate = dateFormatter.format(this.getStartDate());
 			oViewModel.setStartDate(sStartDate);
+			oViewModel.setYear(yearFormatter.format(this.getStartDate()));
+			oViewModel.setMonth(monthFormatter.format(this.getStartDate()));
+			oViewModel.setDay(dayFormatter.format(this.getStartDate()));
 		}
 		if (this.m_oStartHour != null)
 		{

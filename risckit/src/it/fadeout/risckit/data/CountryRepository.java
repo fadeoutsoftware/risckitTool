@@ -70,4 +70,33 @@ public class CountryRepository extends Repository<Country> {
 		}
 		return aoList;
 	}
+	
+	public Country SelectCountryByCountryCode(String sCountryCode)
+	{
+		Session oSession = null;
+
+		Country oCountry = null;
+
+		try {
+			oSession = HibernateUtils.getSessionFactory().openSession();
+			Criteria oCriteria = oSession.createCriteria(Country.class);
+			oCriteria.add(Restrictions.eq("NutsLevel", "0"));
+			oCriteria.add(Restrictions.eq("CountryCode", sCountryCode));
+			oCountry = (Country) oCriteria.uniqueResult();
+		}
+		catch(Throwable oEx) {
+			System.err.println(oEx.toString());
+			oEx.printStackTrace();
+		}
+		finally {
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
+
+		}
+		return oCountry;
+	}
+
 }
