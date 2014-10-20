@@ -69,7 +69,7 @@ public class EventResource {
 
 	@Context
 	ServletConfig servletConfig;
-	
+
 	@Context 
 	ServletContext serveletContext;
 
@@ -104,11 +104,11 @@ public class EventResource {
 					//Load Country
 					CountryRepository oRepoCountry = new CountryRepository();
 					oEvent.setCountry(oRepoCountry.Select(oEvent.getCountryId(), Country.class));
-					
+
 					//socio impacts
 					SocioImpactRepository oSocioRepo = new SocioImpactRepository();
 					List<SocioImpact> oSocioImpacts = oSocioRepo.SelectByEvent(oEvent.getId());
-					
+
 					String sLocation = oViewModel.getCountryCode() + "_" + oViewModel.getRegionName();
 
 					DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -116,7 +116,7 @@ public class EventResource {
 
 					SVNUtils oSvnUtils = new SVNUtils();
 					String sDirPath = oViewModel.getLogin() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
-					
+
 					//csv
 					try
 					{
@@ -225,7 +225,7 @@ public class EventResource {
 		EventRepository oRepo = new EventRepository();
 		SocioImpactRepository oSocioImpactsRepo = new SocioImpactRepository();
 		List<Event> oEvents = oRepo.SelectByUser(iIdUser);
-		
+
 		CountryRepository oCountryRepo = new CountryRepository();
 		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
 
@@ -301,7 +301,7 @@ public class EventResource {
 			}
 			finally
 			{
-				
+
 			}
 		}
 
@@ -613,15 +613,15 @@ public class EventResource {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 			return null;
-			
+
 		}
-		
+
 		return sFileName;
 	}
-	
-	
+
+
 	@GET
 	@Path("/pdf/{idevent}")
 	@Consumes({"application/xml", "application/json", "text/xml"})
@@ -630,7 +630,7 @@ public class EventResource {
 
 		String sFileName = UUID.randomUUID().toString() + ".pdf";
 		File oFile = new File(servletConfig.getInitParameter("ProjectPath") + "pdf/" + sFileName);
-		
+
 		try
 		{
 			PdfCreator oPdfCreator = new PdfCreator(servletConfig.getInitParameter("ProjectPath"),
@@ -638,20 +638,25 @@ public class EventResource {
 					servletConfig.getInitParameter("SvnPwd"), 
 					servletConfig.getInitParameter("SvnUserDomain"),
 					servletConfig.getInitParameter("SvnRepository"));
-			oPdfCreator.CreatePdf(iIdEvent, oFile, serveletContext);
-			
+			String sPdfName = oPdfCreator.CreatePdf(iIdEvent, oFile, serveletContext);
+			if (sPdfName != null)
+			{
+				ResponseBuilder response = Response.ok(oFile);
+				response.header("Content-Disposition", "attachment; filename=\""
+						+ sPdfName + "\"");
+				response.header("content-type", "application/pdf");
+				response.header("Content-lenght", oFile.length());
+				return response.build();
+			}
+
 		}
 		catch(Exception oEx)
 		{
-		ResponseBuilder response = Response.noContent();
-		return response.build();
+			ResponseBuilder response = Response.noContent();
+			return response.build();
 		}
-	
-		ResponseBuilder response = Response.ok(oFile);
-		response.header("Content-Disposition", "attachment; filename=\""
-				+ sFileName + "\"");
-		response.header("content-type", "application/pdf");
-		response.header("Content-lenght", oFile.length());
+
+		ResponseBuilder response = Response.noContent();
 		return response.build();
 	}
 
