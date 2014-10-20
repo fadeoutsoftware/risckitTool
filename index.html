@@ -15,7 +15,7 @@
     <script src="lib/angular/angular-sanitize.js"></script>
     <script src="lib/angular-file-upload/angular-file-upload.js"></script>
     <!-- Add custom CSS here -->
-    <link href="css/riskit.css" rel="stylesheet">
+    <!--<link href="css/riskit.css" rel="stylesheet">-->
     <!-- Google Maps Scripts -->
     <script src="https://maps.googleapis.com/maps/api/js"></script>
     <script src='lib/lodash/lodash.js'></script>
@@ -25,30 +25,78 @@
     <script src='lib/angular/i18n/angular-locale_en.js'></script>
 
 </head>
+<style>
 
-<body ng-app="riskitapp" ng-controller="MainController">
-<div id="wrapper">
 
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-            <li class="sidebar-li"><a href="#/eventslist">Events</a>
-            </li>
-            <li class="sidebar-li"><a href="#/map">Map</a>
-            </li>
-        </ul>
+    .logo-wrapper img {
+        width:100%;
+    }
+    .bck .container {
+        background: #111; color:#eee;
+    }
+</style>
+<body ng-app="riskitapp" ng-controller="MainController" class="bck">
+
+<div class="container">
+    <div class="row">
+        <div class="logo-wrapper">
+            <img src="img/bannerrisckit.png" >
+            <!--<a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i></a>
+            Simple Sidebar-->
+        </div>
     </div>
-
+</div>
     <!-- Page content -->
     <div class="full-width-image-1">
         <div class="logo-wrapper">
-                <img src="img/bannerrisckit.png" class="img-responsive">
-                <!--<a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i></a>
-                Simple Sidebar-->
+
         </div>
     </div >
+
+<div class="container">
+
+<div id="wrapper">
+
+
+    <div class="row">
+        <div class="navbar navbar-inverse">
+            <a class="navbar-brand" href="#"></a>
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#/eventslist">Events</a>
+                </li>
+                <li>
+                    <a href="#/map">Map</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div ng-view ></div>
+
+    </div>
+
+    <!-- Sidebar -->
+    <!--<div id="sidebar-wrapper">-->
+        <!--<ul class="sidebar-nav">-->
+            <!--<li class="sidebar-li"><a href="#/eventslist">Events</a>-->
+            <!--</li>-->
+            <!--<li class="sidebar-li"><a href="#/map">Map</a>-->
+            <!--</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+
+    <!-- Page content -->
+    <!--<div class="full-width-image-1">-->
+        <!--<div class="logo-wrapper">-->
+                <!--<img src="img/bannerrisckit.png" class="img-responsive">-->
+                <!--&lt;!&ndash;<a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i></a>-->
+                <!--Simple Sidebar&ndash;&gt;-->
+        <!--</div>-->
+    <!--</div >-->
     <!-- Keep all page content within the page-content inset div! -->
-    <div ng-view ></div>
+    <!--<div ng-view ></div>-->
 
 </div>
 
