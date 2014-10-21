@@ -1,3 +1,6 @@
+<style>
+.navbar.eventlist {height: 1em;}
+</style>
 <div class="container-fluid">
 
     <div class="row">
@@ -11,15 +14,44 @@
     <div class="row">
         <h3 class="col-xs-1"><i class="fa fa-thumb-tack fa-fw"></i>Filters</h3>
     </div>
-    <div class="row">
-        <div class="col-lg-2"><label class="control-label">Country</label></div>
-        <div class="col-lg-3"><label class="control-label">Region</label></div>
-        <div class="col-lg-2"><label class="control-label">Year</label></div>
-        <div class="col-lg-2"><label class="control-label">Month</label></div>
-        <div class="col-lg-2"><label class="control-label">Day</label></div>
-        <div class="col-lg-1"><label class="control-label">Impacts</label></div>
+    <div class="navbar eventlist">
+    	<ul class="nav navbar-nav">
+            <li class="control-label">Country</li>
+            <li class="control-label">Region</li>
+            <li class="control-label">Year</li>
+            <li class="control-label">Month</li>
+            <li class="control-label">Day</li>
+            <li class="control-label">Impacts</li>
+    	</ul>
     </div>
+
+
+    <!--<div class="row">-->
+        <!--<div class="col-lg-2"><label class="control-label">Country</label></div>-->
+        <!--<div class="col-lg-3"><label class="control-label">Region</label></div>-->
+        <!--<div class="col-lg-2"><label class="control-label">Year</label></div>-->
+        <!--<div class="col-lg-2"><label class="control-label">Month</label></div>-->
+        <!--<div class="col-lg-2"><label class="control-label">Day</label></div>-->
+        <!--<div class="col-lg-1"><label class="control-label">Impacts</label></div>-->
+    <!--</div>-->
     <div class="row">
+    	<div class="table-responsive">
+    		<table class="table table-hover">
+    			<thead>
+    				<tr>
+    					<th></th>
+    				</tr>
+    			</thead>
+    			<tbody>
+    				<tr>
+    					<td></td>
+    				</tr>
+    			</tbody>
+    		</table>
+    	</div>
+    </div>
+    
+    <div class="row">        
         <div class="col-lg-2 btn-group">
             <select class="form-control" ng-model="search.countryCode" ng-change="m_oController.LoadRegion()" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
             <span class="searchclear glyphicon glyphicon-remove-circle" ng-click="m_oController.clearFilterCountry()" ng-show="m_oController.m_bShowClearFilterCountry"></span>
