@@ -1,41 +1,48 @@
-<div class="container-fluid">
+<div class="container">
+<div class="row">
+
+
 <form class="form-horizontal" role="form">
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Country</label>
-        <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryCode == null || m_oController.m_oEvent.countryCode == ''}">
-            <select id="select_country_code" class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
-            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryCode != null && m_oController.m_oEvent.countryCode != 0" tooltip="Select a country" style="margin-right: 30px;"></span>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Country</label>
+            <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryCode == null || m_oController.m_oEvent.countryCode == ''}">
+                <select id="select_country_code" class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryCode != null && m_oController.m_oEvent.countryCode != 0" tooltip="Select a country" style="margin-right: 30px;"></span>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Region</label>
-        <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryId == null || m_oController.m_oEvent.countryId == 0}">
-            <select class="form-control" ng-model="m_oController.m_oEvent.countryId" ng-options="Region.id as Region.countryname for Region in m_oController.m_oRegions"></select>
-            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryId != null && m_oController.m_oEvent.countryId != 0" tooltip="Select a region" style="margin-right: 30px;"></span>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Region</label>
+            <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryId == null || m_oController.m_oEvent.countryId == 0}">
+                <select class="form-control" ng-model="m_oController.m_oEvent.countryId" ng-options="Region.id as Region.countryname for Region in m_oController.m_oRegions"></select>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryId != null && m_oController.m_oEvent.countryId != 0" tooltip="Select a region" style="margin-right: 30px;"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="inpute_date">Start Date</label>
+            <div class="col-sm-3" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.startDate == null}">
+                <input type="date" id="inpute_date" class="form-control" ng-model="m_oController.m_oEvent.startDate" >
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.startDate != null" tooltip="Insert a start date"></span>
+            </div>
+            <label class="col-sm-2 control-label">Start Hour</label>
+            <div class="col-sm-3">
+                <input type="time" class="form-control" ng-model="m_oController.m_oEvent.startHour">
+            </div>
+        </div>
+
+        <div class="form-group" >
+            <label class="col-sm-2 control-label">Description</label>
+            <div class="col-sm-8" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.description == null || m_oController.m_oEvent.description == ''}">
+                <textarea class="form-control" rows="2"  placeholder="Description" ng-model="m_oController.m_oEvent.description"></textarea>
+                <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.description != null && m_oController.m_oEvent.description != ''" tooltip="Insert a description"></span>
+            </div>
         </div>
     </div>
 
-    <div class="form-group">
-        <label class="col-sm-2 control-label" for="inpute_date">Start Date</label>
-        <div class="col-sm-3" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.startDate == null}">
-            <input type="date" id="inpute_date" class="form-control" ng-model="m_oController.m_oEvent.startDate" >
-            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.startDate != null" tooltip="Insert a start date"></span>
-        </div>
-        <label class="col-sm-2 control-label">Start Hour</label>
-        <div class="col-sm-3">
-            <input type="time" class="form-control" ng-model="m_oController.m_oEvent.startHour">
-        </div>
-    </div>
-
-    <div class="form-group" >
-        <label class="col-sm-2 control-label">Description</label>
-        <div class="col-sm-8" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.description == null || m_oController.m_oEvent.description == ''}">
-            <textarea class="form-control" rows="2"  placeholder="Description" ng-model="m_oController.m_oEvent.description"></textarea>
-            <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.description != null && m_oController.m_oEvent.description != ''" tooltip="Insert a description"></span>
-        </div>
-    </div>
-
-    <div class="col-sm-12" >
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table class="table">
             <tr>
                 <td rowspan="2">
@@ -726,7 +733,7 @@
         </table>
     </div>
 
-    <div class="col-sm-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table class="table" >
             <tr>
                 <td colspan="6" class="text-center">
@@ -791,7 +798,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-sm-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table class="table" ng-hide="m_oController.m_oEvent.Media.length == 0">
             <tr>
                 <td><label class="control-label">Media</label></td>
@@ -826,7 +833,7 @@
         </table>
     </div>
 
-    <div class="col-sm-12">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table class="table" ng-hide="m_oController.m_oEvent.GIS == null || m_oController.m_oEvent.GIS == ''">
             <tr>
                 <td rowspan="3" style="width: 121px"><label class="control-label">Gis</label></td>
@@ -869,18 +876,21 @@
         </table>
     </div>
 
-    <div class="form-group">
-        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
-            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.AddMedia()">Add supplementary media</button>
+
+        <div class="form-group">
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddMedia()">Add supplementary media</button>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" >
+                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddGIS('sm')">Add supplementary GIS</button>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" tooltip-popup-delay="500" tooltip="Send">
+                <div class="loading" ng-show="m_oController.m_bSaving" ><img class="loading" src="img/Spinner.gif"/></div>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.Save()" ng-hide="m_oController.m_bSaving">Send/Close</button>
+            </div>
         </div>
-        <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3" >
-            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.AddGIS('sm')">Add supplementary GIS</button>
-        </div>
-        <div class="col-xs-12 col-sm- col-md-3 col-lg-3" tooltip-popup-delay="500" tooltip="Send">
-            <div class="loading" ng-show="m_oController.m_bSaving" ><img class="loading" src="img/Spinner.gif"/></div>
-            <button type="submit" class="btn btn-primary btn-lg" ng-click="m_oController.Save()" ng-hide="m_oController.m_bSaving">Send/Close</button>
-        </div>
-    </div>
+
     <div ng-show="selected"></div>
 </form>
+</div>
 </div>
