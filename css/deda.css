@@ -6,8 +6,8 @@
 
     @font-face {
     font-family: Sophisto-B;
-    src: url('fonts/sophisto-b-webfont.eot');
-    src: url('fonts/sophisto-b-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/sophisto-b-webfont.woff') format('woff'), url('fonts/sophisto-b-webfont.ttf') format('truetype'), url('fonts/sophisto-b-webfont.svg#sophisto_bregular') format('svg');
+    src: url('../fonts/sophisto-b-webfont.eot');
+    src: url('../fonts/sophisto-b-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/sophisto-b-webfont.woff') format('woff'), url('../fonts/sophisto-b-webfont.ttf') format('truetype'), url('../fonts/sophisto-b-webfont.svg#sophisto_bregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -18,8 +18,8 @@
 /*}*/
 @font-face {
     font-family: Sophisto-D;
-    src: url('fonts/sophisto-d-webfont.eot');
-    src: url('fonts/sophisto-d-webfont.eot?#iefix') format('embedded-opentype'), url('fonts/sophisto-d-webfont.woff') format('woff'), url('fonts/sophisto-d-webfont.ttf') format('truetype'), url('fonts/sophisto-d-webfont.svg#sophisto_dregular') format('svg');
+    src: url('../fonts/sophisto-d-webfont.eot');
+    src: url('../fonts/sophisto-d-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/sophisto-d-webfont.woff') format('woff'), url('../fonts/sophisto-d-webfont.ttf') format('truetype'), url('../fonts/sophisto-d-webfont.svg#sophisto_dregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -88,7 +88,18 @@ hr {
 }
 
 
+.btn i.fa-upload:after{content:"Upload"; font-family: "Sophisto-B", sans-serif;padding: 0 5px;}
+.btn i.fa-download:after{content:"Download";font-family: "Sophisto-B", sans-serif;padding: 0 5px;}
+.btn i.fa-remove:after{content:"Remove";font-family: "Sophisto-B", sans-serif; padding: 0 5px;}
+.btn i.fa-edit:after{content:"Edit";font-family: "Sophisto-B", sans-serif; padding: 0 5px;}
+.event .btn,
+.event input,
+.event select,
+.event span,
+.details .btn {margin:10px 0; }
 
+.event .btn [class*="fa-"] {width:120px;}
+.details .btn { font-size: 1.5em; }
 
 /*=====================================================
               Login
@@ -227,7 +238,7 @@ hr {
 			.social-em:hover {
 				color: #f39c12;
 			}
-    .eu { width:100%; margin:10px}
+    .eu { width:auto; margin:10px; max-height: 80px;}
     .footer p {color:white;}
     .footer .social {margin-top:20px;}
 

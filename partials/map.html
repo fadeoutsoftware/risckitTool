@@ -33,7 +33,8 @@
                 <h2  align="center">Event Detail</h2>
                 <a href="{{m_oController.createPdf()}}"  ng-show="m_oController.EventHtml != ''">
                     <div class="project-icon" tooltip-popup-delay="500" tooltip="Pdf">
-                        <img src="img/download.png" >
+                        <button class="btn btn-success btn-block"><i class="fa fa-download fa-2x"></i></button>
+                        <!--<img src="img/download.png" >-->
                     </div>
                 </a>
                 <p ng-bind-html="m_oController.EventHtml"></p>
