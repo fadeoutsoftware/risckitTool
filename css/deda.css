@@ -92,11 +92,19 @@ hr {
 .btn i.fa-download:after{content:"Download";font-family: "Sophisto-B", sans-serif;padding: 0 5px;}
 .btn i.fa-remove:after{content:"Remove";font-family: "Sophisto-B", sans-serif; padding: 0 5px;}
 .btn i.fa-edit:after{content:"Edit";font-family: "Sophisto-B", sans-serif; padding: 0 5px;}
+
+
 .event .btn,
 .event input,
 .event select,
 .event span,
 .details .btn {margin:10px 0; }
+
+.event i.fa.fa-remove {
+    font-size: 1.5em;
+    margin: 0 8px;
+    color: yellow;
+}
 
 .event .btn [class*="fa-"] {width:120px;}
 .details .btn { font-size: 1.5em; }
@@ -191,6 +199,23 @@ hr {
 .table > tbody > tr {background: #222;}
 .table > tbody > tr:nth-child(2n+1) {background: #111;}
    
+/*=====================================================
+                        MAPPA
+====================================================*/
+.labels-map {
+    color: black;
+    /*font-family: "Lucida Grande", "Arial", sans-serif;*/
+    font-size: 1.3em;
+    text-align: center;
+    width: 52px;
+    margin-top: -35px!important;
+    white-space: nowrap;
+}
+.tooltip {position: absolute; margin:0;}
+.tooltip-inner {background: #ffcc00; font-size: 2em; color:black;}
+.tooltip[class*="top"] .tooltip-arrow {    border-top-color: #ffcc00;}
+
+
 /*=====================================================
                         NAV
 ====================================================*/
