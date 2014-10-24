@@ -7,21 +7,22 @@
     </div>
     <br/>
     <div class="row ">
-
-            <label class="col-xs-offset-1 control-label">Description</label>
-            <textarea class="col-xs-offset-1 col-xs-2 form-control" rows="2" ng-change="m_oController.m_oMediaService.isModified()" placeholder="Description" ng-model="m_oController.description"></textarea>
-            <div class="col-xs-7"></div>
+        <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <label class="control-label">Description</label>
+            <textarea class=" form-control" rows="2" ng-change="m_oController.m_oMediaService.isModified()" placeholder="Description" ng-model="m_oController.description"></textarea>
+        </div>
     </div>
     <div class="row">
-        <label class="col-xs-offset-1 control-label">Date</label>
-        <input class="col-xs-offset-1 col-xs-2 form-control" type="date" ng-change="m_oController.m_oMediaService.isModified()" ng-model="m_oController.date">
+        <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <label class="control-label">Date</label>
+            <input class="form-control" type="date" ng-change="m_oController.m_oMediaService.isModified()" ng-model="m_oController.date">
+        </div>
     </div>
-        <div class="row">
-
-            <label class="col-xs-offset-1 col-xs-10 control-label">Attachment</label>
-
+    <div class="row">
+        <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-6 col-lg-offset-3">
+            <label class="control-label">Attachment</label>
             <br/>
-            <table class="col-xs-offset-1 col-xs-10 table table-bordered table-condensed" ng-show="m_oController.NewMedia.downloadPath != null">
+            <table class=" table table-bordered table-condensed" ng-show="m_oController.NewMedia.downloadPath != null">
                 <tr>
                     <td>
                         <a ng-href="{{m_oController.DownloadMedia(m_oController.NewMedia.id)}}">
@@ -35,9 +36,12 @@
                     </td>
                 </tr>
             </table>
-        </div>
-        <div class="row">
 
+        </div>
+
+
+    </div>
+        <div class="row">
 
             <div class="col-lg-offset-1 col-lg-1" ng-show="m_oController.canUpload()">
                 <div class="loading" ng-show="m_oController.m_oUploading">
