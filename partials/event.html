@@ -855,12 +855,12 @@
                         </div>
                         <a ng-href="{{m_oController.DownloadMedia(oTableRow.id)}}">
                             <div class="project-icon delete">
-                                 <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Download"><i class="fa fa-remove"></i></button>
+                                 <button class="btn btn-success"  tooltip-popup-delay="500" tooltip="Download"><i class="fa fa-download"></i></button>
                                 <!--<img src="img/download.png" tooltip="Download">-->
                             </div>
                         </a>
                         <div class="delete">
-                            <a href ng-click="m_oController.OpenMedia(oTableRow.id)">{{oTableRow.shortDownloadPath}}</a>
+                            <a class="btn btn-info" href ng-click="m_oController.OpenMedia(oTableRow.id)">{{oTableRow.shortDownloadPath}}</a>
                         </div>
                     </td>
                     <td>
