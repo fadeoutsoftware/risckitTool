@@ -100,11 +100,13 @@ hr {
 .event span,
 .details .btn {margin:10px 0; }
 
-.event i.fa.fa-remove {
+.event i.fa.fa-remove,
+.event i.fa.fa-pencil  {
     font-size: 1.5em;
-    margin: 0 8px;
-    color: yellow;
-}
+    margin: 0 8px;}
+
+.event i.fa.fa-remove {color: yellow;}
+.event i.fa.fa-pencil {color:cyan;}
 
 .event .btn [class*="fa-"] {width:120px;}
 .details .btn { font-size: 1.5em; }
