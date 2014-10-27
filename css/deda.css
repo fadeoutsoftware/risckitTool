@@ -232,6 +232,7 @@ td label i,
 }
 
 .modal-content {background:#333; color:white;}
+.modal-body img {    width: 100%;}
 
 
 /*=====================================================
