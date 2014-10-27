@@ -233,7 +233,7 @@ td label i,
 }
 
 .modal-content {background:#333; color:white;}
-.modal-body img { width: 100%;}
+.modal-body img:not[    .loading] { width: 100%;}
 
 
 /*=====================================================
