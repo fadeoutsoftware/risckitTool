@@ -299,7 +299,7 @@ td label i,
     color: #f39c12;
 }
 .eu { width:auto; margin:10px; max-height: 80px;}
-.footer p {color:white;}
+.footer p {color:white; margin-top: 10px;}
 .footer .social {margin-top:20px;}
 
 
@@ -309,4 +309,14 @@ td label i,
 
 @media (max-width: 768px) {
     .footer p { line-height:1;}
+    .event td .btn-info {
+        letter-spacing: -0.04em;
+        font-size: 0.85em;
+        max-width:150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+    }
+    .event .table .media td:first-child {min-width:250px;}
 }

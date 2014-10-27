@@ -13,7 +13,7 @@
             <h2>GIS</h2>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <input id="gis-input" type="file" file-Model="m_oController.m_sGisFilePath" ng-hide="true" ng-file-select="onFileSelect($files, 0)"/>
-                <!--<img src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload GIS"/>-->
+                <img src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload GIS"/>
                 <div ng-show="m_oController.m_oSharedService.getEvent().GIS.downloadGisPath != null">
                     <a ng-href="{{m_oController.DownloadGis(0)}}">
 
@@ -31,7 +31,7 @@
             <h2>Inspire</h2>
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                 <input id="Inspire-input" type="file" file-Model="m_oController.m_sInspireFilePath" ng-hide="true" ng-file-select="onFileSelect($files, 1)"/>
-                <!--<img src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload Inspire"/>-->
+                <img src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload Inspire"/>
                 <div  ng-show="m_oController.m_oSharedService.getEvent().GIS.downloadInspirePath != null">
                     <a ng-href="{{m_oController.DownloadGis(1)}}">
 
