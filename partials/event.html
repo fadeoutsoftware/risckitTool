@@ -882,49 +882,49 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <table class="table" ng-hide="m_oController.m_oEvent.GIS == null || m_oController.m_oEvent.GIS == ''">
             <tr>
-                <td rowspan="3" style="width: 121px"><label class="control-label">Gis</label></td>
+                <!--<td rowspan="3" style="width: 121px"><label class="control-label">Gis</label></td>-->
+                <td><label class="control-label">GIS</label></td>
                 <td><label class="control-label">Attachments</label></td>
             </tr>
             <tr ng-hide="m_oController.m_oEvent.GIS.shortGisFile == null">
                 <td>
-                    <div class="project-icon delete" >
+
                       <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 0)"><i class="fa fa-remove"></i></button> -->
                       <!--<img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 0)">-->
                       <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 0)"></i>
-                    </div>
+
                     <a ng-href="{{m_oController.DownloadGis(m_oController.m_oEvent.GIS.id, 0)}}">
-                        <div class="project-icon delete" >
+
                           <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Download"><i class="fa fa-remove"></i></button> -->
-                            <!--<img src="img/download.png" tooltip="Download">-->
-                          <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete"></i>
-                        </div>
+                            <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download">
+                          <!--<i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete"></i>-->
+
                     </a>
-                    <div class="delete">
-                        <a>{{m_oController.m_oEvent.GIS.shortGisFile}}</a>
-                    </div>
+
+                    <a class="btn btn-info" >{{m_oController.m_oEvent.GIS.shortGisFile}}</a>
+
                 </td>
                 <td></td>
-                <td></td>
+
             </tr>
             <tr ng-hide="m_oController.m_oEvent.GIS.shortInspireFile == null">
                 <td>
-                    <div class="project-icon delete" >
+
                         <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 1)"><i class="fa fa-remove"></i></button>
                         <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 1)"></i>
                         <!--<img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteGis(m_oController.m_oEvent.GIS.id, m_oController.m_oEvent.id, 1)">-->
-                    </div>
+
                     <a ng-href="{{m_oController.DownloadGis(m_oController.m_oEvent.GIS.id, 1)}}">
-                        <div class="project-icon delete">
+
                             <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Download"><i class="fa fa-remove"></i></button>
-                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ></i>
-                            <!--<img src="img/download.png" tooltip="Download">-->
-                        </div>
+                            <!--<i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ></i>-->
+                            <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download">
+
                     </a>
-                    <div class="delete">
-                        <a>{{m_oController.m_oEvent.GIS.shortInspireFile}}</a>
-                    </div>
+
+                        <a class="btn btn-info">{{m_oController.m_oEvent.GIS.shortInspireFile}}</a>
+
                 </td>
-                <td></td>
                 <td></td>
             </tr>
         </table>

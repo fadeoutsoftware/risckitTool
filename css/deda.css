@@ -205,11 +205,13 @@ body { background-color: #333;}
 .event .project-icon img,
 td label,
 td label i,
-.event .btn {
+.event td .btn,
+.event td a,
+.event td i {
     float: left;
-    line-height:1em; margin:0;
+    line-height:0.8em; margin:0;
+    vertical-align:middle;
 }
-
 
 .event .wave td:last-child,
 .event .wave td:nth-child(4) { min-width:100px;}
@@ -223,6 +225,14 @@ td label i,
 }
 .rosa li input  {margin:0;}
 .rosa li img {width:16px; height:16px; margin-left:-6px;}
+
+.modal-body [class*="col-"] img {
+    float: left;
+    margin: 0;
+}
+
+.modal-content {background:#333; color:white;}
+
 
 /*=====================================================
                         MAPPA
