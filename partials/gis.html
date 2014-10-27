@@ -3,7 +3,7 @@
         <h3 class="modal-title">Add GIS and INSPIRE File</h3>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body ">
         <div class="loading" ng-show="m_oController.m_oUploading">
             <img src="img/Spinner.gif" class="loading"/>
         </div>
@@ -11,16 +11,16 @@
             <div>
                 <label>GIS</label>
             </div>
-            <div class=" project-icon" tooltip-popup-delay="500" >
+            <div class=" project-icon" >
                 <label for="gis-input">
-                    <img src="img/upload.png"/>
+                    <img src="img/upload.png" tooltip-popup-delay="500" tooltip-popup-delay="500" tooltip="Upload"/>
                 </label>
                 <input id="gis-input" type="file" file-Model="m_oController.m_sGisFilePath" ng-hide="true" ng-file-select="onFileSelect($files, 0)"/>
             </div>
             <div class="" ng-show="m_oController.m_oSharedService.getEvent().GIS.downloadGisPath != null">
                 <a ng-href="{{m_oController.DownloadGis(0)}}">
-                    <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
-                        <img src="img/download.png" tooltip="Download">
+                    <div class="project-icon delete" >
+                        <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download">
                     </div>
                 </a>
             </div>
@@ -31,14 +31,14 @@
             </div>
             <div class="project-icon" tooltip-popup-delay="500">
                 <label for="Inspire-input">
-                    <img src="img/upload.png"/>
+                    <img src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                 </label>
                 <input id="Inspire-input" type="file" file-Model="m_oController.m_sInspireFilePath" ng-hide="true" ng-file-select="onFileSelect($files, 1)"/>
             </div>
             <div class="" ng-show="m_oController.m_oSharedService.getEvent().GIS.downloadInspirePath != null">
                 <a ng-href="{{m_oController.DownloadGis(1)}}">
-                    <div class="project-icon delete" tooltip-popup-delay="500" tooltip="Download">
-                        <img src="img/download.png" tooltip="Download">
+                    <div class="project-icon delete" >
+                        <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download">
                     </div>
                 </a>
             </div>
