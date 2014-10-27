@@ -226,13 +226,14 @@ td label i,
 .rosa li input  {margin:0;}
 .rosa li img {width:16px; height:16px; margin-left:-6px;}
 
-.modal-body [class*="col-"] img {
+.modal-body .project-icon img {
     float: left;
     margin: 0;
+    max-width: 32px;
 }
 
 .modal-content {background:#333; color:white;}
-.modal-body img {    width: 100%;}
+.modal-body img { width: 100%;}
 
 
 /*=====================================================
