@@ -575,7 +575,7 @@
                         </div>
                         <input id="water-level-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waterLevelInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waterLevelInspire')}}">
-                            <div class="div-td project-icon" >
+                            <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waterLevelInspire">
                                 <!-- <button class="btn btn-success" tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.m_oEvent.waterLevelInspire" ><i class="fa fa-download "></i></button> -->
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
                             </div>

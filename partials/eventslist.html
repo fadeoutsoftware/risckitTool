@@ -34,8 +34,8 @@
                 </li>
                 <li class="col-xs-12 col-sm-3 col-md-2 col-lg-2">
                     <h3>Region</h3>
-                    <select class="form-control" ng-model="search.countryCode" ng-change="m_oController.LoadRegion()" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
-                    <span class="searchclear glyphicon glyphicon-remove-circle" ng-click="m_oController.clearFilterCountry()" ng-show="m_oController.m_bShowClearFilterCountry"></span>
+                    <select class="form-control" ng-model="search.regionName" ng-change="m_oController.SelectRegion()" ng-options="Region.countryname as Region.countryname for Region in m_oController.m_oRegions"></select>
+                    <span class="searchclear glyphicon glyphicon-remove-circle" ng-click="m_oController.clearFilterRegion()" ng-show="m_oController.m_bShowClearFilterRegion"></span>
                 </li>
                 <li class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
                     <h3>Year</h3>
