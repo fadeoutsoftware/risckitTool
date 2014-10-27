@@ -171,11 +171,11 @@ public class GisResource {
 				if (oGis.getGisFile() == null && oGis.getGisFile() == null)
 					oRepo.Delete(oGis);
 				else
+				{
 					oRepo.Update(oGis);
-
-				if (oGis != null)
-					oReturnValue = oGis.getViewModel();
-
+					if (oGis != null)
+						oReturnValue = oGis.getViewModel();
+				}
 
 				EventRepository oEventRepo = new EventRepository();
 				Event oEvent =  oEventRepo.Select(iIdEvent, Event.class);

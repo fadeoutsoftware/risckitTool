@@ -260,8 +260,8 @@ public class SVNUtils {
 		 */
 		return editor.closeEdit();
 	}
-	
-	
+
+
 	public void Delete(
 			String sLogin,
 			String sSvnUser, 
@@ -286,7 +286,7 @@ public class SVNUtils {
 
 		String userName = sSvnUser;
 		String userPassword = sSvnPwd;
-		
+
 		/*
 		 * Create an instance of SVNRepository class. This class is the main entry point 
 		 * for all "low-level" Subversion operations supported by Subversion protocol. 
@@ -295,9 +295,9 @@ public class SVNUtils {
 		 * SVNRepository methods javadoc for more details.
 		 */
 		//SVNRepository repository = SVNRepositoryFactory.create(url);
-		
+
 		SVNRepository repository = DAVRepositoryFactory.create(url);
-		
+
 		/*
 		 * User's authentication information (name/password) is provided via  an 
 		 * ISVNAuthenticationManager  instance.  SVNWCUtil  creates  a   default 
@@ -359,8 +359,8 @@ public class SVNUtils {
 		 * when 'null' is passed, then default system temporary directory will be used to
 		 * create temporary files.  
 		 */
-		ISVNEditor editor = repository.getCommitEditor("directory and file added", null, true, null);
-		
+		ISVNEditor editor = repository.getCommitEditor("directory and file deleted", null, true, null);
+
 		/*
 		 * Add a directory and a file within that directory.
 		 * 
@@ -369,14 +369,22 @@ public class SVNUtils {
 		 */
 
 		sFileName = sFileName.replaceAll(sSvnRepository, "");
-		
-		SVNCommitInfo commitInfo = DeleteDir(editor, sFileName, latestRevision);
-
-		System.out.println("The directory was added: " + commitInfo);
-
+		//controllo per impedire la cancellazione della cartella
+		if (!sFileName.startsWith("/trunk")){
+			try
+			{
+				SVNCommitInfo commitInfo = DeleteDir(editor, sFileName, latestRevision);
+				System.out.println("File Deleted");
+			}
+			catch(SVNException oEx)
+			{
+				oEx.printStackTrace();
+				System.err.println("Error on deleting dir");
+			}
+		}
 	}
-	
-	
+
+
 
 	/*
 	 * This method performs commiting an addition of a  directory  containing  a
@@ -405,7 +413,7 @@ public class SVNUtils {
 		 * (the 3rd) parameter is set to  -1  since  the  directory is not added 
 		 * with history (is not copied, in other words).
 		 */
-		
+
 		editor.deleteEntry(fileName, -1);
 		/*
 		 * Closes the root directory.
@@ -419,7 +427,7 @@ public class SVNUtils {
 		 */
 		return editor.closeEdit();
 	}
-	
+
 	public long GetFile(
 			String sLogin,
 			String sSvnUser, 
@@ -443,7 +451,7 @@ public class SVNUtils {
 
 		String userName = sSvnUser;
 		String userPassword = sSvnPwd;
-		
+
 		/*
 		 * Create an instance of SVNRepository class. This class is the main entry point 
 		 * for all "low-level" Subversion operations supported by Subversion protocol. 
@@ -452,10 +460,10 @@ public class SVNUtils {
 		 * SVNRepository methods javadoc for more details.
 		 */
 		//SVNRepository repository = SVNRepositoryFactory.create(url);
-		
+
 		SVNRepository repository = DAVRepositoryFactory.create(url);
-		
-		
+
+
 		//ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(userName, userPassword);
 		SVNAuthentication auth = new SVNPasswordAuthentication(userName, userPassword, false);
 		ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(userName, userPassword);
@@ -472,13 +480,13 @@ public class SVNUtils {
 		SVNNodeKind nodeKind = repository.checkPath("", -1);
 
 		sPath = sPath.replaceAll(sSvnRepository, "");
-		
+
 		/*
 		 * Checks  up  if the current path really corresponds to a directory. If 
 		 * it doesn't, the program exits. SVNNodeKind is that one who says  what
 		 * is located at a path in a revision. 
 		 */
-		
+
 		if (nodeKind == SVNNodeKind.NONE) {
 			SVNErrorMessage err = SVNErrorMessage.create(SVNErrorCode.UNKNOWN, "No entry at URL ''{0}''", url);
 			throw new SVNException(err);
@@ -486,16 +494,16 @@ public class SVNUtils {
 			SVNErrorMessage err = SVNErrorMessage.create(SVNErrorCode.UNKNOWN, "Entry at URL ''{0}'' is a file while directory was expected", url);
 			throw new SVNException(err);
 		}
-	 	
+
 		/*
 		 * Get exact value of the latest (HEAD) revision.
 		 */
 		long latestRevision = repository.getLatestRevision();
 		System.out.println("Repository latest revision (before committing): " + latestRevision);
 
-		
+
 		return repository.getFile(sPath, -1, null, oOutput);
-		
+
 	}
 
 

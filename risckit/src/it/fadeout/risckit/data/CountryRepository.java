@@ -10,6 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import it.fadeout.risckit.business.Country;
@@ -54,6 +55,7 @@ public class CountryRepository extends Repository<Country> {
 			Criteria oCriteria = oSession.createCriteria(Country.class);
 			oCriteria.add(Restrictions.eq("NutsLevel", "2"));
 			oCriteria.add(Restrictions.eq("CountryCode", sCountryCode));
+			oCriteria.addOrder(Order.asc("Name"));
 			aoList = oCriteria.list();
 		}
 		catch(Throwable oEx) {

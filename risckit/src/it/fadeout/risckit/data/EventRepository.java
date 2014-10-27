@@ -16,6 +16,7 @@ import it.fadeout.risckit.business.Event;
 import it.fadeout.risckit.business.Gis;
 import it.fadeout.risckit.business.Media;
 import it.fadeout.risckit.business.SVNUtils;
+import it.fadeout.risckit.business.SocioImpact;
 
 public class EventRepository extends Repository<Event>{
 
@@ -95,7 +96,7 @@ public class EventRepository extends Repository<Event>{
 
 		return aoList;
 	}
-	
+
 	public List<Event> SelectByCountries(String sCountryCode) {
 
 		Session oSession = null;
@@ -130,8 +131,8 @@ public class EventRepository extends Repository<Event>{
 
 		return aoList;
 	}
-	
-	
+
+
 	public List<Event> SelectByRegion(Integer iIdRegion) {
 
 		Session oSession = null;
@@ -167,9 +168,9 @@ public class EventRepository extends Repository<Event>{
 		return aoList;
 	}
 
-	
-	
-	
+
+
+
 
 	public void DeleteEventFile(String sUserName, String sSvnUser, String sSvnPwd,
 			String sSvnUserDomain, String sRepoFile, String sSvnRepository, String sStartDate, String sLocation) throws SVNException, IOException
@@ -202,6 +203,7 @@ public class EventRepository extends Repository<Event>{
 
 		MediaRepository oMediaRepository = new MediaRepository();
 		GisRepository oGisRepository = new GisRepository();
+		SocioImpactRepository oSocioRepository = new SocioImpactRepository(); 
 
 		Session oSession = null;
 		try {				
@@ -219,13 +221,14 @@ public class EventRepository extends Repository<Event>{
 					}
 					catch(SVNException oEx)
 					{
-
+						oEx.printStackTrace();
 					}
 					oSession.delete(media);
 				}
 			}
 			catch(Exception oEx)
 			{
+				oEx.printStackTrace();
 				bError = true;
 			}
 
@@ -247,7 +250,7 @@ public class EventRepository extends Repository<Event>{
 				}
 				catch(SVNException oEx)
 				{
-
+					oEx.printStackTrace();
 				}
 				try
 				{
@@ -255,7 +258,25 @@ public class EventRepository extends Repository<Event>{
 				}
 				catch(Exception oEx)
 				{
+					oEx.printStackTrace();
 					bError = true;
+				}
+			}
+
+			//Delete socio impact
+			List<SocioImpact> oImpacts = oSocioRepository.SelectByEvent(oEntity.getId());
+			if (oImpacts != null)
+			{
+				for (SocioImpact socioImpact : oImpacts) {
+					try
+					{
+						oSocioRepository.Delete(socioImpact);
+					}
+					catch(Exception oEx)
+					{
+						oEx.printStackTrace();
+						bError = true;
+					}
 				}
 			}
 

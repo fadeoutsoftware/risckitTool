@@ -401,34 +401,44 @@ public class EventResource {
 		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 
 		String sRepoFile = oEvent.getPathRepository(sParameter);
-		String[] sSplitString = sRepoFile.split("/");
-		final String sTemp = sSplitString[sSplitString.length - 1];
+		try
+		{
+			String[] sSplitString = sRepoFile.split("/");
+			final String sTemp = sSplitString[sSplitString.length - 1];
+			
+			//Delete File if present
+			SVNUtils oSvnUtils = new SVNUtils();
+			File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
+			OutputStream oOut = new FileOutputStream(oFile);
 
-		//Delete File if present
-		SVNUtils oSvnUtils = new SVNUtils();
-		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
-		OutputStream oOut = new FileOutputStream(oFile);
+			try{
+				oSvnUtils.GetFile(
+						oUser.getUserName(),
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						oEvent.getPathRepository(sParameter), 
+						servletConfig.getInitParameter("SvnRepository"),
+						oOut);
+			}
+			catch(SVNException oEx)
+			{
+				ResponseBuilder response = Response.noContent();
+				return response.build();
+			}
 
-		try{
-			oSvnUtils.GetFile(
-					oUser.getUserName(),
-					servletConfig.getInitParameter("SvnUser"), 
-					servletConfig.getInitParameter("SvnPwd"), 
-					servletConfig.getInitParameter("SvnUserDomain"), 
-					oEvent.getPathRepository(sParameter), 
-					servletConfig.getInitParameter("SvnRepository"),
-					oOut);
+			ResponseBuilder response = Response.ok(oFile);
+			response.header("Content-Disposition", "attachment; filename=\""
+					+ sTemp + "\"");
+			return response.build();
 		}
-		catch(SVNException oEx)
+		catch(Exception oEx)
 		{
 			ResponseBuilder response = Response.noContent();
 			return response.build();
 		}
-
-		ResponseBuilder response = Response.ok(oFile);
-		response.header("Content-Disposition", "attachment; filename=\""
-				+ sTemp + "\"");
-		return response.build();
+		
+		
 
 	}
 
@@ -512,9 +522,11 @@ public class EventResource {
 				List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
 				Country oCountry = oCountryRepo.Select(oEvent.getCountryId(), Country.class);
 
+				String sStartDate = "";
 				String sLocation = oCountry.getCountryCode() + "_" + oCountry.getName();
 				DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-				String sStartDate = dateFormatter.format(oEvent.getStartDate());
+				if (oEvent.getStartDate() != null)
+					sStartDate = dateFormatter.format(oEvent.getStartDate());
 
 				UserRepository oUserRepo = new UserRepository();
 				User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
@@ -534,7 +546,7 @@ public class EventResource {
 					}
 					catch(SVNException oEx)
 					{
-
+						oEx.printStackTrace();
 					}
 				}
 
@@ -554,7 +566,7 @@ public class EventResource {
 				}
 				catch(SVNException oEx)
 				{
-
+					oEx.printStackTrace();
 				}
 
 

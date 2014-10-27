@@ -106,6 +106,7 @@ public class PdfCreator {
 			document.add(TitoloParagrafo("Impacts"));
 			if (oSocioList.size() > 0)
 				document.add(SocioImpactsTable(2, oSocioList));
+			document.newPage();
 			document.add(TitoloParagrafo("Photos"));
 			DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 			for (Media oMedia : oMediaList) {
