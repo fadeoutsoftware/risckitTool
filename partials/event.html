@@ -199,64 +199,65 @@
                 </td>
                 <td>
                     <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.waveDirectionType == 1" ng-model="m_oController.m_oEvent.waveDirectionDegree" step="any" min="-360" max="360">
-                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.waveDirectionType == 2">
-                        <div class="radio">
+                    <ul class="rosa" ng-show="m_oController.m_oEvent.waveDirectionType == 2">
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenord">
                                 <img src="img/white/arrow_down.png" tooltip="Nord" >
                                 N
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NE"ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordest">
                                 <img src="img/white/arrow_down_left.png" tooltip="Nord-Est" >
                                 NE
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="E" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveest">
                                 <img src="img/white/arrow_left.png" tooltip="Est" >
                                 E
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SE" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudest">
                                 <img src="img/white/arrow_up_left.png" tooltip="Sud-Est" >
                                 SE
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <div class="clearfix hidden-md"></div>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="S" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesud">
                                 <img src="img/white/arrow_up.png" tooltip="Sud" >
                                 S
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudovest">
                                 <img src="img/white/arrow_up_right.png" tooltip="Sud-West" >
                                 SW
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="O" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveovest">
                                 <img src="img/white/arrow_right.png" tooltip="West" >
                                 W
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordovest">
                                 <img src="img/white/arrow_down_right.png" tooltip="Nord-West" >
                                 NW
                             </label>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
                 </td>
                 <td>
                     <div class="loading" ng-show="m_oController.waveDirectionInspireuploading">
@@ -420,64 +421,65 @@
                 </td>
                 <td>
                     <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.windDirectionType == 1" ng-model="m_oController.m_oEvent.windDirectionDegree" step="any" max="360" min="-360">
-                    <div style="overflow-y:scroll; height: 70px;" ng-show="m_oController.m_oEvent.windDirectionType == 2">
-                        <div class="radio">
+                    <ul  class="rosa" ng-show="m_oController.m_oEvent.windDirectionType == 2">
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnord" checked>
                                 <img src="img/white/arrow_down.png" tooltip="Nord" >
                                 N
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NE" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnordest">
                                 <img src="img/white/arrow_down_left.png" tooltip="Nord-Est" >
                                 NE
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="E" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windest">
                                 <img src="img/white/arrow_left.png" tooltip="Est" >
                                 E
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SE" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsudest">
                                 <img src="img/white/arrow_up_left.png" tooltip="Sud-Est" >
                                 SE
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <div class="clearfix hidden-md"></div>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="S" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsud">
                                 <img src="img/white/arrow_up.png" tooltip="Sud" >
                                 S
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="SO" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsudovest">
                                 <img src="img/white/arrow_up_right.png" tooltip="Sud-West" >
                                 SW
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="O"  ng-model="m_oController.m_oEvent.windDirectionClustered" id="windovest">
                                 <img src="img/white/arrow_right.png" tooltip="West" >
                                 W
                             </label>
-                        </div>
-                        <div class="radio">
+                        </li>
+                        <li class="radio">
                             <label class="control-label">
                                 <input type="radio" value="NO" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnordovest">
                                 <img src="img/white/arrow_down_right.png" tooltip="Nord-West" >
                                 NW
                             </label>
-                        </div>
-                    </div>
+                        </li>
+                    </ul >
                 </td>
                 <td>
                     <div class="loading" ng-show="m_oController.windDirectionInspireuploading">
@@ -765,12 +767,13 @@
     </div>
 
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2 class="text-center">IMPACTS</h2>
         <table class="table" >
-            <tr>
-                <td colspan="6" class="text-center">
-                    <label class="control-label">IMPACTS</label>
-                </td>
-            </tr>
+            <!--<tr>-->
+                <!--<td colspan="7" class="text-center">-->
+
+                <!--</td>-->
+            <!--</tr>-->
             <tr>
                 <td></td>
                 <td><label class="control-label">Category</label></td>
@@ -785,7 +788,7 @@
                     <td>
                         <div class="project-icon delete" >
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ><i class="fa fa-remove "></i></button> -->
-                            <i class="fa fa-remove"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteSocioImpact(oTableRow.id)" ></i>
+                            <!--<i class="fa fa-remove"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteSocioImpact(oTableRow.id)" ></i>-->
                             <!-- <img src="img/delete.png" tooltip="Delete" > -->
                             <!-- <button class="btn btn-danger" tooltip="Delete" ng-click="m_oController.DeleteSocioImpact(oTableRow.id)"><i class="fa fa-remove"></i></button> -->
                         </div>
@@ -831,21 +834,23 @@
                     <td>
                         <label class="control-label">{{m_oController.GetTotalCost()}}</label>
                     </td>
+                    <td></td>
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h2 class="text-center">Media</h2>
         <table class="table" ng-hide="m_oController.m_oEvent.Media.length == 0">
             <tr>
-                <td><label class="control-label">Media</label></td>
+                <!--<td><label class="control-label">Media</label></td>-->
                 <td><label class="control-label">Attachments</label></td>
                 <td><label class="control-label">Lat</label></td>
                 <td><label class="control-label">Lon</label></td>
             </tr>
             <tbody ng-repeat="oTableRow in m_oController.m_oEvent.Media">
                 <tr>
-                    <td></td>
+
                     <td>
                         <div class="project-icon delete" >
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, m_oController.m_oEvent.id)"><i class="fa fa-remove"></i></button> -->
@@ -862,6 +867,7 @@
                             <a class="btn btn-info" href ng-click="m_oController.OpenMedia(oTableRow.id)">{{oTableRow.shortDownloadPath}}</a>
                         </div>
                     </td>
+                    <!--<td></td>-->
                     <td>
                         <label class="control-label">{{oTableRow.lat}}</label>
                     </td>
