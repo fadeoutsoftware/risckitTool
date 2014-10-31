@@ -268,6 +268,47 @@ td label i,
 .navbar li a {color:white; text-align: center;}
 
 
+
+
+
+/*=====================================================
+                        links
+====================================================*/
+.links ul {
+    list-style-type: none;
+}
+.links ul > li > a {
+    text-decoration:none;
+    color:black;
+}
+
+.links ul > li {
+    display:block;
+    max-width:75%;
+    background:#ffcc00;
+    padding:5px;
+    margin:5px 0;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -ms-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+    transition: all 1s ease-in-out;
+}
+
+.links ul > li:hover {
+
+    text-shadow: 0 0 5px white;
+    font-size:1.2em;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -ms-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
+
+}
+
+
+
 /*=====================================================
                         footer
 ====================================================*/
