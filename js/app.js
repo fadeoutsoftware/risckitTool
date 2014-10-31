@@ -25,6 +25,7 @@ riskit.config(function($routeProvider) {
         $routeProvider.when('/media/:idmedia', {templateUrl: 'partials/media.html', controller: 'MediaController'});
         $routeProvider.when('/socioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
         $routeProvider.when('/socioimpact/:idsocioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
+        $routeProvider.when('/links', {templateUrl: 'partials/links.html'});
         $routeProvider.otherwise({redirectTo: '/'});
     }
 );
