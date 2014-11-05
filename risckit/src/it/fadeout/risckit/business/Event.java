@@ -850,9 +850,9 @@ public class Event {
 			if (this.getFloodHeightTimeSeries() != null)
 				sFloodHeightTimeSeries = this.getFloodHeightTimeSeries();
 
-			if (oSocioImpacts != null)
+			if (oSocioImpacts != null && oSocioImpacts.size() > 0)
 			{
-				SocioImpact oSocioImpact =oSocioImpacts.get(iCount);
+				SocioImpact oSocioImpact = oSocioImpacts.get(iCount);
 				if (oSocioImpact.getSubCategory() != null)
 				{
 					sCategory = oSocioImpact.getSubCategory().getCategory().getDescription();

@@ -127,13 +127,16 @@ public class MediaResource {
 			//Thumb
 			String sProjectPath = servletConfig.getInitParameter("ProjectPath") + "img/thumb/";
 			String mimeType = serveletContext.getMimeType(fileDetail.getFileName());
-			if (mimeType.startsWith("image"))
+			if (mimeType != null)
 			{
-				//Write Thumb
-				String sThumbPath = oRepo.CreateThumb(isImage, sProjectPath, oMedia, fileDetail.getFileName());
-				if (sThumbPath != "-1")
+				if (mimeType.startsWith("image"))
 				{
-					oMedia.setThumbnail(sThumbPath);
+					//Write Thumb
+					String sThumbPath = oRepo.CreateThumb(isImage, sProjectPath, oMedia, fileDetail.getFileName());
+					if (sThumbPath != "-1")
+					{
+						oMedia.setThumbnail(sThumbPath);
+					}
 				}
 			}
 
