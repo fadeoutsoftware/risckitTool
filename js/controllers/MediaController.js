@@ -57,9 +57,10 @@ var MediaController = (function() {
                     draggable: true
                 });
 
-                oRootScope.m_oController.m_oPositionMark = location;
                 //oRootScope.$apply();
             }
+
+            oRootScope.m_oController.m_oPositionMark = location;
         }
 
 
