@@ -116,7 +116,7 @@ public class PdfCreator {
 				{
 					if (document.add(oImage))
 					{
-						document.add(FooterFoto("Figura: " + oMedia.getDescription() + " (Date: " + dateFormatter.format(oMedia.getDate()) + ")"));
+						document.add(FooterFoto("Figure: " + oMedia.getDescription() + " (Date: " + dateFormatter.format(oMedia.getDate()) + ")"));
 						document.newPage();
 					}
 					
