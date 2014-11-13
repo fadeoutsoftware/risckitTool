@@ -248,9 +248,7 @@ td label i,
     margin-top: -35px!important;
     white-space: nowrap;
 }
-.tooltip {position: absolute; margin:0;}
-.tooltip-inner {background: #ffcc00; font-size: 2em; color:black;}
-.tooltip[class*="top"] .tooltip-arrow {    border-top-color: #ffcc00;}
+
 
 
 /*=====================================================
@@ -350,6 +348,107 @@ td label i,
 .eu { width:auto; margin:10px; max-height: 80px;}
 .footer p {color:white; margin-top: 10px;}
 .footer .social {margin-top:20px;}
+
+/* ======================================
+            tooltip bootstrap
+========================================*/
+
+
+.tooltip {position: absolute; margin:0;}
+.tooltip-inner {background: #ffcc00; font-size: 2em; color:black;}
+.tooltip[class*="top"] .tooltip-arrow {    border-top-color: #ffcc00;}
+
+/* ======================================
+            tooltip custom
+========================================*/
+
+/**
+ * HINT- A CSS tooltip library
+ */
+
+.hint { position: relative; display: inline-block; }
+{display: block;}
+
+
+.hint:before, .hint:after
+{
+    position: absolute;
+    opacity: 0;
+    z-index: 1000000;
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    pointer-events: none;
+}
+
+
+.hint:hover:before, .hint:hover:after {
+    opacity: 1;
+}
+
+.hint:before {
+    content: '';
+    position: absolute;
+    background: transparent;
+    border: 6px solid transparent;
+    position: absolute;
+}
+
+.hint:after {
+    content: attr(data-hint);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 8px 10px;
+    font-size: 12px;
+    white-space: nowrap;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+
+/* top */
+
+.hint--top:before {
+    bottom: 100%;
+    left: 50%;
+    margin: 0 0 -18px 0;
+    border-top-color: rgba(0, 0, 0, 0.8);
+}
+
+.hint--top:after {
+    bottom: 100%;
+    left: 50%;
+    margin: 0 0 -6px -10px;
+}
+
+.hint--top:hover:before {
+    margin-bottom: -10px;
+}
+
+.hint--top:hover:after {
+    margin-bottom: 2px;
+}
+
+
+/* ================================
+            tooltip custom override
+================================*/
+.hint:before, .hint:after
+{
+    -webkit-transition: 0.3s ease;
+    -moz-transition: 0.3s ease;
+    pointer-events: none;
+}
+
+.hint:hover:before, .hint:hover:after {    opacity: 0.9; }
+.hint:after {
+    /*background: rgba(0, 0, 0, 0.8);*/
+    background: #ffcc00; font-size: 1.5em; color:black;
+    /*color: white;*/
+    padding: 8px 10px;
+    /*font-size: 12px;*/
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+/* top */
+.hint--top:before {border-top-color: rgba(255, 204, 0, 0.8); }
 
 
 
