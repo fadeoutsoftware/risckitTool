@@ -81,62 +81,73 @@ public class EventResource {
 	public EventViewModel SaveEvent(EventViewModel oViewModel) {
 
 		Event oEvent = null;
+		if (oViewModel == null)
+			return null;
+
+		if (oViewModel.getUserId() == null)
+			return null;
+
+		if (oViewModel.getUserId().equals(0))
+			return null;
+
 		try
 		{
-			if (oViewModel != null)
+
+			//Load User
+			UserRepository oUserRepo = new UserRepository();
+			User oUser = oUserRepo.Select(oViewModel.getUserId(), User.class);
+			if (oUser == null)
+				return null;
+
+			EventRepository oRepo = new EventRepository();
+			oEvent = new Event();
+			oEvent.setEntity(oViewModel);
+			if (oViewModel.getId() == null || oViewModel.getId() == 0)
 			{
-				EventRepository oRepo = new EventRepository();
-				oEvent = new Event();
-				oEvent.setEntity(oViewModel);
-				if (oViewModel.getId() == null || oViewModel.getId() == 0)
-				{
-					oRepo.Save(oEvent);
-				}
-				else
-				{
-					oEvent.setId(oViewModel.getId());
-					oRepo.Update(oEvent);
-				}
+				oRepo.Save(oEvent);
+			}
+			else
+			{
+				oEvent.setId(oViewModel.getId());
+				oRepo.Update(oEvent);
+			}
 
-				if (oEvent != null)
-				{
-					oViewModel.setId(oEvent.getId());
-					//Load Country
-					CountryRepository oRepoCountry = new CountryRepository();
-					oEvent.setCountry(oRepoCountry.Select(oEvent.getCountryId(), Country.class));
+			if (oEvent == null)
+				return null;
 
-					//socio impacts
-					SocioImpactRepository oSocioRepo = new SocioImpactRepository();
-					List<SocioImpact> oSocioImpacts = oSocioRepo.SelectByEvent(oEvent.getId());
+			oViewModel.setId(oEvent.getId());
+			//Load Country
+			CountryRepository oRepoCountry = new CountryRepository();
+			oEvent.setCountry(oRepoCountry.Select(oEvent.getCountryId(), Country.class));
 
-					String sLocation = oViewModel.getCountryCode() + "_" + oViewModel.getRegionName();
+			//socio impacts
+			SocioImpactRepository oSocioRepo = new SocioImpactRepository();
+			List<SocioImpact> oSocioImpacts = oSocioRepo.SelectByEvent(oEvent.getId());
 
-					DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-					String sStartDate = dateFormatter.format(oEvent.getStartDate());
+			String sLocation = oViewModel.getCountryCode() + "_" + oViewModel.getRegionName();
 
-					SVNUtils oSvnUtils = new SVNUtils();
-					String sDirPath = oViewModel.getLogin() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
+			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+			String sStartDate = dateFormatter.format(oEvent.getStartDate());
 
-					//csv
-					try
-					{
-						oSvnUtils.Commit(oEvent.GetCsvInputStream(oSocioImpacts), 
-								oViewModel.getLogin(),
-								servletConfig.getInitParameter("SvnUser"), 
-								servletConfig.getInitParameter("SvnPwd"), 
-								servletConfig.getInitParameter("SvnUserDomain"), 
-								sDirPath + "Event.csv", 
-								servletConfig.getInitParameter("SvnRepository"),
-								sStartDate,
-								sLocation);
-					}
-					catch(SVNException oEx)
-					{
+			SVNUtils oSvnUtils = new SVNUtils();
+			String sDirPath = oUser.getUserName() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 
-					}
-				}
-				else
-					oViewModel = null;	
+			//csv
+			try
+			{
+				oSvnUtils.Commit(oEvent.GetCsvInputStream(oSocioImpacts), 
+						oViewModel.getLogin(),
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						sDirPath + "Event.csv", 
+						servletConfig.getInitParameter("SvnRepository"),
+						sStartDate,
+						sLocation);
+			}
+			catch(SVNException oEx)
+			{
+
 			}
 		}
 		catch(Exception oEx)
@@ -151,25 +162,50 @@ public class EventResource {
 	@POST
 	@Path("/upload")
 	@Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
-	public String UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("eventid") Integer iEventId, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("parameter") String sNameProperty, @FormDataParam("login") String sUserLogin, @FormDataParam("startDate") String sStartDate, @FormDataParam("regionName") String sRegionName, @FormDataParam("countryCode") String sCountryCode) throws IOException
+	public String UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("eventid") Integer iEventId, @FormDataParam("file") FormDataContentDisposition fileDetail, @FormDataParam("parameter") String sNameProperty, @FormDataParam("userid") Integer iUserId, @FormDataParam("startDate") String sStartDate, @FormDataParam("regionName") String sRegionName, @FormDataParam("countryCode") String sCountryCode) throws IOException
 	{
+
+		if (file == null)
+			return null;
+
+		if (iEventId == null)
+			return null;
+
+		if (iEventId == 0)
+			return null;
+
+		if (iUserId == null)
+			return null;
+
+		if (iUserId == null)
+			return null;
+
+		String sPathRepository = null;
+		EventRepository oRepo = new EventRepository();
+		UserRepository oUserRepo = new UserRepository();
+		Event oEvent = null;
 		try
 		{
+			User oUser = oUserRepo.Select(iUserId, User.class);
+			if (oUser == null)
+				return null;
+
 			//Carico il progetto e lo aggiorno con il nuovo path
-			EventRepository oRepo = new EventRepository();
-			Event oEvent = oRepo.Select(iEventId, Event.class);
+			oEvent = oRepo.Select(iEventId, Event.class);
+
+			if (oEvent == null)
+				return null;
 
 			String sLocation = sCountryCode + "_" + sRegionName;
-
 			SVNUtils oSvnUtils = new SVNUtils();
-			String sDirPath = sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
+			String sDirPath = oUser.getUserName() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 			DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 			sStartDate = dateFormatter.format(oEvent.getStartDate());
 			boolean bError = false;
 			try
 			{
 				oSvnUtils.Commit(file,
-						sUserLogin,
+						oUser.getUserName(),
 						servletConfig.getInitParameter("SvnUser"), 
 						servletConfig.getInitParameter("SvnPwd"), 
 						servletConfig.getInitParameter("SvnUserDomain"), 
@@ -182,21 +218,25 @@ public class EventResource {
 			{
 				bError = true;
 			}
-			String sPathRepository = null;
 			if (!bError)
 			{
 				sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
-				oEvent.setPathRepository(sNameProperty, sPathRepository);
-				oRepo.Update(oEvent);
 			}
-
-			return sPathRepository;
 		}
 		catch(Exception oEx)
 		{
 			oEx.printStackTrace();
 			return null;
 		}
+		finally
+		{
+			if (oEvent != null)
+			{
+				oEvent.setPathRepository(sNameProperty, sPathRepository);
+				oRepo.Update(oEvent);
+			}
+		}
+		return sPathRepository;
 	}
 
 	@GET
@@ -405,7 +445,7 @@ public class EventResource {
 		{
 			String[] sSplitString = sRepoFile.split("/");
 			final String sTemp = sSplitString[sSplitString.length - 1];
-			
+
 			//Delete File if present
 			SVNUtils oSvnUtils = new SVNUtils();
 			File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
@@ -437,8 +477,8 @@ public class EventResource {
 			ResponseBuilder response = Response.noContent();
 			return response.build();
 		}
-		
-		
+
+
 
 	}
 
@@ -640,9 +680,6 @@ public class EventResource {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response CretePdf2(@PathParam("idevent") int iIdEvent) {
 
-		String sFileName = UUID.randomUUID().toString() + ".pdf";
-		File oFile = new File(servletConfig.getInitParameter("ProjectPath") + "pdf/" + sFileName);
-
 		try
 		{
 			PdfCreator oPdfCreator = new PdfCreator(servletConfig.getInitParameter("ProjectPath"),
@@ -650,12 +687,12 @@ public class EventResource {
 					servletConfig.getInitParameter("SvnPwd"), 
 					servletConfig.getInitParameter("SvnUserDomain"),
 					servletConfig.getInitParameter("SvnRepository"));
-			String sPdfName = oPdfCreator.CreatePdf(iIdEvent, oFile, serveletContext);
-			if (sPdfName != null)
+			File oFile = oPdfCreator.CreatePdf(iIdEvent, servletConfig.getInitParameter("ProjectPath"), serveletContext);
+			if (oFile != null)
 			{
 				ResponseBuilder response = Response.ok(oFile);
 				response.header("Content-Disposition", "attachment; filename=\""
-						+ sPdfName + "\"");
+						+ oFile.getName() + "\"");
 				response.header("content-type", "application/pdf");
 				response.header("Content-lenght", oFile.length());
 				return response.build();

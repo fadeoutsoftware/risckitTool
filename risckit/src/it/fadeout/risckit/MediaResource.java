@@ -66,24 +66,26 @@ public class MediaResource {
 	@Produces({"application/json"})
 	public MediaViewModel SaveMedia(MediaViewModel oMediaViewModel) {
 
+		if (oMediaViewModel == null)
+			return null;
+
 		try
 		{
-			if (oMediaViewModel != null)
-			{
-				MediaRepository oRepo = new MediaRepository();
-				Media oMedia = new Media();
-				oMedia.setEntity(oMediaViewModel);
-				if (oMediaViewModel.getId() == null || oMediaViewModel.getId() == 0)
-					oRepo.Save(oMedia);
-				else
-				{
-					oMedia.setId(oMediaViewModel.getId());
-					oRepo.Update(oMedia);
-				}
 
-				if (oMedia != null)
-					oMediaViewModel = oMedia.getViewModel();
+			MediaRepository oRepo = new MediaRepository();
+			Media oMedia = new Media();
+			oMedia.setEntity(oMediaViewModel);
+			if (oMediaViewModel.getId() == null || oMediaViewModel.getId() == 0)
+				oRepo.Save(oMedia);
+			else
+			{
+				oMedia.setId(oMediaViewModel.getId());
+				oRepo.Update(oMedia);
 			}
+
+			if (oMedia != null)
+				oMediaViewModel = oMedia.getViewModel();
+
 		}
 		catch(Exception oEx)
 		{
@@ -98,10 +100,31 @@ public class MediaResource {
 	@POST
 	@Path("/upload")
 	@Consumes({MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON})
-	public MediaViewModel UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("mediaid") Integer iMediaId, @FormDataParam("file") FormDataContentDisposition fileDetail,@FormDataParam("login") String sUserLogin, @FormDataParam("startDate") String sStartDate, @FormDataParam("regionName") String sRegionName, @FormDataParam("countryCode") String sCountryCode) throws IOException
+	public MediaViewModel UploadFile(@FormDataParam("file") InputStream file, @FormDataParam("mediaid") Integer iMediaId, @FormDataParam("file") FormDataContentDisposition fileDetail,@FormDataParam("userid") Integer iUserId, @FormDataParam("startDate") String sStartDate, @FormDataParam("regionName") String sRegionName, @FormDataParam("countryCode") String sCountryCode) throws IOException
 	{
+		MediaViewModel oReturnViewModel = null;
+		if (file == null)
+			return null;
+
+		if (iMediaId == null)
+			return null;
+
+		if (iMediaId.equals(0))
+			return null;
+
+		if (iUserId == null)
+			return null;
+
+		if (iUserId.equals(0))
+			return null;
+
 		try
 		{
+			UserRepository oUserRepo = new UserRepository();
+			User oUser = oUserRepo.Select(iUserId, User.class);
+			if (oUser == null)
+				return null;
+
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
 			// Fake code simulating the copy
@@ -119,8 +142,6 @@ public class MediaResource {
 			InputStream isImage = new ByteArrayInputStream(baos.toByteArray()); 
 			InputStream isOpenEarth = new ByteArrayInputStream(baos.toByteArray()); 
 
-
-			MediaViewModel oReturnViewModel = null;
 			MediaRepository oRepo = new MediaRepository();
 			Media oMedia = oRepo.Select(iMediaId, Media.class);
 			String sLocation = sCountryCode + "_" + sRegionName;
@@ -141,12 +162,12 @@ public class MediaResource {
 			}
 
 			SVNUtils oSvnUtils = new SVNUtils();
-			String sDirPath = sUserLogin + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
+			String sDirPath = oUser.getUserName() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 			boolean bError = false;
 			try{
 
 				oSvnUtils.Commit(isOpenEarth,
-						sUserLogin,
+						oUser.getUserName(),
 						servletConfig.getInitParameter("SvnUser"), 
 						servletConfig.getInitParameter("SvnPwd"), 
 						servletConfig.getInitParameter("SvnUserDomain"), 

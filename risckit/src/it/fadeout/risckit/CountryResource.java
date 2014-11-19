@@ -35,6 +35,8 @@ public class CountryResource {
 					oViewModel.setid(oCountry.getId());
 					oViewModel.setcountryname(oCountry.getName());
 					oViewModel.setCountryCode(oCountry.getCountryCode());
+					oViewModel.setLat(oCountry.getLat());
+					oViewModel.setLon(oCountry.getLon());
 					oReturnList.add(oViewModel);
 				}
 			}

@@ -14,7 +14,7 @@ import it.fadeout.risckit.business.SubCategory;
 
 public class SocioImpactRepository extends Repository<SocioImpact>
 {
-	
+
 	public List<SocioImpact> SelectByEvent(Integer iIdEvent)
 	{
 		Session oSession = null;
@@ -35,7 +35,7 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -45,7 +45,7 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 			}			
 		}		
 		finally {
-			
+
 			if (oSession!=null) {
 				oSession.flush();
 				oSession.clear();
@@ -55,28 +55,31 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 
 		return oList;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public SocioImpact Select(int iId, Class<SocioImpact> oClass) {
-		
+
 		Session oSession = null;
-		
+
 		SocioImpact oEntity = null;
-		
+
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
 			oSession.beginTransaction();
 			oEntity = (SocioImpact) oSession.get(oClass, iId);
-			oEntity.setSubCategory((SubCategory)oSession.get(SubCategory.class, oEntity.getIdSubcategory()));
-			if (oEntity.getIdCurrency() != null)
-				oEntity.setCurrency((Currency)oSession.get(Currency.class, oEntity.getIdCurrency()));
+			if (oEntity != null)
+			{
+				oEntity.setSubCategory((SubCategory)oSession.get(SubCategory.class, oEntity.getIdSubcategory()));
+				if (oEntity.getIdCurrency() != null)
+					oEntity.setCurrency((Currency)oSession.get(Currency.class, oEntity.getIdCurrency()));
+			}
 			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -92,17 +95,17 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 				oSession.close();
 			}
 		}
-		
+
 		return oEntity;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public long SelectCount(int iIdEvent) {
-		
+
 		Session oSession = null;
-		
+
 		long iCount = 0;
-		
+
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
 			oSession.beginTransaction();
@@ -114,7 +117,7 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -130,9 +133,9 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 				oSession.close();
 			}
 		}
-		
+
 		return iCount;
 	}
 
-	
+
 }

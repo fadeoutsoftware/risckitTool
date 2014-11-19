@@ -67,7 +67,7 @@ public class PdfCreator {
 		m_sSvnRepository = sSvnRepository;
 	}
 
-	public String CreatePdf(int iIdEvent, File oFile, ServletContext serveletContext)
+	public File CreatePdf(int iIdEvent, String sProjectPath, ServletContext serveletContext)
 	{
 		EventRepository oEventRepo = new EventRepository();
 		MediaRepository oMediaRepo = new MediaRepository();
@@ -76,7 +76,6 @@ public class PdfCreator {
 		CountryRepository oCountryRepo = new CountryRepository();
 		UserRepository oUserRepo = new UserRepository();
 
-
 		Event oEvent = oEventRepo.Select(iIdEvent, Event.class);
 		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 		List<Media> oMediaList = oMediaRepo.SelectByEvent(iIdEvent);
@@ -84,7 +83,12 @@ public class PdfCreator {
 		List<SocioImpact> oSocioList = oSocioRepo.SelectByEvent(iIdEvent);
 		Country oRegion = oCountryRepo.Select(oEvent.getCountryId(), Country.class);
 		Country oCountry = oCountryRepo.SelectCountryByCountryCode(oRegion.getCountryCode());
+		
+		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+		String sFileName = oCountry.getCountryCode() + "_" + oRegion.getName() + "_" + dateFormatter.format(oEvent.getStartDate()).replace("-", "_");
 
+		File oFile = new File(sProjectPath + "pdf/" + sFileName + ".pdf");
+		
 		List<Media> oGenericMedia = new ArrayList<Media>();
 		Document document = null;
 		OutputStream oOut = null;
@@ -108,7 +112,7 @@ public class PdfCreator {
 				document.add(SocioImpactsTable(2, oSocioList));
 			document.newPage();
 			document.add(TitoloParagrafo("Photos"));
-			DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+			DateFormat oDateFormatter = new SimpleDateFormat("dd-MM-yyyy");
 			for (Media oMedia : oMediaList) {
 
 				Image oImage = GetImage(oMedia, oUser, oPdfWriter, serveletContext);
@@ -116,7 +120,7 @@ public class PdfCreator {
 				{
 					if (document.add(oImage))
 					{
-						document.add(FooterFoto("Figure: " + oMedia.getDescription() + " (Date: " + dateFormatter.format(oMedia.getDate()) + ")"));
+						document.add(FooterFoto("Figure: " + oMedia.getDescription() + " (Date: " + oDateFormatter.format(oMedia.getDate()) + ")"));
 						document.newPage();
 					}
 					
@@ -162,8 +166,7 @@ public class PdfCreator {
 
 		}
 
-		DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-		return oCountry.getCountryCode() + "_" + oRegion.getName() + "_" + dateFormatter.format(oEvent.getStartDate()).replace("-", "_");
+		return oFile;
 	}
 
 	private Paragraph Intestazione(String sValue)

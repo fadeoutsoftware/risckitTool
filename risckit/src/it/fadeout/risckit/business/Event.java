@@ -860,7 +860,9 @@ public class Event {
 				}
 				sSocioDescription = oSocioImpact.getDescription();
 				sUnitMeasure = oSocioImpact.getUnitMeasure();
-				sCost = oSocioImpact.getCost().toString();
+				
+				if (oSocioImpact.getCost() != null)
+					sCost = oSocioImpact.getCost().toString();
 				if (oSocioImpact.getCurrency() != null)
 					sCurrency = oSocioImpact.getCurrency().getCurrency();
 			}

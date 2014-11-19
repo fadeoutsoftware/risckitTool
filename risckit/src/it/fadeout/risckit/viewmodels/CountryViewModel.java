@@ -13,7 +13,9 @@ public class CountryViewModel {
 	
 	private String countrycode;
 	
+	private String lat;
 	
+	private String lon;
 
 	public int getid() {
 		return id;
@@ -37,6 +39,22 @@ public class CountryViewModel {
 
 	public void setCountryCode(String countrycode) {
 		this.countrycode = countrycode;
+	}
+	
+	public String getLat() {
+		return lat;
+	}
+
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+
+	public String getLon() {
+		return lon;
+	}
+
+	public void setLon(String lon) {
+		this.lon = lon;
 	}
 	
 }

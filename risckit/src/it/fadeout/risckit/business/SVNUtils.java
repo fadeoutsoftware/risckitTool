@@ -134,7 +134,7 @@ public class SVNUtils {
 		 * when 'null' is passed, then default system temporary directory will be used to
 		 * create temporary files.  
 		 */
-		ISVNEditor editor = repository.getCommitEditor("directory and file added", null);
+		ISVNEditor editor = repository.getCommitEditor(sLogin + " - directory and file added", null);
 
 		/*
 		 * Add a directory and a file within that directory.
@@ -164,7 +164,13 @@ public class SVNUtils {
 		 * -1 - revision is HEAD (actually, for a comit  editor  this number  is 
 		 * irrelevant)
 		 */
-		editor.openRoot(-1);
+		try
+		{
+			editor.openRoot(-1);
+		}
+		catch (Exception oEx){
+
+		}
 		/*
 		 * Adds a new directory (in this  case - to the  root  directory  for 
 		 * which the SVNRepository was  created). 
@@ -359,7 +365,7 @@ public class SVNUtils {
 		 * when 'null' is passed, then default system temporary directory will be used to
 		 * create temporary files.  
 		 */
-		ISVNEditor editor = repository.getCommitEditor("directory and file deleted", null, true, null);
+		ISVNEditor editor = repository.getCommitEditor(sLogin + " directory and file deleted", null, true, null);
 
 		/*
 		 * Add a directory and a file within that directory.
