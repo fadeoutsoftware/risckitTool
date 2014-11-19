@@ -164,8 +164,19 @@ var MediaController = (function() {
                     $scope.m_oController.NewMedia = data;
                     if ($scope.selectedFiles[index] != null) {
                         $scope.m_oController.m_oMediaService.UploadMedia($scope.m_oController.m_oSharedService.getEvent(), $scope.m_oController.NewMedia, $scope.selectedFiles[index]).success(function (data) {
-                            $scope.m_oController.NewMedia = data;
-                            $scope.m_oController.m_oSharedService.getEvent().Media.push(data);
+                            if (data != null && data != '') {
+                                $scope.m_oController.NewMedia = data;
+                                $scope.m_oController.m_oSharedService.getEvent().Media.push(data);
+
+                            }
+                            else
+                            {
+                                $scope.m_oController.NewMedia.downloadPath = '';
+                                $scope.m_oController.NewMedia.shortDownloadPath = '';
+                                $scope.m_oController.m_oSharedService.getEvent().Media.push($scope.m_oController.NewMedia);
+                                alert('Error uploading media')
+                            }
+
                             $scope.m_oController.m_oUploading = false;
                         });
                     }

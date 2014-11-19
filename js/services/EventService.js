@@ -14,7 +14,7 @@ angular.module('risckit.eventService', []).
         this.m_aGetWaveHeightType = [{name:"Mean significant wave height", value:1}, {name:"Peak significant wave height", value:2}, {name:"Maximum wave height", value:3}];
         this.m_aGetWaveDiectionType = [{name:"Degrees from N", value:1}, {name:"Compass", value:2}];
         this.m_aGetWindDiectionType = [{name:"Degrees from N", value:1}, {name:"Compass", value:2}];
-        this.m_aGetWaterLevelType = [{name:"Maximum total water level", value:1}, {name:"Maximum astronomical tide", value:2}];
+        this.m_aGetWaterLevelType = [{name:"Maximum total water level", value:1}, {name:"Maximum astronomical tide", value:2}, {name:"Minimum total water level", value:3}];
         this.m_aGetWindIntensityType = [{name:"Mean wind speed", value:1}, {name:"Maximum wind speed", value:2}, {name:"Maximum wind gust", value:3}];
         this.m_aGetCostDetails = [{name:"Direct Cost", value:1}, {name:"Business Interruption Cost", value:2}, {name:"Indirect Cost", value:3}, {name:"Risk mitigation Cost", value:4}];
 
@@ -116,7 +116,7 @@ angular.module('risckit.eventService', []).
             fd.append('file', selectedfile);
             fd.append("eventid", event.id);
             fd.append("parameter", parameter);
-            fd.append("login", event.login);
+            fd.append("userid", event.userId);
             fd.append("startDate", event.startDate);
             fd.append("regionName", event.regionName);
             fd.append("countryCode", event.countryCode);

@@ -61,7 +61,7 @@ angular.module('risckit.mediaService', []).
             var fd = new FormData();
             fd.append('file', oSelectedfile);
             fd.append("mediaid", media.id);
-            fd.append("login", event.login);
+            fd.append("userid", event.userId);
             fd.append("startDate", event.startDate);
             fd.append("regionName", event.regionName);
             fd.append("countryCode", event.countryCode);

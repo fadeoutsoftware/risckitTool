@@ -63,8 +63,19 @@ var EventController = (function() {
 
         }
 
-        if (this.m_oLoginService.isLogged())
+        if (this.m_oLoginService.isLogged()) {
             this.m_oScope.m_oController.m_oEvent.login = this.m_oLoginService.getUserName();
+            this.m_oScope.m_oController.m_oEvent.userId = this.m_oLoginService.getUserId();
+        }
+        else
+        {
+            var oModalLogin = this.m_oModal.open({
+                templateUrl: 'partials/login.html',
+                controller: LoginController,
+                backdrop: 'static',
+                keyboard: false
+            });
+        }
 
         this.uploadRightAway = true;
 
@@ -385,6 +396,10 @@ var EventController = (function() {
                     $scope.m_oController.m_oEvent.id = data.id;
                     $scope.m_oController.m_oEventService.Upload($scope.m_oController.m_oEvent, $scope.selectedFiles[index], $scope.parameter).success(function (data) {
 
+                        if (data == null || data == '') {
+                            alert('Error uploading file!');
+                        }
+
                         //TODO Aggiornarnare il path corretto dell'evento
                         if ($scope.parameter == 'waveHeightInspire') {
                             $scope.m_oController.m_oEvent.waveHeightInspire = data;
@@ -467,6 +482,7 @@ var EventController = (function() {
 
                     }).error(function (data) {
 
+                        alert('Error uploading file!');
                     });
 
                 });
@@ -614,10 +630,10 @@ var EventController = (function() {
 
     EventController.prototype.Save = function() {
         var oScope = this.m_oScope;
-        if (this.m_oEvent != null)
-        {
+        if (this.m_oEvent != null) {
             if (this.m_oLoginService.isLogged()) {
                 this.m_oEvent.userId = this.m_oLoginService.getUserId();
+                this.m_oEvent.login = this.m_oLoginService.getUserName();
 
                 if (oScope.m_oController.m_oEventService.isModified()) {
 
@@ -627,22 +643,27 @@ var EventController = (function() {
                     }
 
                     //Geocoding
-                    var oCountry = '';
+                    var oCountry = null;
                     var oCountries = oScope.m_oController.GetCountries();
-                    for(var iCount = 0; iCount < oCountries.length; iCount++)
-                    {
+                    for (var iCount = 0; iCount < oCountries.length; iCount++) {
                         if (oScope.m_oController.m_oEvent.countryCode == oCountries[iCount].countryCode)
-                            oCountry = oCountries[iCount].countryname;
+                            oCountry = oCountries[iCount];
                     }
                     var oRegion = oScope.m_oController.m_oEventService.GetRegion(oScope.m_oController.m_oEvent.countryId);
                     if (oRegion != null) {
                         var geocoder = new google.maps.Geocoder();
-                        geocoder.geocode({ 'address': oCountry + ' ' + oRegion.countryname }, function (results, status) {
+                        geocoder.geocode({ 'address': oCountry.countryname + ' ' + oRegion.countryname }, function (results, status) {
                             if (status == google.maps.GeocoderStatus.OK) {
                                 oScope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
                                 oScope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
                             }
+                            else {
+                                //se è andata male la decodifica metto almeno le coordinate del country
+                                oScope.m_oController.m_oEvent.lat = oCountries.lat;
+                                oScope.m_oController.m_oEvent.lon = oCountries.lon;
+                            }
 
+                            //ora posso salvare
                             oScope.m_oController.m_bSaving = true;
                             oScope.m_oController.m_oEventService.Save(oScope.m_oController.m_oEvent).success(function (data, status) {
 
@@ -672,9 +693,12 @@ var EventController = (function() {
                                 oScope.m_oController.m_oEventService.setUnchanged();
                             });
 
+
                         });
                     }
                     else {
+
+                        oScope.m_oController.m_bSaving = true;
                         oScope.m_oController.m_oEventService.Save(oScope.m_oController.m_oEvent).success(function (data, status) {
 
                             //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
@@ -703,8 +727,7 @@ var EventController = (function() {
                         });
                     }
                 }
-                else
-                {
+                else {
                     oScope.m_oController.m_oLocation.path('eventslist');
                 }
 

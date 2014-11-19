@@ -3,8 +3,8 @@
  */
 angular.module('risckit.socioimpactService', []).
     service('SocioimpactService',  ['$http', '$upload', function ($http) {
-        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        //this.APIURL = 'http://localhost:8080/risckit/rest';
+        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        this.APIURL = 'http://localhost:8080/risckit/rest';
         this.m_oHttp = $http;
         this.m_oCategories = null;
         this.m_oCurrencies = null;
