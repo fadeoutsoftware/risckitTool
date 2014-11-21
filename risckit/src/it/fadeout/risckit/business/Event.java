@@ -1147,28 +1147,26 @@ public class Event {
 
 	public void setPathRepository(String sNameProperty, String sPathRepository)
 	{
-		if (sNameProperty.equals("waveHeightInspire"))
-			this.setWaveHeightInspire(sPathRepository);
-		if (sNameProperty.equals("waveHeightTimeSeries"))
-			this.setWaveHeightTimeSeries(sPathRepository);
-		if (sNameProperty.equals("wavewindDirectionInspire"))
+		if (sNameProperty.equals("waveHeightDirectionInspire"))
 		{
+			this.setWaveHeightInspire(sPathRepository);
 			this.setWaveDirectionInspire(sPathRepository);
+		}
+		if (sNameProperty.equals("waveHeightDirectionTimeSeries"))
+		{
+			this.setWaveHeightTimeSeries(sPathRepository);
+			this.setWaveDirectionTimeSeries(sPathRepository);
+		}
+		if (sNameProperty.equals("windIntensityDirectionInspire"))
+		{
+			this.setWindIntensityInspire(sPathRepository);
 			this.setWindDirectionInspire(sPathRepository);
 		}
-		if (sNameProperty.equals("wavewindDirectionTimeSeries"))
+		if (sNameProperty.equals("windIntensityDirectionTimeSeries"))
 		{
-			this.setWaveDirectionTimeSeries(sPathRepository);
+			this.setWindIntensitySeries(sPathRepository);
 			this.setWindDirectionTimeSeries(sPathRepository);
 		}
-		if (sNameProperty.equals("windIntensityInspire"))
-			this.setWindIntensityInspire(sPathRepository);
-		if (sNameProperty.equals("windIntensitySeries"))
-			this.setWindIntensitySeries(sPathRepository);
-		//if (sNameProperty.equals("windDirectionInspire"))
-		//	this.setWindDirectionInspire(sPathRepository);
-		//if (sNameProperty.equals("windDirectionTimeSeries"))
-		//	this.setWindDirectionTimeSeries(sPathRepository);
 		if (sNameProperty.equals("waterLevelInspire"))
 			this.setWaterLevelInspire(sPathRepository);
 		if (sNameProperty.equals("waterLevelTimeSeries"))
@@ -1193,22 +1191,14 @@ public class Event {
 
 	public String getPathRepository(String sNameProperty)
 	{
-		if (sNameProperty.equals("waveHeightInspire"))
+		if (sNameProperty.equals("waveHeightDirectionInspire"))
 			return this.getWaveHeightInspire();
-		if (sNameProperty.equals("waveHeightTimeSeries"))
+		if (sNameProperty.equals("waveHeightDirectionTimeSeries"))
 			return this.getWaveHeightTimeSeries();
-		if (sNameProperty.equals("wavewindDirectionInspire"))
-			return this.getWaveDirectionInspire();
-		if (sNameProperty.equals("wavewindDirectionInspire"))
-			return this.getWaveDirectionTimeSeries();
-		if (sNameProperty.equals("windIntensityInspire"))
+		if (sNameProperty.equals("windIntensityDirectionInspire"))
 			return this.getWindIntensityInspire();
-		if (sNameProperty.equals("windIntensitySeries"))
+		if (sNameProperty.equals("windIntensityDirectionTimeSeries"))
 			return this.getWindIntensitySeries();
-		//if (sNameProperty.equals("windDirectionInspire"))
-		//	return this.getWindDirectionInspire();
-		//if (sNameProperty.equals("windDirectionTimeSeries"))
-		//	return this.getWindDirectionTimeSeries();
 		if (sNameProperty.equals("waterLevelInspire"))
 			return this.getWaterLevelInspire();
 		if (sNameProperty.equals("waterLevelTimeSeries"))
@@ -1241,18 +1231,10 @@ public class Event {
 			oList.add(this.getWaveHeightInspire());
 		if (this.getWaveHeightTimeSeries() != null)
 			oList.add(this.getWaveHeightTimeSeries());
-		if (this.getWaveDirectionInspire() != null)
-			oList.add(this.getWaveDirectionInspire());
-		if (this.getWaveDirectionTimeSeries() != null)
-			oList.add(this.getWaveDirectionTimeSeries());
 		if (this.getWindIntensityInspire() != null)
 			oList.add(this.getWindIntensityInspire());
 		if (this.getWindIntensitySeries() != null)
 			oList.add(this.getWindIntensitySeries());
-		//if (this.getWindDirectionInspire() != null)
-		//	oList.add(this.getWindDirectionInspire());
-		//if (this.getWindDirectionTimeSeries() != null)
-		//	oList.add(this.getWindDirectionTimeSeries());
 		if (this.getWaterLevelInspire() != null)
 			oList.add(this.getWaterLevelInspire());
 		if (this.getWaterLevelTimeSeries() != null)

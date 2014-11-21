@@ -164,6 +164,7 @@ public class MediaResource {
 			SVNUtils oSvnUtils = new SVNUtils();
 			String sDirPath = oUser.getUserName() + "/risckit/" + sStartDate + "_" + sLocation + "/raw/";
 			boolean bError = false;
+			String sPathRepository = null;
 			try{
 
 				oSvnUtils.Commit(isOpenEarth,
@@ -179,13 +180,14 @@ public class MediaResource {
 			catch(SVNException oEx)
 			{
 				bError = true;
+				oEx.printStackTrace();
 			}
 			if (!bError)
 			{
-				String sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
-				oMedia.setFile(sPathRepository);
-				oRepo.Update(oMedia);
+				sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
 			}
+			oMedia.setFile(sPathRepository);
+			oRepo.Update(oMedia);
 			if (oMedia != null)
 			{
 				oReturnViewModel = oMedia.getViewModel();
@@ -336,6 +338,7 @@ public class MediaResource {
 		}
 		catch (SVNException oEx)
 		{
+			oEx.printStackTrace();
 			ResponseBuilder response = Response.noContent();
 			return response.build();
 		}
@@ -385,6 +388,7 @@ public class MediaResource {
 			}
 			catch (SVNException oEx)
 			{
+				oEx.printStackTrace();
 				return null;
 			}
 		}

@@ -375,17 +375,20 @@ public class SVNUtils {
 		 */
 
 		sFileName = sFileName.replaceAll(sSvnRepository, "");
-		//controllo per impedire la cancellazione della cartella
-		if (!sFileName.startsWith("/trunk")){
-			try
-			{
-				SVNCommitInfo commitInfo = DeleteDir(editor, sFileName, latestRevision);
-				System.out.println("File Deleted");
-			}
-			catch(SVNException oEx)
-			{
-				oEx.printStackTrace();
-				System.err.println("Error on deleting dir");
+		//controllo per impedire la cancellazione della cartella trunk
+		if (sFileName != null && sFileName != "")
+		{
+			if (!sFileName.startsWith("trunk/")){
+				try
+				{
+					SVNCommitInfo commitInfo = DeleteDir(editor, sFileName, latestRevision);
+					System.out.println("File Deleted");
+				}
+				catch(SVNException oEx)
+				{
+					oEx.printStackTrace();
+					System.err.println("Error on deleting dir");
+				}
 			}
 		}
 	}

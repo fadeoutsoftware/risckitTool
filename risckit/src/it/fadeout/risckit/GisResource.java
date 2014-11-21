@@ -204,6 +204,7 @@ public class GisResource {
 							servletConfig.getInitParameter("SvnRepository"),
 							sStartDate,
 							sLocation);
+
 				}
 			}
 
@@ -212,7 +213,6 @@ public class GisResource {
 		catch(Exception oEx)
 		{
 			oEx.printStackTrace();
-
 		}
 
 		return oReturnValue;

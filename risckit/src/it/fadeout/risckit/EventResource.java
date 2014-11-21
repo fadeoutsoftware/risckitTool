@@ -147,7 +147,7 @@ public class EventResource {
 			}
 			catch(SVNException oEx)
 			{
-
+				oEx.printStackTrace();
 			}
 		}
 		catch(Exception oEx)
@@ -190,7 +190,7 @@ public class EventResource {
 			if (oUser == null)
 				return null;
 
-			//Carico il progetto e lo aggiorno con il nuovo path
+			//load event
 			oEvent = oRepo.Select(iEventId, Event.class);
 
 			if (oEvent == null)
@@ -216,11 +216,19 @@ public class EventResource {
 			}
 			catch(SVNException oEx)
 			{
+				oEx.printStackTrace();
 				bError = true;
 			}
+
 			if (!bError)
 			{
 				sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
+			}
+			
+			if (oEvent != null)
+			{
+				oEvent.setPathRepository(sNameProperty, sPathRepository);
+				oRepo.Update(oEvent);
 			}
 		}
 		catch(Exception oEx)
@@ -228,14 +236,7 @@ public class EventResource {
 			oEx.printStackTrace();
 			return null;
 		}
-		finally
-		{
-			if (oEvent != null)
-			{
-				oEvent.setPathRepository(sNameProperty, sPathRepository);
-				oRepo.Update(oEvent);
-			}
-		}
+
 		return sPathRepository;
 	}
 
@@ -553,8 +554,6 @@ public class EventResource {
 		try
 		{
 			Event oEvent = oRepo.Select(iIdEvent, Event.class);
-			//Provo a cancellare tutti i file
-
 			if (oEvent != null)
 			{
 
@@ -608,8 +607,6 @@ public class EventResource {
 				{
 					oEx.printStackTrace();
 				}
-
-
 				//Delete Event
 				return oRepo.Delete(oEvent, oUser.getUserName(), 
 						servletConfig.getInitParameter("SvnUser"), 
@@ -620,8 +617,6 @@ public class EventResource {
 						sLocation);
 
 			}
-
-
 		}
 		catch(Exception oEx)
 		{
