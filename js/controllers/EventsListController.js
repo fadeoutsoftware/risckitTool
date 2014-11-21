@@ -30,7 +30,7 @@ var EventsListController = (function() {
                 $scope.m_oController.m_oEventList = data;
             });
 
-        //Carico i country
+        //Load countries
         this.m_oEventService.LoadCountries();
 
     };

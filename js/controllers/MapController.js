@@ -36,12 +36,12 @@ var MapController = (function() {
 
             if (map.getZoom() < 6)
             {
-                //rimuovo i region marker
+                //remove region marker
                 clearRegionMarkers();
                 clearEventsInfo();
                 $scope.m_oController.clearMediaMarkers();
 
-                //Visualizzo nuovamente i marker per country
+                //Show marker for countries
                 for (var iCount = 0; iCount < $scope.m_oController.countryEventMarkers.length; iCount++)
                 {
                     $scope.m_oController.countryEventMarkers[iCount].setMap(map);
@@ -215,7 +215,7 @@ var MapController = (function() {
                         "</a>" +
                         "</div>";
 
-                    //preview se è un'immagine
+                    //preview if image
                     var modalInstance = oModal.open({
                         template: templ,
                         controller: 'PreviewController',
@@ -240,7 +240,7 @@ var MapController = (function() {
     MapController.prototype.clearMediaMarkers = function(){
 
         var oScope = this.m_oScope;
-        //Ritorno true  se non ci sono media marker da eliminare, false altrimenti
+        //true if no media marker to delete, false otherwise
         var bRet = true;
         //clear media
         if (oScope.m_oController.mediaMarkers != null) {

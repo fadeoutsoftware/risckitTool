@@ -19,12 +19,12 @@ var SocioimpactController = (function() {
         var oEvent = this.m_oSharedService.getEvent();
         if (oEvent != null)
         {
-            //Carico le categorie
+            //Load categories
             this.m_oSocioImpactService.LoadCategories().success(function(data){
                 //Set category
                 $scope.m_oController.m_oSocioImpactService.SetCategories(data);
 
-                //Carico le valute
+                //Load currencies
                 $scope.m_oController.m_oSocioImpactService.LoadCurrencies().success(function(data){
                     //Set currency
                     $scope.m_oController.m_oSocioImpactService.SetCurrencies(data);

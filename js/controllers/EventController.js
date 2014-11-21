@@ -20,8 +20,8 @@ var EventController = (function() {
         if (this.m_oScope.m_oController.m_oSharedService.getEvent() == null) {
             this.m_oScope.m_oController.m_oEvent = new Object();
             this.m_oScope.m_oController.m_oEvent.userId = this.m_oLoginService.getUserId();
-            this.m_oScope.m_oController.m_oEvent.Media = null; //ipotizzo si possano inserire più media con coordinate diverse
-            this.m_oScope.m_oController.m_oEvent.GIS = null; //ipotizzo sia solo un file
+            this.m_oScope.m_oController.m_oEvent.Media = null;
+            this.m_oScope.m_oController.m_oEvent.GIS = null;
         }
         else {
             this.m_oScope.m_oController.m_oEvent = this.m_oScope.m_oController.m_oSharedService.getEvent();
@@ -67,8 +67,7 @@ var EventController = (function() {
             this.m_oScope.m_oController.m_oEvent.login = this.m_oLoginService.getUserName();
             this.m_oScope.m_oController.m_oEvent.userId = this.m_oLoginService.getUserId();
         }
-        else
-        {
+        else {
             var oModalLogin = this.m_oModal.open({
                 templateUrl: 'partials/login.html',
                 controller: LoginController,
@@ -253,49 +252,36 @@ var EventController = (function() {
         });
 
 
-
         $scope.onFileSelect = function ($files, parameter) {
 
             if ($files != null && $files.length > 0) {
                 $scope.m_oController.m_oEventService.setUnchanged();
-                if (parameter == 'waveHeightInspire') {
+
+
+                if (parameter == 'waveHeightDirectionInspire') {
+                    $scope.m_oController.m_oEvent.waveDirectionInspire = $files[0].name;
+                    $scope.m_oController.waveDirectionInspireuploading = true;
                     $scope.m_oController.m_oEvent.waveHeightInspire = $files[0].name;
                     $scope.m_oController.waveHeightInspireuploading = true;
                 }
-                if (parameter == 'waveHeightTimeSeries') {
+                if (parameter == 'waveHeightDirectionTimeSeries') {
                     $scope.m_oController.m_oEvent.waveHeightTimeSeries = $files[0].name;
                     $scope.m_oController.waveHeightTimeSeriesuploading = true;
+                    $scope.m_oController.m_oEvent.waveDirectionTimeSeries = $files[0].name;
+                    $scope.m_oController.waveDirectionTimeSeriesuploading = true;
                 }
-                if (parameter == 'wavewindDirectionInspire') {
-                    $scope.m_oController.m_oEvent.waveDirectionInspire = $files[0].name;
-                    $scope.m_oController.waveDirectionInspireuploading = true;
+                if (parameter == 'windIntensityDirectionInspire') {
+                    $scope.m_oController.m_oEvent.windIntensityInspire = $files[0].name;
+                    $scope.m_oController.windIntensityInspireuploading = true;
                     $scope.m_oController.m_oEvent.windDirectionInspire = $files[0].name;
                     $scope.m_oController.windDirectionInspireuploading = true;
                 }
-                if (parameter == 'wavewindDirectionTimeSeries') {
-                    $scope.m_oController.m_oEvent.waveDirectionTimeSeries = $files[0].name;
-                    $scope.m_oController.waveDirectionTimeSeriesuploading = true;
+                if (parameter == 'windIntensityDirectionTimeSeries') {
+                    $scope.m_oController.m_oEvent.windIntensitySeries = $files[0].name;
+                    $scope.m_oController.windIntensitySeriesuploading = true;
                     $scope.m_oController.m_oEvent.windDirectionTimeSeries = $files[0].name;
                     $scope.m_oController.windDirectionTimeSeriesuploading = true;
                 }
-                if (parameter == 'windIntensityInspire') {
-                    $scope.m_oController.m_oEvent.windIntensityInspire = $files[0].name;
-                    $scope.m_oController.windIntensityInspireuploading = true;
-                }
-                if (parameter == 'windIntensitySeries') {
-                    $scope.m_oController.m_oEvent.windIntensitySeries = $files[0].name;
-                    $scope.m_oController.windIntensitySeriesuploading = true;
-                }
-                /*
-                 if (parameter == 'windDirectionInspire'){
-                 $scope.m_oController.m_oEvent.windDirectionInspire = $files[0].name;
-                 $scope.m_oController.windDirectionInspireuploading = true;
-                 }
-                 if (parameter == 'windDirectionTimeSeries'){
-                 $scope.m_oController.m_oEvent.windDirectionTimeSeries = $files[0].name;
-                 $scope.m_oController.windDirectionTimeSeriesuploading = true;
-                 }
-                 */
                 if (parameter == 'waterLevelInspire') {
                     $scope.m_oController.m_oEvent.waterLevelInspire = $files[0].name;
                     $scope.m_oController.waterLevelInspireuploading = true;
@@ -398,47 +384,35 @@ var EventController = (function() {
 
                         if (data == null || data == '') {
                             alert('Error uploading file!');
+                            //imposto il dato a vuoto se è andato male il caricamento
+                            data = null;
                         }
 
-                        //TODO Aggiornarnare il path corretto dell'evento
-                        if ($scope.parameter == 'waveHeightInspire') {
+                        if ($scope.parameter == 'waveHeightDirectionInspire') {
+                            $scope.m_oController.m_oEvent.waveDirectionInspire = data;
+                            $scope.m_oController.waveDirectionInspireuploading = false;
                             $scope.m_oController.m_oEvent.waveHeightInspire = data;
                             $scope.m_oController.waveHeightInspireuploading = false;
                         }
-                        if ($scope.parameter == 'waveHeightTimeSeries') {
+                        if ($scope.parameter == 'waveHeightDirectionTimeSeries') {
                             $scope.m_oController.m_oEvent.waveHeightTimeSeries = data;
                             $scope.m_oController.waveHeightTimeSeriesuploading = false;
+                            $scope.m_oController.m_oEvent.waveDirectionTimeSeries = data;
+                            $scope.m_oController.waveDirectionTimeSeriesuploading = false;
                         }
-                        if ($scope.parameter == 'wavewindDirectionInspire') {
-                            $scope.m_oController.m_oEvent.waveDirectionInspire = data;
-                            $scope.m_oController.waveDirectionInspireuploading = false;
+                        if ($scope.parameter == 'windIntensityDirectionInspire') {
+                            $scope.m_oController.m_oEvent.windIntensityInspire = data;
+                            $scope.m_oController.windIntensityInspireuploading = false;
                             $scope.m_oController.m_oEvent.windDirectionInspire = data;
                             $scope.m_oController.windDirectionInspireuploading = false;
                         }
-                        if ($scope.parameter == 'wavewindDirectionTimeSeries') {
-                            $scope.m_oController.m_oEvent.waveDirectionTimeSeries = data;
-                            $scope.m_oController.waveDirectionTimeSeriesuploading = false;
+                        if ($scope.parameter == 'windIntensityDirectionTimeSeries') {
+                            $scope.m_oController.m_oEvent.windIntensitySeries = data;
+                            $scope.m_oController.windIntensitySeriesuploading = false;
                             $scope.m_oController.m_oEvent.windDirectionTimeSeries = data;
                             $scope.m_oController.windDirectionTimeSeriesuploading = false;
                         }
-                        if ($scope.parameter == 'windIntensityInspire') {
-                            $scope.m_oController.m_oEvent.windIntensityInspire = data;
-                            $scope.m_oController.windIntensityInspireuploading = false;
-                        }
-                        if ($scope.parameter == 'windIntensitySeries') {
-                            $scope.m_oController.m_oEvent.windIntensitySeries = data;
-                            $scope.m_oController.windIntensitySeriesuploading = false;
-                        }
-                        /*
-                         if ($scope.parameter == 'windDirectionInspire') {
-                         $scope.m_oController.m_oEvent.windDirectionInspire = data;
-                         $scope.m_oController.windDirectionInspireuploading = false;
-                         }
-                         if ($scope.parameter == 'windDirectionTimeSeries') {
-                         $scope.m_oController.m_oEvent.windDirectionTimeSeries = data;
-                         $scope.m_oController.windDirectionTimeSeriesuploading = false;
-                         }
-                         */
+
                         if ($scope.parameter == 'waterLevelInspire') {
                             $scope.m_oController.m_oEvent.waterLevelInspire = data;
                             $scope.m_oController.waterLevelInspireuploading = false;
@@ -485,7 +459,9 @@ var EventController = (function() {
                         alert('Error uploading file!');
                     });
 
+
                 });
+
             });
         };
 
