@@ -134,8 +134,8 @@
                         </div>
                     </label>
             
-                    <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightInspire')" ng-hide="true" ng-click="m_oController.Check()" />
-                    <a ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveHeightInspire')}}">
+                    <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()" />
+                    <a ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionInspire')}}">
                         <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.waveHeightInspire != null && m_oController.m_oEvent.waveHeightInspire != ''">
                             <!--<button class="btn btn-success" ><i class="fa fa-download" ></i></button>-->
                              <img src="img/download.png" >
@@ -144,7 +144,7 @@
                     <div class="project-icon delete" ng-show="m_oController.m_oEvent.waveHeightInspire != null && m_oController.m_oEvent.waveHeightInspire != ''">
                         <!--<img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightInspire')">-->
                         <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightInspire')"><i class="fa fa-remove "></i></button> -->
-                        <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightInspire')"></i>
+                        <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionInspire')"></i>
                     </div>
                 
                 </td>
@@ -160,8 +160,8 @@
                         </div>
                     </label>
         
-                    <input id="wave-height-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveHeightTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
-                    <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveHeightTimeSeries')}}">
+                    <input id="wave-height-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveHeightDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
+                    <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionTimeSeries')}}">
                         <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveHeightTimeSeries != null && m_oController.m_oEvent.waveHeightTimeSeries != ''">
                             <!-- <button class="btn btn-success" tooltip-popup-delay="500" tooltip="Download" ><i class="fa fa-download "></i></button> -->
                             <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
@@ -170,7 +170,7 @@
                     <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveHeightTimeSeries != null && m_oController.m_oEvent.waveHeightTimeSeries != ''">
                         <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightTimeSeries')">-->
                         <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightTimeSeries')"><i class="fa fa-remove "></i></button> -->
-                        <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightTimeSeries')"></i>
+                        <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionTimeSeries')"></i>
                     </div>
                     
                 </td>
@@ -271,8 +271,8 @@
                         </div>
                     </label>
             
-                    <input id="wavedirection-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()" />
-                    <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')}}">
+                    <input id="wavedirection-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()" />
+                    <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionInspire')}}">
                         <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveDirectionInspire != null && m_oController.m_oEvent.waveDirectionInspire != ''">
                             <!-- <button class="btn btn-success" tooltip-popup-delay="500" tooltip="Download" ><i class="fa fa-download "></i></button> -->
                             <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" />
@@ -281,7 +281,7 @@
                     <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveDirectionInspire != null && m_oController.m_oEvent.waveDirectionInspire != ''">
                         <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')"><i class="fa fa-remove "></i></button> -->
                         <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" >-->
-                        <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')"></i>
+                        <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionInspire')"></i>
                     </div>
             
                 </td>
@@ -298,8 +298,8 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wavedirection-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')}}">
+                        <input id="wavedirection-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waveHeightDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()" />
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionTimeSeries')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveDirectionTimeSeries != null && m_oController.m_oEvent.waveDirectionTimeSeries != ''">
                                 <!-- <button class="btn btn-success" tooltip-popup-delay="500" tooltip="Download" ><i class="fa fa-download "></i></button> -->
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" />
@@ -308,7 +308,7 @@
                         <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveDirectionTimeSeries != null && m_oController.m_oEvent.waveDirectionTimeSeries != ''">
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')"><i class="fa fa-remove "></i></button> -->
                             <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" >-->
-                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" ></i>
+                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionTimeSeries')" ></i>
                         </div>
                     </div>
                 </td>
@@ -355,8 +355,8 @@
                         </div>
                     </label>
 
-                    <input id="wind-intensity-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
-                    <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityInspire')}}">
+                    <input id="wind-intensity-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
+                    <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionInspire')}}">
                         <div class="div-td project-icon"  tooltip-popup-delay="500" tooltip="Download" ng-show="m_oController.m_oEvent.windIntensityInspire != null && m_oController.m_oEvent.windIntensityInspire != ''">
                             <!-- <button class="btn btn-success"><i class="fa fa-download "></i></button> -->
                             <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download"/>
@@ -364,7 +364,7 @@
                     </a>
                     <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.windIntensityInspire != null && m_oController.m_oEvent.windIntensityInspire != ''">
                         <!-- <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityInspire')" ><i class="fa fa-remove "></i></button> -->
-                        <i class="fa fa-remove " tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityInspire')" ></i>
+                        <i class="fa fa-remove " tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionInspire')" ></i>
                         <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityInspire')" >-->
                     </div>
 
@@ -381,8 +381,8 @@
                             </div>
                         </label>
                         </div>
-                        <input id="wind-intensity-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensitySeries')" ng-hide="true" ng-click="m_oController.Check()"/>
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensitySeries')}}">
+                        <input id="wind-intensity-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensityDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')}}">
                             <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.windIntensitySeries != null && m_oController.m_oEvent.windIntensitySeries != ''">
                                 <!-- <button class="btn btn-success" tooltip-popup-delay="500" tooltip="Download"><i class="fa fa-download "></i></button> -->
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
@@ -391,7 +391,7 @@
                         <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.windIntensitySeries">
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensitySeries')" ><i class="fa fa-remove "></i></button> -->
                             <!-- <img src="img/delete.png" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensitySeries')" > -->
-                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensitySeries')" ></i>
+                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')" ></i>
                         </div>
 
                 </td>
@@ -493,15 +493,15 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')}}">
+                        <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionInspire')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionInspire != null && m_oController.m_oEvent.windDirectionInspire != ''">
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
                                 <!-- <button class="btn btn-success" tooltip-popup-delay="500" tooltip="Download"><i class="fa fa-download "></i></button> -->
                             </div>
                         </a>
                         <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionInspire">
-                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete"  ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" ></i>
+                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete"  ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionInspire')" ></i>
                             <!-- <img src="img/delete.png" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" > -->
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" ><i class="fa fa-remove"></i></button> -->
                         </div>
@@ -519,8 +519,8 @@
                                 </div>
                             </label>
                         </div>
-                        <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'wavewindDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
-                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')}}">
+                        <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensityDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
+                        <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionTimeSeries != null && m_oController.m_oEvent.windDirectionTimeSeries != ''">
                                 <!-- <button class="btn btn-success"  tooltip-popup-delay="500" tooltip="Download" ><i class="fa fa-download "></i></button> -->
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
@@ -529,7 +529,7 @@
                         <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionTimeSeries">
                             <!-- <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Delete"  ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" ><i class="fa fa-remove "></i></button> -->
                             <!-- <img src="img/delete.png" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" > -->
-                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')"></i>
+                            <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')"></i>
 
                         </div>
                     
