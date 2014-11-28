@@ -119,6 +119,8 @@ var EventController = (function() {
                         $scope.m_oController.m_oEventService.setRegions(data);
                         if ($scope.m_oController.m_oSharedService.getEvent() != null) {
                             $scope.m_oController.m_oEvent.countryId = $scope.m_oController.m_oSharedService.getEvent().countryId;
+                            $scope.m_oController.m_oEvent.lat = null;
+                            $scope.m_oController.m_oEvent.lon = null;
                             $scope.$apply();
                         }
 
@@ -131,8 +133,36 @@ var EventController = (function() {
             if (newVal != oldVal) {
                 $scope.m_oController.m_oEventService.setAsModified();
                 for (var iCount = 0; iCount < $scope.m_oController.m_oRegions.length; iCount++) {
-                    if ($scope.m_oController.m_oRegions[iCount].id == $scope.m_oController.m_oEvent.countryId)
+                    if ($scope.m_oController.m_oRegions[iCount].id == $scope.m_oController.m_oEvent.countryId) {
                         $scope.m_oController.m_oEvent.regionName = $scope.m_oController.m_oRegions[iCount].countryname;
+
+                        var oCountry = null;
+                        var oCountries = $scope.m_oController.GetCountries();
+                        for (var iCount = 0; iCount < oCountries.length; iCount++) {
+                            if ($scope.m_oController.m_oEvent.countryCode == oCountries[iCount].countryCode)
+                                oCountry = oCountries[iCount];
+                        }
+                        var oRegion = $scope.m_oController.m_oEventService.GetRegion($scope.m_oController.m_oEvent.countryId);
+                        var geocoder = new google.maps.Geocoder();
+                        geocoder.geocode({ 'address': oCountry.countryname + ' ' + oRegion.countryname}, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                $scope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
+                                $scope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
+                            }
+                            else {
+                                //se è andata male la decodifica metto almeno le coordinate del country
+                                $scope.m_oController.m_oEvent.lat = oCountry.lat;
+                                $scope.m_oController.m_oEvent.lon = oCountry.lon;
+                            }
+
+                            if ($scope.m_oController.m_oEvent.lat == null || $scope.m_oController.m_oEvent.lon == null ||
+                                $scope.m_oController.m_oEvent.lat == '' || $scope.m_oController.m_oEvent.lon == '') {
+                                alert('Google geocoding error!');
+                                return;
+                            }
+                        });
+
+                    }
                 }
             }
         });
@@ -362,107 +392,97 @@ var EventController = (function() {
             $scope.progress[index] = 0;
             $scope.errorMsg = null;
 
-
-            //Geocoding
-            var oCountry = $scope.m_oController.m_oEventService.GetRegion($scope.m_oController.m_oEvent.countryId);
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ 'address': oCountry.countryname }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    $scope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
-                    $scope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
+            //Save Event
+            $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oEvent).success(function (data) {
+                if (data == null) {
+                    alert("Error saving event");
+                    return;
                 }
 
+                $scope.m_oController.m_oEvent.id = data.id;
+                $scope.m_oController.m_oEventService.Upload($scope.m_oController.m_oEvent, $scope.selectedFiles[index], $scope.parameter).success(function (data) {
 
-                $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oEvent).success(function (data) {
-                    if (data == null) {
-                        alert("Error saving event");
-                        return;
+                    if (data == null || data == '') {
+                        alert('Error uploading file!');
+                        //imposto il dato a vuoto se è andato male il caricamento
+                        data = null;
                     }
 
-                    $scope.m_oController.m_oEvent.id = data.id;
-                    $scope.m_oController.m_oEventService.Upload($scope.m_oController.m_oEvent, $scope.selectedFiles[index], $scope.parameter).success(function (data) {
+                    if ($scope.parameter == 'waveHeightDirectionInspire') {
+                        $scope.m_oController.m_oEvent.waveDirectionInspire = data;
+                        $scope.m_oController.waveDirectionInspireuploading = false;
+                        $scope.m_oController.m_oEvent.waveHeightInspire = data;
+                        $scope.m_oController.waveHeightInspireuploading = false;
+                    }
+                    if ($scope.parameter == 'waveHeightDirectionTimeSeries') {
+                        $scope.m_oController.m_oEvent.waveHeightTimeSeries = data;
+                        $scope.m_oController.waveHeightTimeSeriesuploading = false;
+                        $scope.m_oController.m_oEvent.waveDirectionTimeSeries = data;
+                        $scope.m_oController.waveDirectionTimeSeriesuploading = false;
+                    }
+                    if ($scope.parameter == 'windIntensityDirectionInspire') {
+                        $scope.m_oController.m_oEvent.windIntensityInspire = data;
+                        $scope.m_oController.windIntensityInspireuploading = false;
+                        $scope.m_oController.m_oEvent.windDirectionInspire = data;
+                        $scope.m_oController.windDirectionInspireuploading = false;
+                    }
+                    if ($scope.parameter == 'windIntensityDirectionTimeSeries') {
+                        $scope.m_oController.m_oEvent.windIntensitySeries = data;
+                        $scope.m_oController.windIntensitySeriesuploading = false;
+                        $scope.m_oController.m_oEvent.windDirectionTimeSeries = data;
+                        $scope.m_oController.windDirectionTimeSeriesuploading = false;
+                    }
 
-                        if (data == null || data == '') {
-                            alert('Error uploading file!');
-                            //imposto il dato a vuoto se è andato male il caricamento
-                            data = null;
-                        }
+                    if ($scope.parameter == 'waterLevelInspire') {
+                        $scope.m_oController.m_oEvent.waterLevelInspire = data;
+                        $scope.m_oController.waterLevelInspireuploading = false;
+                    }
+                    if ($scope.parameter == 'waterLevelTimeSeries') {
+                        $scope.m_oController.m_oEvent.waterLevelTimeSeries = data;
+                        $scope.m_oController.waterLevelTimeSeriesuploading = false;
+                    }
+                    if ($scope.parameter == 'peakWaterInpire') {
+                        $scope.m_oController.m_oEvent.peakWaterInpire = data;
+                        $scope.m_oController.peakWaterInpireuploading = false;
+                    }
+                    if ($scope.parameter == 'peakWaterTimeSeries') {
+                        $scope.m_oController.m_oEvent.peakWaterTimeSeries = data;
+                        $scope.m_oController.peakWaterTimeSeriesuploading = false;
+                    }
+                    if ($scope.parameter == 'floodHeightInspire') {
+                        $scope.m_oController.m_oEvent.floodHeightInspire = data;
+                        $scope.m_oController.floodHeightInspireuploading = false;
+                    }
+                    if ($scope.parameter == 'floodHeightTimeSeries') {
+                        $scope.m_oController.m_oEvent.floodHeightTimeSeries = data;
+                        $scope.m_oController.floodHeightTimeSeriesuploading = false;
+                    }
+                    if ($scope.parameter == 'reporedCasualtiesInspire') {
+                        $scope.m_oController.m_oEvent.reporedCasualtiesInspire = data;
+                        $scope.m_oController.reporedCasualtiesInspireuploading = false;
+                    }
+                    if ($scope.parameter == 'reporedCasualtiesTimeSeries') {
+                        $scope.m_oController.m_oEvent.reporedCasualtiesTimeSeries = data;
+                        $scope.m_oController.reporedCasualtiesTimeSeriesuploading = false;
+                    }
+                    if ($scope.parameter == 'damageToBuildingsInspire') {
+                        $scope.m_oController.m_oEvent.damageToBuildingsInspire = data;
+                        $scope.m_oController.damageToBuildingsInspireuploading = false;
+                    }
+                    if ($scope.parameter == 'damageToBuildingsTimeSeries') {
+                        $scope.m_oController.m_oEvent.damageToBuildingsTimeSeries = data;
+                        $scope.m_oController.damageToBuildingsTimeSeriesuploading = false;
+                    }
 
-                        if ($scope.parameter == 'waveHeightDirectionInspire') {
-                            $scope.m_oController.m_oEvent.waveDirectionInspire = data;
-                            $scope.m_oController.waveDirectionInspireuploading = false;
-                            $scope.m_oController.m_oEvent.waveHeightInspire = data;
-                            $scope.m_oController.waveHeightInspireuploading = false;
-                        }
-                        if ($scope.parameter == 'waveHeightDirectionTimeSeries') {
-                            $scope.m_oController.m_oEvent.waveHeightTimeSeries = data;
-                            $scope.m_oController.waveHeightTimeSeriesuploading = false;
-                            $scope.m_oController.m_oEvent.waveDirectionTimeSeries = data;
-                            $scope.m_oController.waveDirectionTimeSeriesuploading = false;
-                        }
-                        if ($scope.parameter == 'windIntensityDirectionInspire') {
-                            $scope.m_oController.m_oEvent.windIntensityInspire = data;
-                            $scope.m_oController.windIntensityInspireuploading = false;
-                            $scope.m_oController.m_oEvent.windDirectionInspire = data;
-                            $scope.m_oController.windDirectionInspireuploading = false;
-                        }
-                        if ($scope.parameter == 'windIntensityDirectionTimeSeries') {
-                            $scope.m_oController.m_oEvent.windIntensitySeries = data;
-                            $scope.m_oController.windIntensitySeriesuploading = false;
-                            $scope.m_oController.m_oEvent.windDirectionTimeSeries = data;
-                            $scope.m_oController.windDirectionTimeSeriesuploading = false;
-                        }
+                }).error(function (data) {
 
-                        if ($scope.parameter == 'waterLevelInspire') {
-                            $scope.m_oController.m_oEvent.waterLevelInspire = data;
-                            $scope.m_oController.waterLevelInspireuploading = false;
-                        }
-                        if ($scope.parameter == 'waterLevelTimeSeries') {
-                            $scope.m_oController.m_oEvent.waterLevelTimeSeries = data;
-                            $scope.m_oController.waterLevelTimeSeriesuploading = false;
-                        }
-                        if ($scope.parameter == 'peakWaterInpire') {
-                            $scope.m_oController.m_oEvent.peakWaterInpire = data;
-                            $scope.m_oController.peakWaterInpireuploading = false;
-                        }
-                        if ($scope.parameter == 'peakWaterTimeSeries') {
-                            $scope.m_oController.m_oEvent.peakWaterTimeSeries = data;
-                            $scope.m_oController.peakWaterTimeSeriesuploading = false;
-                        }
-                        if ($scope.parameter == 'floodHeightInspire') {
-                            $scope.m_oController.m_oEvent.floodHeightInspire = data;
-                            $scope.m_oController.floodHeightInspireuploading = false;
-                        }
-                        if ($scope.parameter == 'floodHeightTimeSeries') {
-                            $scope.m_oController.m_oEvent.floodHeightTimeSeries = data;
-                            $scope.m_oController.floodHeightTimeSeriesuploading = false;
-                        }
-                        if ($scope.parameter == 'reporedCasualtiesInspire') {
-                            $scope.m_oController.m_oEvent.reporedCasualtiesInspire = data;
-                            $scope.m_oController.reporedCasualtiesInspireuploading = false;
-                        }
-                        if ($scope.parameter == 'reporedCasualtiesTimeSeries') {
-                            $scope.m_oController.m_oEvent.reporedCasualtiesTimeSeries = data;
-                            $scope.m_oController.reporedCasualtiesTimeSeriesuploading = false;
-                        }
-                        if ($scope.parameter == 'damageToBuildingsInspire') {
-                            $scope.m_oController.m_oEvent.damageToBuildingsInspire = data;
-                            $scope.m_oController.damageToBuildingsInspireuploading = false;
-                        }
-                        if ($scope.parameter == 'damageToBuildingsTimeSeries') {
-                            $scope.m_oController.m_oEvent.damageToBuildingsTimeSeries = data;
-                            $scope.m_oController.damageToBuildingsTimeSeriesuploading = false;
-                        }
-
-                    }).error(function (data) {
-
-                        alert('Error uploading file!');
-                    });
-
-
+                    alert('Error uploading file!');
                 });
 
+
             });
+
+
         };
 
     }
@@ -470,10 +490,12 @@ var EventController = (function() {
 
     EventController.prototype.AddMedia = function (partial, size) {
 
-        if (this.m_oScope.m_oController.Check()) {
-            this.m_oSharedService.setEvent(this.m_oEvent);
-            this.m_oLocation.path('media');
+        var oScope = this.m_oScope;
+        if (oScope.m_oController.Check()) {
+            oScope.m_oController.m_oSharedService.setEvent(this.m_oEvent);
+            oScope.m_oController.m_oLocation.path('media');
         }
+
     };
 
     EventController.prototype.AddSocioimpact = function (partial, size) {
@@ -635,8 +657,14 @@ var EventController = (function() {
                             }
                             else {
                                 //se è andata male la decodifica metto almeno le coordinate del country
-                                oScope.m_oController.m_oEvent.lat = oCountries.lat;
-                                oScope.m_oController.m_oEvent.lon = oCountries.lon;
+                                oScope.m_oController.m_oEvent.lat = oCountry.lat;
+                                oScope.m_oController.m_oEvent.lon = oCountry.lon;
+                            }
+
+                            if (oScope.m_oController.m_oEvent.lat == null || oScope.m_oController.m_oEvent.lon == null||
+                                oScope.m_oController.m_oEvent.lat == '' || oScope.m_oController.m_oEvent.lon == '') {
+                                alert('Error saving event: google geocoding error. Retry!');
+                                return;
                             }
 
                             //ora posso salvare

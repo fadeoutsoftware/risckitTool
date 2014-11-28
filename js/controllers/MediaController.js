@@ -39,6 +39,9 @@ var MediaController = (function() {
         google.maps.event.addListener(map, 'click', function (event) {
 
             placeMarker(event.latLng);
+
+            // set as modified
+            $scope.m_oController.m_oMediaService.setAsModified();
         });
 
 
@@ -79,9 +82,9 @@ var MediaController = (function() {
 
                     });
 
-                    $scope.m_oController.NewMedia = data;
                     $scope.m_oController.description = data.description;
                     $scope.m_oController.date = data.date;
+                    $scope.m_oController.NewMedia = data;
 
                     google.maps.event.addListener($scope.m_oController.Marker, 'click', function() {
                         var content = 'Media';
@@ -96,14 +99,16 @@ var MediaController = (function() {
             }
         }
 
+
         $scope.$watch('m_oController.m_sFilePath', function (newVal, oldVal) {
             if (newVal !== oldVal) {
 
+                $scope.m_oController.m_oMediaService.setAsModified();
                 $scope.m_oController.NewMedia = new Object();
                 $scope.m_oController.NewMedia.lat = $scope.m_oController.m_oPositionMark.lat();
                 $scope.m_oController.NewMedia.lon = $scope.m_oController.m_oPositionMark.lng();
                 $scope.m_oController.NewMedia.latlon = $scope.m_oController.m_oPositionMark;
-                $scope.m_oController.NewMedia.downloadPath = newVal.name;
+                //$scope.m_oController.NewMedia.downloadPath = newVal.name;
                 $scope.m_oController.NewMedia.description = $scope.m_oController.description;
                 $scope.m_oController.NewMedia.date = $scope.m_oController.date;
                 if ($scope.m_oController.m_oSharedService.getEvent().Media == null)
@@ -113,7 +118,16 @@ var MediaController = (function() {
             }
         });
 
+        $scope.$on('$locationChangeStart', function (event, next, current) {
 
+            if ($scope.m_oController.m_oMediaService.isModified()) {
+                var bAnswer = confirm("Are you sure you want to leave this page without saving?")
+                if (!bAnswer) {
+                    event.preventDefault();
+
+                }
+            }
+        });
 
         $scope.onFileSelect = function ($files) {
 
@@ -167,12 +181,14 @@ var MediaController = (function() {
                             if (data != null && data != '') {
                                 $scope.m_oController.NewMedia = data;
                                 $scope.m_oController.m_oSharedService.getEvent().Media.push(data);
+                                // set unchanged
+                                $scope.m_oController.m_oMediaService.setUnchanged();
 
                             }
                             else
                             {
-                                $scope.m_oController.NewMedia.downloadPath = '';
-                                $scope.m_oController.NewMedia.shortDownloadPath = '';
+                                $scope.m_oController.NewMedia.downloadPath = null;
+                                $scope.m_oController.NewMedia.shortDownloadPath = null;
                                 $scope.m_oController.m_oSharedService.getEvent().Media.push($scope.m_oController.NewMedia);
                                 alert('Error uploading media')
                             }
@@ -193,7 +209,7 @@ var MediaController = (function() {
     MediaController.prototype.Save = function() {
 
         if (this.m_oScope.m_oController.NewMedia == null) {
-            this.m_oLocation.path('event');
+            alert("Select attachment!");
             return;
         }
 
@@ -205,13 +221,17 @@ var MediaController = (function() {
         }
 
         var oController = this.m_oScope.m_oController;
-        this.m_oMediaService.SaveMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
+        if (oController.m_oMediaService.isModified()) {
+            this.m_oMediaService.SaveMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
 
-            if (data != null)
-                oController.m_oLocation.path('event');
-            else
-                alert('Error during save');
-        });
+                if (data != null) {
+                    oController.m_oMediaService.setUnchanged();
+                    oController.m_oLocation.path('event');
+                }
+                else
+                    alert('Error during save');
+            });
+        }
     };
 
 
