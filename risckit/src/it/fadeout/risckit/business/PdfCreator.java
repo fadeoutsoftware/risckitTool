@@ -680,7 +680,7 @@ public class PdfCreator {
 		}
 
 		//Ritorno il path solo se è un'immagine
-		String mimetype= oContext.getMimeType(oFile.getName());
+		String mimetype= oContext.getMimeType(oFile.getName().toLowerCase()); //To lower for mime type
 		if (mimetype != null)
 		{
 			if (mimetype.startsWith("image"))

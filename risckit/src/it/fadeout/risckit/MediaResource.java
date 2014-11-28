@@ -71,7 +71,6 @@ public class MediaResource {
 
 		try
 		{
-
 			MediaRepository oRepo = new MediaRepository();
 			Media oMedia = new Media();
 			oMedia.setEntity(oMediaViewModel);
@@ -147,14 +146,14 @@ public class MediaResource {
 			String sLocation = sCountryCode + "_" + sRegionName;
 			//Thumb
 			String sProjectPath = servletConfig.getInitParameter("ProjectPath") + "img/thumb/";
-			String mimeType = serveletContext.getMimeType(fileDetail.getFileName());
+			String mimeType = serveletContext.getMimeType(fileDetail.getFileName().toLowerCase()); //To lower for mime type
 			if (mimeType != null)
 			{
 				if (mimeType.startsWith("image"))
 				{
 					//Write Thumb
 					String sThumbPath = oRepo.CreateThumb(isImage, sProjectPath, oMedia, fileDetail.getFileName());
-					if (sThumbPath != "-1")
+					if (!sThumbPath.equals("-1"))
 					{
 						oMedia.setThumbnail(sThumbPath);
 					}
@@ -262,7 +261,7 @@ public class MediaResource {
 					UserRepository oUserRepo = new UserRepository();
 					User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 
-					if (sRepoFile != null)
+					if (sRepoFile != null && sRepoFile != "")
 					{
 						oRepo.DeleteMediaFile(oUser.getUserName(),
 								servletConfig.getInitParameter("SvnUser"),
