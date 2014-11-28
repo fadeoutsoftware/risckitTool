@@ -9,13 +9,13 @@
     <div class="row ">
         <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-6 col-lg-offset-3">
             <label class="control-label">Description</label>
-            <textarea class=" form-control" rows="2" ng-change="m_oController.m_oMediaService.isModified()" placeholder="Description" ng-model="m_oController.description"></textarea>
+            <textarea class=" form-control" rows="2" ng-change="m_oController.m_oMediaService.setAsModified()" placeholder="Description" ng-model="m_oController.description"></textarea>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-5 col-xs-offset-1 col-sm-5 col-sm-offset-1 col-md-6 col-md-offset-2 col-lg-6 col-lg-offset-3">
             <label class="control-label">Date</label>
-            <input class="form-control" type="date" ng-change="m_oController.m_oMediaService.isModified()" ng-model="m_oController.date">
+            <input class="form-control" type="date" ng-change="m_oController.m_oMediaService.setAsModified()" ng-model="m_oController.date">
         </div>
     </div>
     <div class="row">
