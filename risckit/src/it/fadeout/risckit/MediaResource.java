@@ -393,7 +393,7 @@ public class MediaResource {
 		}
 
 		//Ritorno il path solo se è un'immagine
-		String mimeType = serveletContext.getMimeType(oFile.getName());
+		String mimeType = serveletContext.getMimeType(oFile.getName().toLowerCase());
 		if (mimeType.startsWith("image"))
 		{
 			return sTemp;
