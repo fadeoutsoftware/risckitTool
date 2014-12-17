@@ -32,6 +32,8 @@ public class CurrencyResource {
 			oReturnValue.add(oViewModel);
 		}
 		
+		oRepo.CloseSession();
+		
 		return oReturnValue;
 	}
 }

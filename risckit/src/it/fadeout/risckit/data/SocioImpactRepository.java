@@ -23,6 +23,7 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(SocioImpact.class);
 			oCriteria.add(Restrictions.eq("IdEvent", iIdEvent));
 			oList = oCriteria.list();
@@ -31,6 +32,7 @@ public class SocioImpactRepository extends Repository<SocioImpact>
 				if (socioImpact.getIdCurrency() != null)
 					socioImpact.setCurrency((Currency)oSession.get(Currency.class, socioImpact.getIdCurrency()));
 			}
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());

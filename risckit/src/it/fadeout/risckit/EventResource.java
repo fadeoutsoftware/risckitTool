@@ -425,6 +425,8 @@ public class EventResource {
 				oReturnList.add(oViewModel);
 			}
 		}
+		
+		oRepo.CloseSession();
 
 		return oReturnList;
 	}

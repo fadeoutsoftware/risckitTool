@@ -34,15 +34,15 @@ public class MediaRepository extends Repository<Media>{
 
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Media.class);
 			oCriteria.add(Restrictions.eq("m_iEventId", iEventId));
 			oList = oCriteria.list();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-
-
 			try {
 				oSession.getTransaction().rollback();
 			}

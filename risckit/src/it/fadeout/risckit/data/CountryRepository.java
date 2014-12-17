@@ -23,13 +23,16 @@ public class CountryRepository extends Repository<Country> {
 		List<Country> aoList = null;
 
 		try {			
+			oSession.beginTransaction();
 			Query oQuery = oSession.createQuery("from Country where NutsLevel = '0' order by Name");
 			System.out.println("Begin query");
 			aoList = oQuery.list();
+			oSession.getTransaction().commit();
 		}
 		catch(Exception oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
+			oSession.getTransaction().rollback();
 			 
 		}
 		finally {
@@ -51,16 +54,20 @@ public class CountryRepository extends Repository<Country> {
 		List<Country> aoList = null;
 
 		try {
+			
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Country.class);
 			oCriteria.add(Restrictions.eq("NutsLevel", "2"));
 			oCriteria.add(Restrictions.eq("CountryCode", sCountryCode));
 			oCriteria.addOrder(Order.asc("Name"));
 			aoList = oCriteria.list();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
+			oSession.getTransaction().rollback();
 		}
 		finally {
 			if (oSession!=null) {
@@ -81,14 +88,17 @@ public class CountryRepository extends Repository<Country> {
 
 		try {
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Country.class);
 			oCriteria.add(Restrictions.eq("NutsLevel", "0"));
 			oCriteria.add(Restrictions.eq("CountryCode", sCountryCode));
 			oCountry = (Country) oCriteria.uniqueResult();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
+			oSession.getTransaction().rollback();
 		}
 		finally {
 			if (oSession!=null) {

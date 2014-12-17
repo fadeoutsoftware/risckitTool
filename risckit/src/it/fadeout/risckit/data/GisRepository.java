@@ -22,14 +22,15 @@ public class GisRepository extends Repository<Gis>{
 
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Gis.class);
 			oCriteria.add(Restrictions.eq("m_iEventId", iEventId));
 			oGis = (Gis) oCriteria.uniqueResult();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-
 
 			try {
 				oSession.getTransaction().rollback();

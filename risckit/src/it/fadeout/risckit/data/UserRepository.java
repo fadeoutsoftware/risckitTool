@@ -19,10 +19,12 @@ public class UserRepository extends Repository<User>{
 
 		try {
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(User.class);
 			oCriteria.add(Restrictions.eq("m_sUserName", sUserName));
 			oCriteria.add(Restrictions.eq("m_sPassword", sPassword));
 			oUser = (User) oCriteria.uniqueResult();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());

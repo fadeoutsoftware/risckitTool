@@ -36,8 +36,6 @@ public class EventRepository extends Repository<Event>{
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-
-
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -67,23 +65,18 @@ public class EventRepository extends Repository<Event>{
 
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(Event.class);
 			oCriteria.add(Restrictions.eq("m_iUserId", iIdUser));
 			oCriteria.addOrder(Order.desc("m_iId"));
 			aoList = oCriteria.list();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
+			oSession.getTransaction().rollback();
 
-
-			try {
-
-			}
-			catch(Throwable oEx2) {
-				System.err.println(oEx2.toString());
-				oEx2.printStackTrace();					
-			}			
 		}		
 		finally {
 			if (oSession!=null) {
@@ -105,20 +98,14 @@ public class EventRepository extends Repository<Event>{
 
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			aoList = oSession.createQuery("select e from Event e join e.m_oCountry c where c.CountryCode = '" + sCountryCode + "'").list();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-
-
-			try {
-
-			}
-			catch(Throwable oEx2) {
-				System.err.println(oEx2.toString());
-				oEx2.printStackTrace();					
-			}			
+			oSession.getTransaction().rollback();
 		}		
 		finally {
 			if (oSession!=null) {
@@ -141,20 +128,15 @@ public class EventRepository extends Repository<Event>{
 
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
 			aoList = oSession.createQuery("select e from Event e where e.m_iCountryId = " + iIdRegion + "order by e.m_oStartDate desc").list();
+			oSession.getTransaction().commit();
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
+			oSession.getTransaction().rollback();
 
-
-			try {
-
-			}
-			catch(Throwable oEx2) {
-				System.err.println(oEx2.toString());
-				oEx2.printStackTrace();					
-			}			
 		}		
 		finally {
 			if (oSession!=null) {
