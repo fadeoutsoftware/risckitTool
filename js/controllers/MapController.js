@@ -84,7 +84,7 @@ var MapController = (function() {
             $scope.m_oController.EventHtml = '';
             $scope.m_oController.m_iSelectedEventId = null;
             $scope.m_oController.m_oEventList = [];
-            $scope.$digest();
+            $scope.$apply();
         }
 
 
