@@ -1185,7 +1185,7 @@ public class Event {
 		oViewModel.setUserId(this.getUserId());
 		oViewModel.setLat(this.getLat());
 		oViewModel.setLon(this.getLon());
-
+		
 		return oViewModel;
 	}
 

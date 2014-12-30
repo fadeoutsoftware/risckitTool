@@ -143,6 +143,8 @@ public class EventViewModel {
 	
 	private String day;
 	
+	private Boolean editMode = false;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -649,6 +651,14 @@ public class EventViewModel {
 
 	public void setDay(String day) {
 		this.day = day;
+	}
+
+	public Boolean getEditMode() {
+		return editMode;
+	}
+
+	public void setEditMode(Boolean editMode) {
+		this.editMode = editMode;
 	}
 	
 }

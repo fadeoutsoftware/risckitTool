@@ -42,6 +42,7 @@ public class UserResource {
 					oReturnValue.setId(oUser.getId());
 					oReturnValue.setUserName(oUser.getUserName());
 					oReturnValue.setPassword(oUser.getPassword());
+					oReturnValue.setIsAdmin(oUser.getIsAdmin());
 				}
 			}
 			return oReturnValue;

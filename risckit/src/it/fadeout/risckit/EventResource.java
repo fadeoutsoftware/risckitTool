@@ -279,7 +279,7 @@ public class EventResource {
 		List<EventViewModel> oReturnList = null;
 		EventRepository oRepo = new EventRepository();
 		SocioImpactRepository oSocioImpactsRepo = new SocioImpactRepository();
-		List<Event> oEvents = oRepo.SelectByUser(iIdUser);
+		List<Event> oEvents = oRepo.SelectAll(Event.class);
 
 		CountryRepository oCountryRepo = new CountryRepository();
 		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
@@ -294,6 +294,8 @@ public class EventResource {
 					bHas = true;
 				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
 				oEventViewModel.setHasSocioImpacts(bHas);
+				if (iIdUser == event.getUserId())
+					oEventViewModel.setEditMode(true);
 				oReturnList.add(oEventViewModel);
 			}
 		}

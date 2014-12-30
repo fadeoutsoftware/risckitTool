@@ -23,6 +23,10 @@ public class User {
 	@Column(name="password")
 	private String m_sPassword;
 
+	@Column(name="isadmin")
+	private Boolean m_bIsAdmin;
+
+	
 	public Integer getId() {
 		return m_iId;
 	}
@@ -47,5 +51,13 @@ public class User {
 
 	public void setPassword(String m_sPassword) {
 		this.m_sPassword = m_sPassword;
+	}
+
+	public Boolean getIsAdmin() {
+		return m_bIsAdmin;
+	}
+
+	public void setIsAdmin(Boolean m_bIsAdmin) {
+		this.m_bIsAdmin = m_bIsAdmin;
 	}
 }
