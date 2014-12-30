@@ -11,7 +11,7 @@
             <div>
                 <label>GIS</label>
             </div>
-            <div class=" project-icon" >
+            <div class=" project-icon" ng-show="!m_oController.getIsReadOnly()">
                 <label for="gis-input">
                     <img src="img/upload.png" tooltip-popup-delay="500" tooltip-popup-delay="500" tooltip="Upload"/>
                 </label>
@@ -29,7 +29,7 @@
             <div>
                 <label>Inspire</label>
             </div>
-            <div class="project-icon" tooltip-popup-delay="500">
+            <div class="project-icon" tooltip-popup-delay="500" ng-show="!m_oController.getIsReadOnly()">
                 <label for="Inspire-input">
                     <img src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                 </label>
@@ -49,7 +49,7 @@
 
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="m_oController.ok()" >Close</button>
+        <button class="btn btn-primary" ng-click="m_oController.ok()" ng-show="!m_oController.getIsReadOnly()">Close</button>
         <button class="btn btn-warning" ng-click="m_oController.cancel()">Cancel</button>
     </div>
 </div>

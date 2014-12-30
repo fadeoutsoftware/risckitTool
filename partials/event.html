@@ -5,18 +5,17 @@
 <form class="form-horizontal" role="form">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-
         <div class="form-group">
             <label class="col-sm-2 control-label">Country</label>
             <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryCode == null || m_oController.m_oEvent.countryCode == ''}">
-                <select id="select_country_code" class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()"></select>
+                <select id="select_country_code" class="form-control" ng-model="m_oController.m_oEvent.countryCode" ng-options="Country.countryCode as Country.countryname for Country in m_oController.GetCountries()" ng-disabled="m_oController.getIsReadOnly()"></select>
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryCode != null && m_oController.m_oEvent.countryCode != 0" tooltip="Select a country" style="margin-right: 30px;"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">Region</label>
             <div class="col-sm-8" ng-class="{'has-warning has-feedback' :m_oController.m_oEvent.countryId == null || m_oController.m_oEvent.countryId == 0}">
-                <select class="form-control" ng-model="m_oController.m_oEvent.countryId" ng-options="Region.id as Region.countryname for Region in m_oController.m_oRegions"></select>
+                <select class="form-control" ng-model="m_oController.m_oEvent.countryId" ng-options="Region.id as Region.countryname for Region in m_oController.m_oRegions" ng-disabled="m_oController.getIsReadOnly()"></select>
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.countryId != null && m_oController.m_oEvent.countryId != 0" tooltip="Select a region" style="margin-right: 30px;"></span>
             </div>
         </div>
@@ -24,19 +23,19 @@
         <div class="form-group">
             <label class="col-sm-2 control-label" for="inpute_date">Start Date</label>
             <div class="col-sm-3" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.startDate == null}">
-                <input type="date" id="inpute_date" class="form-control" ng-model="m_oController.m_oEvent.startDate" >
+                <input type="date" id="inpute_date" class="form-control" ng-model="m_oController.m_oEvent.startDate" ng-disabled="m_oController.getIsReadOnly()">
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.startDate != null" tooltip="Insert a start date"></span>
             </div>
             <label class="col-sm-2 control-label">Start Hour</label>
             <div class="col-sm-3">
-                <input type="time" class="form-control" ng-model="m_oController.m_oEvent.startHour">
+                <input type="time" class="form-control" ng-model="m_oController.m_oEvent.startHour" ng-disabled="m_oController.getIsReadOnly()">
             </div>
         </div>
 
         <div class="form-group" >
             <label class="col-sm-2 control-label">Description</label>
             <div class="col-sm-8" ng-class="{'has-warning has-feedback' : m_oController.m_oEvent.description == null || m_oController.m_oEvent.description == ''}">
-                <textarea class="form-control" rows="2"  placeholder="Description" ng-model="m_oController.m_oEvent.description"></textarea>
+                <textarea class="form-control" rows="2"  placeholder="Description" ng-model="m_oController.m_oEvent.description" ng-disabled="m_oController.getIsReadOnly()"></textarea>
                 <span class="glyphicon glyphicon-warning-sign form-control-feedback" ng-hide="m_oController.m_oEvent.description != null && m_oController.m_oEvent.description != ''" tooltip="Insert a description"></span>
             </div>
         </div>
@@ -60,32 +59,32 @@
             </tr>
             <tr>
                 <td>
-                    <div class="radio-inline">
+                    <div class="radio-inline" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.unitHour != true)">
                         <label>
-                            <input type="radio" ng-value="true" ng-model="m_oController.m_oEvent.unitHour">
+                            <input type="radio" ng-value="true" ng-model="m_oController.m_oEvent.unitHour" >
                             hours
                         </label>
                     </div>
-                    <div class="radio-inline">
+                    <div class="radio-inline" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.unitHour != false)">
                         <label>
-                            <input type="radio" ng-value="false" ng-model="m_oController.m_oEvent.unitHour">
+                            <input type="radio" ng-value="false" ng-model="m_oController.m_oEvent.unitHour" >
                             days
                         </label>
                     </div>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.unitValue" step="any" min="0">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.unitValue" step="any" min="0" ng-readonly="m_oController.getIsReadOnly()">
                 </td>
                 <td colspan="2">
-                    <div class="radio-inline">
+                    <div class="radio-inline" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.unitApproximated != true)">
                         <label>
-                            <input type="radio" ng-value="true" ng-model="m_oController.m_oEvent.unitApproximated">
+                            <input type="radio" ng-value="true" ng-model="m_oController.m_oEvent.unitApproximated" >
                             Approximate
                         </label>
                     </div>
-                    <div class="radio-inline">
+                    <div class="radio-inline" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.unitApproximated != false)">
                         <label>
-                            <input type="radio" ng-value="false" ng-model="m_oController.m_oEvent.unitApproximated">
+                            <input type="radio" ng-value="false" ng-model="m_oController.m_oEvent.unitApproximated" >
                             Exact
                         </label>
                     </div>
@@ -116,12 +115,12 @@
             <tr>
                 <td>
 
-                    <select class="form-control" ng-model="m_oController.m_oEvent.waveHeightType" ng-options="obj.value as obj.name for obj in m_oController.GetWaveHeightType()">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.waveHeightType" ng-options="obj.value as obj.name for obj in m_oController.GetWaveHeightType()" ng-disabled="m_oController.getIsReadOnly()">
                     </select>
 
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waveHeightValue" step="any" min="0">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waveHeightValue" step="any" min="0" ng-disabled="m_oController.getIsReadOnly()">
                 </td>
                 <td>
                     <div class="loading" ng-show="m_oController.waveHeightInspireuploading">
@@ -129,19 +128,19 @@
                     </div>
                     <label for="wave-height-file-input-inspire">
                         <!-- <button class="btn btn-warning project-icon" tooltip-popup-delay="500" tooltip="Upload" ><i class="fa fa-upload" tooltip="Upload"></i></button> -->
-                        <div class="project-icon" >
+                        <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                             <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload" />
                         </div>
                     </label>
             
-                    <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()" />
+                    <input id="wave-height-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waveHeightDirectionInspire')" ng-hide="true" ng-click="m_oController.Check() "/>
                     <a ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionInspire')}}">
                         <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.waveHeightInspire != null && m_oController.m_oEvent.waveHeightInspire != ''">
                             <!--<button class="btn btn-success" ><i class="fa fa-download" ></i></button>-->
                              <img src="img/download.png" >
                         </div>
                     </a>
-                    <div class="project-icon delete" ng-show="m_oController.m_oEvent.waveHeightInspire != null && m_oController.m_oEvent.waveHeightInspire != ''">
+                    <div class="project-icon delete" ng-show="(m_oController.m_oEvent.waveHeightInspire != null && m_oController.m_oEvent.waveHeightInspire != '') && !m_oController.getIsReadOnly()">
                         <!--<img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightInspire')">-->
                         <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightInspire')"><i class="fa fa-remove "></i></button> -->
                         <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionInspire')"></i>
@@ -154,7 +153,7 @@
                     </div>
                     
                     <label for="wave-height-file-input-timeseries">
-                        <div class="project-icon" >
+                        <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                             <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                         </div>
@@ -167,7 +166,7 @@
                             <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
                         </div>
                     </a>
-                    <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveHeightTimeSeries != null && m_oController.m_oEvent.waveHeightTimeSeries != ''">
+                    <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.waveHeightTimeSeries != null && m_oController.m_oEvent.waveHeightTimeSeries != '') && !m_oController.getIsReadOnly()">
                         <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightTimeSeries')">-->
                         <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightTimeSeries')"><i class="fa fa-remove "></i></button> -->
                         <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionTimeSeries')"></i>
@@ -194,65 +193,65 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.waveDirectionType" ng-options="obj.value as obj.name for obj in m_oController.GetWaveDiectionType()">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.waveDirectionType" ng-options="obj.value as obj.name for obj in m_oController.GetWaveDiectionType()" ng-disabled="m_oController.getIsReadOnly()">
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.waveDirectionType == 1" ng-model="m_oController.m_oEvent.waveDirectionDegree" step="any" min="-360" max="360">
-                    <ul class="rosa" ng-show="m_oController.m_oEvent.waveDirectionType == 2">
-                        <li class="radio">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.waveDirectionType == 1" ng-model="m_oController.m_oEvent.waveDirectionDegree" step="any" min="-360" max="360" ng-disabled="m_oController.getIsReadOnly()">
+                    <ul class="rosa" ng-show="m_oController.m_oEvent.waveDirectionType == 2" >
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'N')">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenord">
                                 <img src="img/white/arrow_down.png" tooltip="Nord" >
                                 N
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'NE')">
                             <label class="control-label">
-                                <input type="radio" value="NE"ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordest">
+                                <input type="radio" value="NE"ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordest" >
                                 <img src="img/white/arrow_down_left.png" tooltip="Nord-Est" >
                                 NE
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'E')">
                             <label class="control-label">
-                                <input type="radio" value="E" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveest">
+                                <input type="radio" value="E" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveest" >
                                 <img src="img/white/arrow_left.png" tooltip="Est" >
                                 E
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'SE')">
                             <label class="control-label">
-                                <input type="radio" value="SE" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudest">
+                                <input type="radio" value="SE" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudest" >
                                 <img src="img/white/arrow_up_left.png" tooltip="Sud-Est" >
                                 SE
                             </label>
                         </li>
                         <div class="clearfix hidden-md"></div>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'S')">
                             <label class="control-label">
-                                <input type="radio" value="S" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesud">
+                                <input type="radio" value="S" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesud" >
                                 <img src="img/white/arrow_up.png" tooltip="Sud" >
                                 S
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'SO')">
                             <label class="control-label">
-                                <input type="radio" value="SO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudovest">
+                                <input type="radio" value="SO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavesudovest" >
                                 <img src="img/white/arrow_up_right.png" tooltip="Sud-West" >
                                 SW
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'O')">
                             <label class="control-label">
-                                <input type="radio" value="O" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveovest">
+                                <input type="radio" value="O" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="waveovest" ng-disabled="m_oController.getIsReadOnly()">
                                 <img src="img/white/arrow_right.png" tooltip="West" >
                                 W
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'NO')">
                             <label class="control-label">
-                                <input type="radio" value="NO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordovest">
+                                <input type="radio" value="NO" ng-model="m_oController.m_oEvent.waveDirectionClustered" id="wavenordovest" ng-disabled="m_oController.getIsReadOnly()">
                                 <img src="img/white/arrow_down_right.png" tooltip="Nord-West" >
                                 NW
                             </label>
@@ -265,7 +264,7 @@
                     </div>
                     
                     <label for="wavedirection-file-input-inspire">
-                        <div class="project-icon" >
+                        <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                             <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload" />
                         </div>
@@ -278,7 +277,7 @@
                             <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" />
                         </div>
                     </a>
-                    <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveDirectionInspire != null && m_oController.m_oEvent.waveDirectionInspire != ''">
+                    <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.waveDirectionInspire != null && m_oController.m_oEvent.waveDirectionInspire != '') && !m_oController.getIsReadOnly()">
                         <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')"><i class="fa fa-remove "></i></button> -->
                         <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" >-->
                         <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionInspire')"></i>
@@ -292,7 +291,7 @@
                     <div>
                         <div class="div-td">
                             <label for="wavedirection-file-input-timeseries">
-                                <div class="project-icon" >
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                                 </div>
@@ -305,7 +304,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" />
                             </div>
                         </a>
-                        <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waveDirectionTimeSeries != null && m_oController.m_oEvent.waveDirectionTimeSeries != ''">
+                        <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.waveDirectionTimeSeries != null && m_oController.m_oEvent.waveDirectionTimeSeries != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')"><i class="fa fa-remove "></i></button> -->
                             <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" >-->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waveHeightDirectionTimeSeries')" ></i>
@@ -337,11 +336,11 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.windIntensityType" ng-options="obj.value as obj.name for obj in m_oController.GetWindIntensityType()">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.windIntensityType" ng-options="obj.value as obj.name for obj in m_oController.GetWindIntensityType()" ng-disabled="m_oController.getIsReadOnly()">
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.windIntensityValue" step="any" min="0">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.windIntensityValue" step="any" min="0" ng-disabled="m_oController.getIsReadOnly()">
                 </td>
                 <td>
                     <div class="loading" ng-show="m_oController.windIntensityInspireuploading">
@@ -349,7 +348,7 @@
                     </div>
 
                     <label for="wind-intensity-file-input-inspire">
-                        <div class="project-icon" >
+                        <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                             <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload" />
                         </div>
@@ -362,7 +361,7 @@
                             <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download"/>
                         </div>
                     </a>
-                    <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.windIntensityInspire != null && m_oController.m_oEvent.windIntensityInspire != ''">
+                    <div class="div-td project-icon"  ng-show="(m_oController.m_oEvent.windIntensityInspire != null && m_oController.m_oEvent.windIntensityInspire != '') && !m_oController.getIsReadOnly()">
                         <!-- <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityInspire')" ><i class="fa fa-remove "></i></button> -->
                         <i class="fa fa-remove " tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionInspire')" ></i>
                         <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityInspire')" >-->
@@ -375,12 +374,11 @@
                     </div>
 
                         <label for="wind-intensity-file-input-timeseries">
-                            <div class="project-icon" >
+                            <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                 <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                 <img class="project-icon-image" tooltip-popup-delay="500" tooltip="Upload" src="img/upload.png"/>
                             </div>
                         </label>
-                        </div>
                         <input id="wind-intensity-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensityDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')}}">
                             <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.windIntensitySeries != null && m_oController.m_oEvent.windIntensitySeries != ''">
@@ -388,7 +386,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
                             </div>
                         </a>
-                        <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.windIntensitySeries">
+                        <div class="div-td project-icon"  ng-show="(m_oController.m_oEvent.windIntensitySeries != null && m_oController.m_oEvent.windIntensitySeries != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensitySeries')" ><i class="fa fa-remove "></i></button> -->
                             <!-- <img src="img/delete.png" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensitySeries')" > -->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')" ></i>
@@ -415,35 +413,35 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.windDirectionType" ng-options="obj.value as obj.name for obj in m_oController.GetWindDiectionType()">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.windDirectionType" ng-options="obj.value as obj.name for obj in m_oController.GetWindDiectionType()" ng-disabled="m_oController.getIsReadOnly()">
 
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.windDirectionType == 1" ng-model="m_oController.m_oEvent.windDirectionDegree" step="any" max="360" min="-360">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.m_oEvent.windDirectionType == 1" ng-model="m_oController.m_oEvent.windDirectionDegree" step="any" max="360" min="-360" ng-disabled="m_oController.getIsReadOnly()">
                     <ul  class="rosa" ng-show="m_oController.m_oEvent.windDirectionType == 2">
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'N')">
                             <label class="control-label">
                                 <input type="radio" value="N" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnord" checked>
                                 <img src="img/white/arrow_down.png" tooltip="Nord" >
                                 N
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'NE')">
                             <label class="control-label">
                                 <input type="radio" value="NE" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnordest">
                                 <img src="img/white/arrow_down_left.png" tooltip="Nord-Est" >
                                 NE
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'E')">
                             <label class="control-label">
-                                <input type="radio" value="E" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windest">
+                                <input type="radio" value="E" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windest" >
                                 <img src="img/white/arrow_left.png" tooltip="Est" >
                                 E
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'SE')">
                             <label class="control-label">
                                 <input type="radio" value="SE" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsudest">
                                 <img src="img/white/arrow_up_left.png" tooltip="Sud-Est" >
@@ -451,28 +449,28 @@
                             </label>
                         </li>
                         <div class="clearfix hidden-md"></div>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'S')">
                             <label class="control-label">
-                                <input type="radio" value="S" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsud">
+                                <input type="radio" value="S" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsud" >
                                 <img src="img/white/arrow_up.png" tooltip="Sud" >
                                 S
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'SO')">
                             <label class="control-label">
                                 <input type="radio" value="SO" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windsudovest">
                                 <img src="img/white/arrow_up_right.png" tooltip="Sud-West" >
                                 SW
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'O')">
                             <label class="control-label">
-                                <input type="radio" value="O"  ng-model="m_oController.m_oEvent.windDirectionClustered" id="windovest">
+                                <input type="radio" value="O"  ng-model="m_oController.m_oEvent.windDirectionClustered" id="windovest" >
                                 <img src="img/white/arrow_right.png" tooltip="West" >
                                 W
                             </label>
                         </li>
-                        <li class="radio">
+                        <li class="radio" ng-hide="m_oController.getIsReadOnly() && (m_oController.m_oEvent.waveDirectionClustered != 'NO')">
                             <label class="control-label">
                                 <input type="radio" value="NO" ng-model="m_oController.m_oEvent.windDirectionClustered" id="windnordovest">
                                 <img src="img/white/arrow_down_right.png" tooltip="Nord-West" >
@@ -487,12 +485,11 @@
                     </div>
                     
                             <label for="wind-direction-file-input-inspire">
-                                <div class="project-icon">
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <img class="project-icon-image" tooltip-popup-delay="500" tooltip="Upload" src="img/upload.png"/>
                                     <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                 </div>
                             </label>
-                        </div>
                         <input id="wind-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'windIntensityDirectionInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionInspire')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionInspire != null && m_oController.m_oEvent.windDirectionInspire != ''">
@@ -500,7 +497,7 @@
                                 <!-- <button class="btn btn-success" tooltip-popup-delay="500" tooltip="Download"><i class="fa fa-download "></i></button> -->
                             </div>
                         </a>
-                        <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionInspire">
+                        <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.windDirectionInspire != null && m_oController.m_oEvent.windDirectionInspire != '') && !m_oController.getIsReadOnly()">
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete"  ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionInspire')" ></i>
                             <!-- <img src="img/delete.png" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" > -->
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionInspire')" ><i class="fa fa-remove"></i></button> -->
@@ -513,12 +510,11 @@
                     </div>
                    
                             <label for="wind-direction-file-input-timeseries">
-                                <div class="project-icon">
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" tooltip-popup-delay="500" tooltip="Upload" src="img/upload.png"/>
                                 </div>
                             </label>
-                        </div>
                         <input id="wind-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'windIntensityDirectionTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionTimeSeries != null && m_oController.m_oEvent.windDirectionTimeSeries != ''">
@@ -526,7 +522,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
                             </div>
                         </a>
-                        <div class="div-td project-icon" ng-show="m_oController.m_oEvent.windDirectionTimeSeries">
+                        <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.windDirectionTimeSeries != null && m_oController.m_oEvent.windDirectionTimeSeries != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Delete"  ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" ><i class="fa fa-remove "></i></button> -->
                             <!-- <img src="img/delete.png" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'wavewindDirectionTimeSeries')" > -->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'windIntensityDirectionTimeSeries')"></i>
@@ -555,11 +551,11 @@
             </tr>
             <tr>
                 <td>
-                    <select class="form-control" ng-model="m_oController.m_oEvent.waterLevelType" ng-options="obj.value as obj.name for obj in m_oController.GetWaterLevelType()">
+                    <select class="form-control" ng-model="m_oController.m_oEvent.waterLevelType" ng-options="obj.value as obj.name for obj in m_oController.GetWaterLevelType()" ng-disabled="m_oController.getIsReadOnly()">
                     </select>
                 </td>
                 <td>
-                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waterLevelValue" step="any" min="0">
+                    <input type="number" class="form-control" placeholder="Value" ng-model="m_oController.m_oEvent.waterLevelValue" step="any" min="0" ng-disabled="m_oController.getIsReadOnly()">
                 </td>
                 <td>
                     <div class="loading" ng-show="m_oController.waterLevelInspireuploading">
@@ -567,12 +563,11 @@
                     </div>
                    
                             <label for="water-level-file-input-inspire">
-                                <div class="project-icon" >
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" tooltip-popup-delay="500" tooltip="Upload" src="img/upload.png"/>
                                 </div>
                             </label>
-                        </div>
                         <input id="water-level-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'waterLevelInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waterLevelInspire')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waterLevelInspire != null && m_oController.m_oEvent.waterLevelInspire != ''">
@@ -580,7 +575,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
                             </div>
                         </a>
-                        <div class="div-td project-icon" ng-show="m_oController.m_oEvent.waterLevelInspire">
+                        <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.waterLevelInspire != null && m_oController.m_oEvent.waterLevelInspire != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Delete"  ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waterLevelInspire')" ><i class="fa fa-remove "></i></button> -->
                             <!-- <img src="img/delete.png"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waterLevelInspire')" > -->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waterLevelInspire')"></i></button>
@@ -594,12 +589,11 @@
                     </div>
                     
                             <label for="water-level-file-input-timeseries">
-                                <div class="project-icon" >
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" src="img/upload.png"  tooltip-popup-delay="500" tooltip="Upload" />
                                 </div>
                             </label>
-                        </div>
                         <input id="water-level-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'waterLevelTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'waterLevelTimeSeries')}}">
                             <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.waterLevelTimeSeries != null && m_oController.m_oEvent.waterLevelTimeSeries != ''">
@@ -607,7 +601,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" />
                             </div>
                         </a>
-                        <div class="div-td project-icon"ng-show="m_oController.m_oEvent.waterLevelTimeSeries">
+                        <div class="div-td project-icon"ng-show="(m_oController.m_oEvent.waterLevelTimeSeries != null && m_oController.m_oEvent.waterLevelTimeSeries != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waterLevelTimeSeries')" ><i class="fa fa-remove "></i></button> -->
                             <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waterLevelTimeSeries')" >-->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'waterLevelTimeSeries')" ></i></button>
@@ -635,10 +629,10 @@
             </tr>
             <tr>
                 <td rowspan="3">
-                    <input type="checkbox" id="inlineCheckbox1" value="option1" ng-model="m_oController.Flooding">
+                    <input type="checkbox" id="inlineCheckbox1" value="option1" ng-model="m_oController.Flooding" ng-disabled="m_oController.getIsReadOnly()">
                 </td>
                 <td ng-show="m_oController.Flooding">
-                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.peakWaterDischarge" step="any" min="0">
+                    <input type="number" class="form-control" placeholder="Value" ng-show="m_oController.Flooding" ng-model="m_oController.m_oEvent.peakWaterDischarge" step="any" min="0" ng-disabled="m_oController.getIsReadOnly()">
                 </td>
                 <td ng-show="m_oController.Flooding">
                     <div class="loading" ng-show="m_oController.peakWaterInpireuploading">
@@ -646,12 +640,11 @@
                     </div>
                    
                             <label for="riverflooding-direction-file-input-inspire">
-                                <div class="project-icon" >
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                                 </div>
                             </label>
-                        </div>
                         <input id="riverflooding-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'peakWaterInpire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'peakWaterInpire')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.peakWaterInpire != null && m_oController.m_oEvent.peakWaterInpire != ''">
@@ -659,7 +652,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download"  />
                             </div>
                         </a>
-                        <div class="div-td project-icon" ng-show="m_oController.m_oEvent.peakWaterInpire">
+                        <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.peakWaterInpire != null && m_oController.m_oEvent.peakWaterInpire != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'peakWaterInpire')" ><i class="fa fa-remove "></i></button> -->
                             <!-- <img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'peakWaterInpire')" > -->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'peakWaterInpire')" ></i>
@@ -673,12 +666,11 @@
                     </div>
                 
                             <label for="riverflooding-direction-file-input-timeseries">
-                                <div class="project-icon">
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning"  tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                                 </div>
                             </label>
-                        </div>
                         <input id="riverflooding-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'peakWaterTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'peakWaterTimeSeries')}}">
                             <div class="div-td project-icon" ng-show="m_oController.m_oEvent.peakWaterTimeSeries != null && m_oController.m_oEvent.peakWaterTimeSeries != ''">
@@ -686,7 +678,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" >
                             </div>
                         </a>
-                        <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.peakWaterTimeSeries">
+                        <div class="div-td project-icon"  ng-show="(m_oController.m_oEvent.peakWaterTimeSeries != null && m_oController.m_oEvent.peakWaterTimeSeries != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'peakWaterTimeSeries')" ><i class="fa fa-remove "></i></button> -->
                             <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'peakWaterTimeSeries')" >-->
                              <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'peakWaterTimeSeries')"></i>
@@ -715,12 +707,11 @@
                     </div>
                     
                             <label for="floodingheight-direction-file-input-inspire">
-                                <div class="project-icon">
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                                 </div>
                             </label>
-                        </div>
                         <input id="floodingheight-direction-file-input-inspire" type="file" ng-file-select="onFileSelect($files, 'floodHeightInspire')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'floodHeightInspire')}}">
                             <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.floodHeightInspire != null && m_oController.m_oEvent.floodHeightInspire != ''">
@@ -728,7 +719,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download" />
                             </div>
                         </a>
-                        <div class="div-td project-icon" ng-show="m_oController.m_oEvent.floodHeightInspire">
+                        <div class="div-td project-icon" ng-show="(m_oController.m_oEvent.floodHeightInspire != null && m_oController.m_oEvent.floodHeightInspire != '') && !m_oController.getIsReadOnly()">
                             <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'floodHeightInspire')" >-->
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'floodHeightInspire')" ><i class="fa fa-remove "></i></button> -->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'floodHeightInspire')"></i>
@@ -741,12 +732,11 @@
                     </div>
                 
                             <label for="floodingheight-direction-file-input-timeseries">
-                                <div class="project-icon" >
+                                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
                                     <!-- <button class="btn btn-warning" tooltip-popup-delay="500" tooltip="Upload"><i class="fa fa-upload "></i></button> -->
                                     <img class="project-icon-image" src="img/upload.png" tooltip-popup-delay="500" tooltip="Upload"/>
                                 </div>
                             </label>
-                        </div>
                         <input id="floodingheight-direction-file-input-timeseries" type="file" ng-file-select="onFileSelect($files, 'floodHeightTimeSeries')" ng-hide="true" ng-click="m_oController.Check()"/>
                         <a class="div-td" ng-href="{{m_oController.DownloadAttachment(m_oController.m_oEvent.id, 'floodHeightTimeSeries')}}">
                             <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.floodHeightTimeSeries != null && m_oController.m_oEvent.floodHeightTimeSeries != ''">
@@ -754,7 +744,7 @@
                                 <img src="img/download.png" tooltip-popup-delay="500" tooltip="Download"/>
                             </div>
                         </a>
-                        <div class="div-td project-icon"  ng-show="m_oController.m_oEvent.floodHeightTimeSeries">
+                        <div class="div-td project-icon"  ng-show="(m_oController.m_oEvent.floodHeightTimeSeries != null && m_oController.m_oEvent.floodHeightTimeSeries != '') && !m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'floodHeightTimeSeries')" ><i class="fa fa-remove "></i></button> -->
                             <!--<img src="img/delete.png" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'floodHeightTimeSeries')" >-->
                             <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteAttachment(m_oController.m_oEvent.id, 'floodHeightTimeSeries')"></i>
@@ -763,6 +753,7 @@
                 </td>
             </tr>
 
+        </table>
         </table>
     </div>
 
@@ -792,7 +783,7 @@
                             <!-- <img src="img/delete.png" tooltip="Delete" > -->
                             <!-- <button class="btn btn-danger" tooltip="Delete" ng-click="m_oController.DeleteSocioImpact(oTableRow.id)"><i class="fa fa-remove"></i></button> -->
                         </div>
-                        <div class="project-icon delete">
+                        <div class="project-icon delete" ng-show="!m_oController.getIsReadOnly()">
                             <i class="fa fa-remove"  tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteSocioImpact(oTableRow.id)" ></i>
                             <i class="fa fa-pencil" tooltip-popup-delay="500" tooltip="Edit" tooltip-popup-delay="500" tooltip="Edit" ng-click="m_oController.EditSocioImpact(oTableRow.id)"></i>
                             <!-- <button class="btn btn-warning"  tooltip-popup-delay="500" tooltip="Edit" ng-click="m_oController.EditSocioImpact(oTableRow.id)"><i class="fa fa-edit"></i></button> -->
@@ -822,7 +813,7 @@
                     <td>
                         <div class="col-sm-3" >
                             <div class="loading" ng-show="m_oController.m_bSaving" ><img class="loading" src="img/Spinner.gif"/></div>
-                            <button type="button" class="btn btn-primary btn-lg" tooltip-popup-delay="500" tooltip="Add impact" ng-click="m_oController.AddSocioimpact()" ng-hide="m_oController.m_bSaving">Add impact</button>
+                            <button type="button" class="btn btn-primary btn-lg" tooltip-popup-delay="500" tooltip="Add impact" ng-click="m_oController.AddSocioimpact()" ng-hide="m_oController.m_bSaving || m_oController.getIsReadOnly()">Add impact</button>
                         </div>
                     </td>
                     <td></td>
@@ -852,7 +843,7 @@
                 <tr>
 
                     <td>
-                        <div class="project-icon delete" >
+                        <div class="project-icon delete" ng-show="!m_oController.getIsReadOnly()">
                             <!-- <button class="btn btn-danger" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, m_oController.m_oEvent.id)"><i class="fa fa-remove"></i></button> -->
                             <img src="img/delete.png" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, m_oController.m_oEvent.id)">
                              <!-- <i class="fa fa-remove" tooltip-popup-delay="500" tooltip="Delete" ng-click="m_oController.DeleteMedia(oTableRow.id, m_oController.m_oEvent.id)"></i> -->
@@ -937,14 +928,14 @@
 
         <div class="form-group">
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddMedia()">Add supplementary media</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddMedia()" ng-show="!m_oController.getIsReadOnly()">Add supplementary media</button>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" >
-                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddGIS('sm')">Add supplementary GIS</button>
+                <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddGIS('sm')" ng-show="!m_oController.getIsReadOnly()">Add supplementary GIS</button>
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" >
                 <div class="loading" ng-show="m_oController.m_bSaving" ><img class="loading" src="img/Spinner.gif"/></div>
-                <button type="submit" class="btn btn-primary btn-lg btn-block" tooltip-popup-delay="500" tooltip="Send" ng-click="m_oController.Save()" ng-hide="m_oController.m_bSaving">Send/Close</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" tooltip-popup-delay="500" tooltip="Send" ng-click="m_oController.Save()" ng-hide="m_oController.m_bSaving || m_oController.getIsReadOnly()">Send/Close</button>
             </div>
         </div>
 

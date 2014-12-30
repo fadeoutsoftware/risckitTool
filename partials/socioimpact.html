@@ -2,41 +2,41 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">Category</label>
         <div class="col-sm-5">
-            <select class="form-control" ng-model="m_oController.m_oSelectedCategoryId" ng-options="Category.id as Category.description for Category in m_oController.GetCategories()"></select>
+            <select class="form-control" ng-model="m_oController.m_oSelectedCategoryId" ng-options="Category.id as Category.description for Category in m_oController.GetCategories()" ng-disabled="m_oController.getIsReadOnly()"></select>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">Subcategory</label>
         <div class="col-sm-5">
-            <select class="form-control" ng-model="m_oController.m_oSelectedSubCategoryId" ng-options="SubCategories.id as SubCategories.description for SubCategories in m_oController.m_oSubCategories"></select>
+            <select class="form-control" ng-model="m_oController.m_oSelectedSubCategoryId" ng-options="SubCategories.id as SubCategories.description for SubCategories in m_oController.m_oSubCategories" ng-disabled="m_oController.getIsReadOnly()"></select>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">Description</label>
         <div class="col-sm-5">
-            <textarea class="form-control" rows="2" placeholder="Description" ng-model="m_oController.m_oSocioimpact.description"></textarea>
+            <textarea class="form-control" rows="2" placeholder="Description" ng-model="m_oController.m_oSocioimpact.description" ng-disabled="m_oController.getIsReadOnly()"></textarea>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">Quantitative description</label>
         <div class="col-sm-5">
-            <textarea class="form-control" rows="2" placeholder="Unit of measure" ng-model="m_oController.m_oSocioimpact.unitMeasure"></textarea>
+            <textarea class="form-control" rows="2" placeholder="Unit of measure" ng-model="m_oController.m_oSocioimpact.unitMeasure" ng-disabled="m_oController.getIsReadOnly()"></textarea>
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">Cost</label>
         <div class="col-sm-2">
-            <input type="number" class="form-control" placeholder="Cost" ng-model="m_oController.m_oSocioimpact.cost" step="any" min="0">
+            <input type="number" class="form-control" placeholder="Cost" ng-model="m_oController.m_oSocioimpact.cost" step="any" min="0" ng-disabled="m_oController.getIsReadOnly()">
         </div>
         <label class="col-sm-1 control-label">Currency</label>
         <div class="col-sm-2">
-            <select class="form-control" ng-model="m_oController.m_oSelectedCurrencyId" ng-options="Currency.id as Currency.currency for Currency in m_oController.GetCurrencies()"></select>
+            <select class="form-control" ng-model="m_oController.m_oSelectedCurrencyId" ng-options="Currency.id as Currency.currency for Currency in m_oController.GetCurrencies()" ng-disabled="m_oController.getIsReadOnly()"></select>
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col-lg-offset-1 col-sm-2">
-            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.Save()">Save/Close</button>
+            <button type="button" class="btn btn-primary btn-lg" ng-click="m_oController.Save()" ng-show="!m_oController.getIsReadOnly()">Save/Close</button>
         </div>
         <div class="col-lg-offset-1 col-sm-2">
             <button class="btn btn-primary btn-lg" ng-click="m_oController.cancel()">Cancel</button>

@@ -9,11 +9,6 @@
     </div>
 <div class="row">
 
-
-
-
-        
-
             <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
                 <h2><i class="fa fa-thumb-tack fa-fw"> </i> Filters</h2>
             </div>
@@ -23,7 +18,6 @@
             </div>
 
     </div>
-
 
     <div class="eventlist">
         <div class="row">
@@ -134,8 +128,9 @@
             </thead>
             <tbody>
                 <tr ng-repeat="oItem in m_oController.m_oEventList  | filter:search | pagination : m_oController.currentPage*m_oController.itemsPerPage | limitTo: m_oController.itemsPerPage">
-                    <td><button type="button" class="btn btn-danger" ng-click="m_oController.deleteEvent(oItem.id)">Del</button></td>
-                    <td><button type="button" class="btn btn-primary" ng-click="m_oController.openEvent(oItem.id)">Edit</button></td>
+                    <td><button ng-show="oItem.editMode || m_oController.m_oLoginService.isAdmin()" type="button" class="btn btn-danger" ng-click="m_oController.deleteEvent(oItem.id)">Del</button></td>
+                    <td ng-show="oItem.editMode || m_oController.m_oLoginService.isAdmin()"><button type="button" class="btn btn-primary" ng-click="m_oController.openEvent(oItem.id)">Edit</button></td>
+                    <td ng-show="!oItem.editMode && !m_oController.m_oLoginService.isAdmin()"><button type="button" class="btn btn-warning" ng-click="m_oController.openEvent(oItem.id)">View</button></td>
                     <td>{{oItem.countryCode}}</td>
                     <td>{{oItem.regionName}}</td>
                     <td>{{oItem.startDate}}</td>
