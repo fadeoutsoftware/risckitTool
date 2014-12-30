@@ -468,3 +468,30 @@ td label i,
     }
     .event .table .media td:first-child {min-width:250px;}
 }
+
+.eventPublicListMedia {
+    width: 32px;
+    height: 32px;
+}
+
+.eventPublicListsRow:hover {
+    background-color: #444444 !important;
+}
+
+.selected-menu-item {
+    color: #fc0 !important;
+    text-decoration: none;
+}
+
+.eventPublicListHeader {
+    cursor: pointer;
+    -webkit-transition: all 0.4s ease 0s;
+    -moz-transition: all 0.4s ease 0s;
+    -ms-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+}
+
+.eventPublicListHeader:hover {
+    color: #fc0;
+}
