@@ -3,7 +3,7 @@
  */
 var GisController = (function() {
 
-    function GisController($scope, $location, $modalInstance, oSharedService, oEventService, oGisService) {
+    function GisController($scope, $location, $modalInstance, oSharedService, oEventService, oGisService, oLoginService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
@@ -11,6 +11,7 @@ var GisController = (function() {
         this.m_oSharedService = oSharedService;
         this.m_oEventService = oEventService;
         this.m_oGisService = oGisService;
+        this.m_oLoginService = oLoginService;
         this.m_sGisFilePath = null;
         this.m_sInspireFilePath = null;
         this.m_oUploading= false;
@@ -107,13 +108,26 @@ var GisController = (function() {
 
     };
 
+    GisController.prototype.getIsReadOnly = function () {
+        var isReadOnly = false;
+        var oEvent = this.m_oSharedService.getEvent();
+        if (oEvent.editMode != null)
+            isReadOnly = !oEvent.editMode;
+
+        if (this.m_oLoginService.isAdmin())
+            isReadOnly = false;
+
+        return isReadOnly;
+    };
+
     GisController.$inject = [
         '$scope',
         '$location',
         '$modalInstance',
         'SharedService',
         'EventService',
-        'GisService'
+        'GisService',
+        'LoginService'
 
     ];
 

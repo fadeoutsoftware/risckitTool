@@ -780,6 +780,17 @@ var EventController = (function() {
         this.m_oLocation.path('/socioimpact/' + idsocio);
     };
 
+    EventController.prototype.getIsReadOnly = function () {
+        var isReadOnly = false;
+        if (this.m_oScope.m_oController.m_oEvent.editMode != null)
+            isReadOnly = !this.m_oScope.m_oController.m_oEvent.editMode;
+
+        if (this.m_oLoginService.isAdmin())
+            isReadOnly = false;
+
+        return isReadOnly;
+    };
+
     EventController.prototype.GetTotalCost = function () {
         var totalCost = 0;
         if (this.m_oScope.m_oController.m_oEvent != null) {

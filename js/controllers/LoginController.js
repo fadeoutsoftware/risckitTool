@@ -25,6 +25,7 @@ var LoginController = (function() {
                 oLoginService.m_iUserId = data.id;
                 oLoginService.m_sUserRole = "Administrator";
                 oLoginService.m_bIsLogged = true;
+                oLoginService.m_bIsAdmin = data.isAdmin;
                 oModalService.close(true);
                 oLoginService.setLogDialogOn(false);
             }

@@ -6,12 +6,13 @@
  */
 var MediaController = (function() {
 
-    function MediaController($scope, $location, oSharedService, oEventService, oMediaService, $routeParams) {
+    function MediaController($scope, $location, oSharedService, oEventService, oMediaService, $routeParams, oLoginService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
         this.m_oEventService = oEventService;
         this.m_oMediaService = oMediaService;
+        this.m_oLoginService = oLoginService;
         this.m_sFilePath = null;
         this.uploadRightAway = true;
         this.description = null;
@@ -253,6 +254,18 @@ var MediaController = (function() {
 
     };
 
+    MediaController.prototype.getIsReadOnly = function () {
+        var isReadOnly = false;
+        var oEvent = this.m_oSharedService.getEvent();
+        if (oEvent.editMode != null)
+            isReadOnly = !oEvent.editMode;
+
+        if (this.m_oLoginService.isAdmin())
+            isReadOnly = false;
+
+        return isReadOnly;
+    };
+
 
     MediaController.$inject = [
         '$scope',
@@ -260,7 +273,8 @@ var MediaController = (function() {
         'SharedService',
         'EventService',
         'MediaService',
-        '$routeParams'
+        '$routeParams',
+        'LoginService'
     ];
 
 

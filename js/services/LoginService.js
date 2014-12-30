@@ -14,6 +14,7 @@ angular.module('risckit.loginService', []).
         this.m_sUserRole = '';
         this.m_bLogDialogOn = false;
         this.m_sLastLogin = '';
+        this.m_bIsAdmin = false;
 
         this.m_iSelectedMenuIndex = 1;
 
@@ -23,6 +24,13 @@ angular.module('risckit.loginService', []).
                 return false;
 
             return this.m_bIsLogged;
+        };
+
+        this.isAdmin = function() {
+            if (this.m_bIsAdmin == null)
+                return false;
+
+            return this.m_bIsAdmin;
         };
 
 

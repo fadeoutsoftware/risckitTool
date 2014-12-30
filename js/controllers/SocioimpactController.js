@@ -1,6 +1,6 @@
 var SocioimpactController = (function() {
 
-    function SocioimpactController($scope, $location, oSharedService, oEventService, oSocioImpactService, $routeParams) {
+    function SocioimpactController($scope, $location, oSharedService, oEventService, oSocioImpactService, $routeParams, oLoginService) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oLocation = $location;
@@ -8,6 +8,7 @@ var SocioimpactController = (function() {
         this.m_oSharedService = oSharedService;
         this.m_oSocioImpactService = oSocioImpactService;
         this.m_oRouteParams = $routeParams;
+        this.m_oLoginService = oLoginService;
         var idsocioimpact = this.m_oRouteParams.idsocioimpact;
         this.m_oSelectedCategoryId;
         this.m_oSelectedSubCategoryId;
@@ -128,6 +129,18 @@ var SocioimpactController = (function() {
 
     };
 
+    SocioimpactController.prototype.getIsReadOnly = function () {
+        var isReadOnly = false;
+        var oEvent = this.m_oSharedService.getEvent();
+        if (oEvent.editMode != null)
+            isReadOnly = !oEvent.editMode;
+
+        if (this.m_oLoginService.isAdmin())
+            isReadOnly = false;
+
+        return isReadOnly;
+    };
+
 
     SocioimpactController.$inject = [
         '$scope',
@@ -135,7 +148,8 @@ var SocioimpactController = (function() {
         'SharedService',
         'EventService',
         'SocioimpactService',
-        '$routeParams'
+        '$routeParams',
+        'LoginService'
     ];
 
 

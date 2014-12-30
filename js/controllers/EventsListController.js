@@ -22,7 +22,7 @@ var EventsListController = (function() {
         this.m_bShowClearFilterRegion = false;
 
         //------pagination------
-        this.itemsPerPage = 5;
+        this.itemsPerPage = 15;
         this.currentPage = 0;
 
         if (this.m_oLoginService.isLogged())
