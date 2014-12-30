@@ -115,7 +115,34 @@ public class Media {
 		this.setLat(oMediaViewModel.getLat());
 		this.setLon(oMediaViewModel.getLon());
 		this.setFile(oMediaViewModel.getDownloadPath());
-		this.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(oMediaViewModel.getDate()));
+		
+		try {
+			this.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(oMediaViewModel.getDate()));
+		}
+		catch(Exception oEx)
+		{
+			try {
+				this.setDate(new SimpleDateFormat("yyyy-dd-MM").parse(oMediaViewModel.getDate()));
+			}
+			catch(Exception oEx2)
+			{
+				try {
+					this.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(oMediaViewModel.getDate()));
+				}
+				catch(Exception oEx4)
+				{
+					try {
+						this.setDate(new SimpleDateFormat("MM-dd-yyyy").parse(oMediaViewModel.getDate()));
+					}
+					catch(Exception oEx5)
+					{
+						oEx5.printStackTrace();
+					}									
+				}				
+			}
+		}
+		
+		
 		this.setDescription(oMediaViewModel.getDescription());
 		this.setThumbnail(oMediaViewModel.getThumbnail());
 	}

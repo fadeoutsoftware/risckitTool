@@ -65,7 +65,7 @@ public class MediaRepository extends Repository<Media>{
 
 	public void DeleteMediaFile(String sUserName, String sSvnUser, String sSvnPwd,
 			String sSvnUserDomain, String sRepoFile, String sSvnRepository, String sStartDate, String sLocation) throws SVNException, IOException
-			{
+	{
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
 
@@ -81,7 +81,7 @@ public class MediaRepository extends Repository<Media>{
 					sStartDate,
 					sLocation);
 		}
-			}
+	}
 
 	public String CreateThumb(InputStream uploadedInputStream, String sProjectPath, Media oMedia, String sFileName)
 	{
@@ -126,21 +126,16 @@ public class MediaRepository extends Repository<Media>{
 			ImageIO.write(thumbnail, sExtension, outputfile);
 
 		} catch (IllegalArgumentException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			return "-1";
 		} catch (ImagingOpException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			return "-1";
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			return "-1";
 		}
 
 		return sRelativePath + sFileName;
-
-
 	}
 }

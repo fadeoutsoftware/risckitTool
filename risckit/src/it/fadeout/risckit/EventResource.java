@@ -39,6 +39,7 @@ import it.fadeout.risckit.viewmodels.EventViewModel;
 import it.fadeout.risckit.viewmodels.GisViewModel;
 import it.fadeout.risckit.viewmodels.HtmlViewModel;
 import it.fadeout.risckit.viewmodels.MediaViewModel;
+import it.fadeout.risckit.viewmodels.PrimitiveResult;
 import it.fadeout.risckit.viewmodels.SocioImpactViewModel;
 
 import javax.servlet.ServletConfig;
@@ -73,6 +74,19 @@ public class EventResource {
 	@Context 
 	ServletContext serveletContext;
 
+	/**
+	 * Test Method
+	 * @return
+	 */
+	@GET
+	@Path("/test")
+	@Produces({"application/xml", "application/json", "text/xml"})
+	public PrimitiveResult Test() {
+		// Just a keep alive message
+		PrimitiveResult oTest = new PrimitiveResult();
+		oTest.StringValue = "RiscKit is Working";
+		return oTest;
+	}
 
 	@POST
 	@Path("/save")
@@ -401,6 +415,67 @@ public class EventResource {
 		return oReturnList;
 	}
 
+	@GET
+	@Path("/bycountrylist/{countrycode}")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public List<EventViewModel> getEventByCountryList(@PathParam("countrycode") String sCountryCode) {
+
+		List<EventViewModel> oReturnList = null;
+		EventRepository oRepo = new EventRepository();
+		MediaRepository oMediaRepo = new MediaRepository();
+		GisRepository oGisRepo = new GisRepository();
+		SocioImpactRepository oSocioRepo = new SocioImpactRepository();
+		List<Event> oEvents = oRepo.SelectByCountries(sCountryCode);
+
+		CountryRepository oCountryRepo = new CountryRepository();
+		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
+
+		if (oEvents != null)
+		{
+			try
+			{
+				oReturnList = new ArrayList<EventViewModel>();
+				for (Event event : oEvents) {
+					EventViewModel oEventViewModel =  event.getViewModel(oCountries);
+					List<Media> oMediaList = oMediaRepo.SelectByEvent(event.getId());
+					if (oMediaList != null)
+					{
+						for (Media media : oMediaList) {
+							if (oEventViewModel.getMedia() == null)
+								oEventViewModel.setMedia(new ArrayList<MediaViewModel>());
+							oEventViewModel.getMedia().add(media.getViewModel());
+						}
+					}
+
+					Gis oGis = oGisRepo.SelectByEvent(event.getId());
+					if (oGis != null)
+					{
+						if (oEventViewModel.getGis() == null)
+							oEventViewModel.setGis(new GisViewModel());
+						oEventViewModel.setGis(oGis.getViewModel());
+					}
+					List<SocioImpact> oImpacts = oSocioRepo.SelectByEvent(event.getId());
+					if (oImpacts != null)
+					{
+						for (SocioImpact socioImpact : oImpacts) {
+							if (oEventViewModel.getSocioimpacts() == null)
+								oEventViewModel.setSocioimpacts(new ArrayList<SocioImpactViewModel>());
+							oEventViewModel.getSocioimpacts().add(socioImpact.GetViewModel());
+						}
+					}
+					oReturnList.add(oEventViewModel);
+				}
+			}
+			finally
+			{
+
+			}
+		}
+
+
+
+		return oReturnList;
+	}	
 
 	@GET
 	@Path("/groupevent")

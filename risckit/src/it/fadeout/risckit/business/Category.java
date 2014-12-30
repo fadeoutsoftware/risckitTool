@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -26,7 +27,7 @@ public class Category {
 	@Column(name="description")
 	private String Description;
 	
-	@OneToMany(mappedBy = "Category")  
+	@OneToMany(mappedBy = "Category", fetch = FetchType.EAGER)  
 	private Set<SubCategory> SubCategories;
 
 	public Integer getId() {

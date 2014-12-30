@@ -75,8 +75,13 @@ public class EventRepository extends Repository<Event>{
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			oSession.getTransaction().rollback();
-
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Exception oEx2) {
+				System.err.println(oEx.toString());
+				oEx.printStackTrace();				
+			}
 		}		
 		finally {
 			if (oSession!=null) {
@@ -105,7 +110,13 @@ public class EventRepository extends Repository<Event>{
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			oSession.getTransaction().rollback();
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Exception oEx2) {
+				System.err.println(oEx.toString());
+				oEx.printStackTrace();				
+			}
 		}		
 		finally {
 			if (oSession!=null) {
@@ -135,8 +146,14 @@ public class EventRepository extends Repository<Event>{
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			oSession.getTransaction().rollback();
-
+			
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Exception oEx2) {
+				System.err.println(oEx.toString());
+				oEx.printStackTrace();				
+			}
 		}		
 		finally {
 			if (oSession!=null) {
@@ -146,17 +163,13 @@ public class EventRepository extends Repository<Event>{
 			}
 
 		}
-
 		return aoList;
 	}
 
 
 
-
-
-	public void DeleteEventFile(String sUserName, String sSvnUser, String sSvnPwd,
-			String sSvnUserDomain, String sRepoFile, String sSvnRepository, String sStartDate, String sLocation) throws SVNException, IOException
-			{
+	public void DeleteEventFile(String sUserName, String sSvnUser, String sSvnPwd, String sSvnUserDomain, String sRepoFile, String sSvnRepository, String sStartDate, String sLocation) throws SVNException, IOException
+	{
 		//Delete File if present
 		SVNUtils oSvnUtils = new SVNUtils();
 
@@ -172,7 +185,7 @@ public class EventRepository extends Repository<Event>{
 					sStartDate,
 					sLocation);
 		}
-			}
+	}
 
 	public int Delete(Event oEntity, String sUserName, String sSvnUser,
 			String sSvnPwd, 
@@ -212,28 +225,39 @@ public class EventRepository extends Repository<Event>{
 			{
 				oEx.printStackTrace();
 				bError = true;
+				
+				try {
+					oSession.getTransaction().rollback();
+				}
+				catch(Throwable oEx2) {
+					System.err.println(oEx2.toString());
+					oEx2.printStackTrace();					
+				}
 			}
 
-			if (bError)
-				return -1; 
+			if (bError) return -1; 
 
 			//delete gis
 			Gis oGis = oGisRepository.SelectByEvent(oEntity.getId());
+			
 			if (oGis != null)
 			{
 				try
 				{
-					if (oGis.getInspireFile() != null)
-						//Delete Gis
-						oGisRepository.DeleteGisFile(sUserName, sSvnUser, sSvnPwd, sSvnUserDomain, oGis.getInspireFile(), sSvnRepository, sStartDate, sLocation);
-					if (oGis.getGisFile() != null)
-						//Delete Gis
+					if (oGis.getInspireFile() != null){
+						//Delete Inspire GIS Metadata
+						oGisRepository.DeleteGisFile(sUserName, sSvnUser, sSvnPwd, sSvnUserDomain, oGis.getInspireFile(), sSvnRepository, sStartDate, sLocation);						
+					}
+					if (oGis.getGisFile() != null) {
+						//Delete Gis File
 						oGisRepository.DeleteGisFile(sUserName, sSvnUser, sSvnPwd, sSvnUserDomain, oGis.getGisFile(), sSvnRepository, sStartDate, sLocation);
+					}
 				}
 				catch(SVNException oEx)
 				{
 					oEx.printStackTrace();
 				}
+				
 				try
 				{
 					oSession.delete(oGis);
@@ -242,37 +266,56 @@ public class EventRepository extends Repository<Event>{
 				{
 					oEx.printStackTrace();
 					bError = true;
+					
+					try {
+						oSession.getTransaction().rollback();
+					}
+					catch(Throwable oEx2) {
+						System.err.println(oEx2.toString());
+						oEx2.printStackTrace();					
+					}
 				}
 			}
+			
+			if (bError) return -1;
 
 			//Delete socio impact
 			List<SocioImpact> oImpacts = oSocioRepository.SelectByEvent(oEntity.getId());
 			if (oImpacts != null)
 			{
-				for (SocioImpact socioImpact : oImpacts) {
-					try
-					{
+				try
+				{
+					for (SocioImpact socioImpact : oImpacts) {
 						oSocioRepository.Delete(socioImpact);
 					}
-					catch(Exception oEx)
-					{
-						oEx.printStackTrace();
-						bError = true;
+				}
+				catch(Exception oEx)
+				{
+					oEx.printStackTrace();
+					bError = true;
+					
+					try {
+						oSession.getTransaction().rollback();
+					}
+					catch(Throwable oEx2) {
+						System.err.println(oEx2.toString());
+						oEx2.printStackTrace();					
 					}
 				}
+				
 			}
 
-			if (bError)
-				return -1;
+			if (bError) return -1;
 
 			oSession.delete(oEntity);
 			oSession.getTransaction().commit();
+			
 			return 0;
 		}
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			bError = true;
+			
 			try {
 				oSession.getTransaction().rollback();
 			}

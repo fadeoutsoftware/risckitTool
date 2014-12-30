@@ -30,10 +30,16 @@ public class CountryRepository extends Repository<Country> {
 			oSession.getTransaction().commit();
 		}
 		catch(Exception oEx) {
+			
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			oSession.getTransaction().rollback();
-			 
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Exception oEx2) {
+				System.err.println(oEx.toString());
+				oEx.printStackTrace();				
+			}
 		}
 		finally {
 			if (oSession!=null) {
@@ -67,7 +73,14 @@ public class CountryRepository extends Repository<Country> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			oSession.getTransaction().rollback();
+			
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Exception oEx2) {
+				System.err.println(oEx.toString());
+				oEx.printStackTrace();				
+			}			
 		}
 		finally {
 			if (oSession!=null) {
@@ -98,7 +111,13 @@ public class CountryRepository extends Repository<Country> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			oSession.getTransaction().rollback();
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Exception oEx2) {
+				System.err.println(oEx.toString());
+				oEx.printStackTrace();				
+			}
 		}
 		finally {
 			if (oSession!=null) {

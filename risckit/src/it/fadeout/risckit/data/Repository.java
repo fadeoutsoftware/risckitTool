@@ -33,7 +33,11 @@ public class Repository<T> {
 			return false;
 		}
 		finally {
-			if (oSession!=null)  oSession.close();
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
 		}
 		
 	}

@@ -29,6 +29,14 @@ public class UserRepository extends Repository<User>{
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
+			
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Throwable oEx2) {
+				System.err.println(oEx2.toString());
+				oEx2.printStackTrace();					
+			}
 		}
 		finally {
 			if (oSession!=null) {

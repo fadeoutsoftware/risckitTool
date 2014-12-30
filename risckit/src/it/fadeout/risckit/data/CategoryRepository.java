@@ -26,27 +26,23 @@ public class CategoryRepository extends Repository<Category>{
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			if (oSession!=null) {
-				oSession.flush();
-				oSession.clear();
-				oSession.close();
-			}
-			
+
 			try {
 				oSession.getTransaction().rollback();
 			}
 			catch(Throwable oEx2) {
 				System.err.println(oEx2.toString());
 				oEx2.printStackTrace();					
-			}			
+			}
 		}
 		finally {
-			
-
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
 		}
 
-		
-		
 		return aoList;
 	}
 	

@@ -994,11 +994,55 @@ public class Event {
 	public void setEntity(EventViewModel oViewModel) throws ParseException
 	{
 		this.setCountryId(oViewModel.getCountryId());
-		this.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(oViewModel.getStartDate()));
+		
+		
+		
+		//this.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(oViewModel.getStartDate()));
+		
+		try {
+			this.setStartDate(new SimpleDateFormat("yyyy-MM-dd").parse(oViewModel.getStartDate()));
+		}
+		catch(Exception oEx)
+		{
+			try {
+				this.setStartDate(new SimpleDateFormat("yyyy-dd-MM").parse(oViewModel.getStartDate()));
+			}
+			catch(Exception oEx2)
+			{
+				try {
+					this.setStartDate(new SimpleDateFormat("dd-MM-yyyy").parse(oViewModel.getStartDate()));
+				}
+				catch(Exception oEx4)
+				{
+					try {
+						this.setStartDate(new SimpleDateFormat("MM-dd-yyyy").parse(oViewModel.getStartDate()));
+					}
+					catch(Exception oEx5)
+					{
+						oEx5.printStackTrace();
+					}									
+				}				
+			}
+		}
+		
+		
+		
 		if (oViewModel.getStartHour() != null)
-			this.setStartHour(new SimpleDateFormat("HH:mm").parse(oViewModel.getStartHour()));
+		{
+			try {
+				this.setStartHour(new SimpleDateFormat("HH:mm").parse(oViewModel.getStartHour()));
+			}
+			catch(Exception oEx)
+			{
+				oEx.printStackTrace();
+				this.setStartHour(null);
+			}
+		}
 		else
+		{
 			this.setStartHour(null);
+		}
+		
 		this.setDescription(oViewModel.getDescription());
 		this.setUnitHour(oViewModel.getUnitHour());
 		this.setUnitValue(oViewModel.getUnitValue());

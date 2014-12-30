@@ -27,13 +27,11 @@ public class CategoryResource {
 	@Produces({"application/json"})
 	public ArrayList<CategoryViewModel> getCategories() {
 
-		ArrayList<CategoryViewModel> oReturnValue = null;
+		ArrayList<CategoryViewModel> oReturnValue = new ArrayList<CategoryViewModel>();
 		CategoryRepository oRepo = new CategoryRepository();
 
 		List<Category> oList = oRepo.SelectAll(Category.class);
 		for (Category category : oList) {
-			if (oReturnValue == null)
-				oReturnValue = new ArrayList<CategoryViewModel>();
 			oReturnValue.add(category.getViewModel());
 		}
 		
