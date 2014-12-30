@@ -15,11 +15,29 @@
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             <div class="sidebar details">
                 <h4 align="center">Event List</h4>
-                <table>
+                <table class="table">
+                    <thead>
+                        <th class="eventPublicListHeader" colspan="2"  ng-click="m_oController.m_sOrderBy = 'regionName'; m_oController.m_bReverseOrder=!m_oController.m_bReverseOrder">Region</th>
+                        <th class="eventPublicListHeader" ng-click="m_oController.m_sOrderBy = 'startDate'; m_oController.m_bReverseOrder=!m_oController.m_bReverseOrder">Date</th>
+                    </thead>
                     <tbody>
-                    <tr ng-repeat="oItem in m_oController.m_oEventList">
+                    <tr ng-repeat="oItem in m_oController.m_oEventList | orderBy:m_oController.m_sOrderBy:m_oController.m_bReverseOrder" class="eventPublicListsRow" ng-click="m_oController.ShowMedia(oItem)">
                         <td>
-                            <a  ng-class="{ 'selected-menu-item': oItem.id == m_oController.m_iSelectedEventId}" href ng-click="m_oController.ShowMedia(oItem)">{{oItem.regionName}} - {{oItem.startDate}}</a>
+                            <img ng-src="{{oItem.imagePath}}"  class="eventPublicListMedia"/>
+                        </td>
+                        <td>
+                            <a  ng-class="{ 'selected-menu-item': oItem.id == m_oController.m_iSelectedEventId}" href >{{oItem.regionName}}</a>
+                        </td>
+                        <td>
+                            <a  ng-class="{ 'selected-menu-item': oItem.id == m_oController.m_iSelectedEventId}" href >{{oItem.startDate}}</a>
+                        </td>
+                    </tr>
+                    <tr ng-show="m_oController.ShowPleaseClickRow()">
+                        <td colspan="3">
+                            Click on a Country to see events
+                            <div class="loading" ng-show="m_oController.m_bLoadingFlag">
+                                <img src="img/Spinner.gif" class="loading"/>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
