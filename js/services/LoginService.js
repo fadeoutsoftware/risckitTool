@@ -4,8 +4,8 @@
 'use strict';
 angular.module('risckit.loginService', []).
     service('LoginService', ['$http',  function ($http) {
-        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        this.APIURL = 'http://localhost:8080/risckit/rest';
+        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        //this.APIURL = 'http://localhost:8080/risckit/rest';
 
         this.m_oHttp = $http;
         this.m_bIsLogged = null;
@@ -37,12 +37,6 @@ angular.module('risckit.loginService', []).
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
-
-
-            //if (sUserName == 'unife' && sPassword == 'unife')
-            //   return true;
-
-            //return false;
         };
 
 

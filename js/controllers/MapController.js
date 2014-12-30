@@ -20,6 +20,9 @@ var MapController = (function() {
         this.m_iSelectedEventId;
         this.m_oMap;
         this.m_oModal = oModal;
+        this.m_sOrderBy = "startDate";
+        this.m_bReverseOrder = false;
+        this.m_bLoadingFlag = false;
 
         var infowindow = new google.maps.InfoWindow({maxWidth: 300});
 
@@ -39,6 +42,7 @@ var MapController = (function() {
                 //remove region marker
                 clearRegionMarkers();
                 clearEventsInfo();
+                $scope.m_oController.m_bLoadingFlag = false;
                 $scope.m_oController.clearMediaMarkers();
 
                 //Show marker for countries
@@ -53,6 +57,7 @@ var MapController = (function() {
         var eventmarker = 'img/marker_event.png';
 
         if (this.m_oLoginService.isLogged())
+        {
             this.m_oScope.m_oController.m_oEventService.LoadEventsByCountries().success(function (data) {
                 $scope.m_oController.m_oEventCountryList = data;
                 for (var iCount = 0; iCount < data.length; iCount++) {
@@ -78,6 +83,11 @@ var MapController = (function() {
                 }
 
             });
+        }
+        else
+        {
+            $location.path('/');
+        }
 
         function clearEventsInfo()
         {
@@ -119,7 +129,7 @@ var MapController = (function() {
                                 labelClass: "labels-map", // the CSS class for the label
                                 labelInBackground: false
                             });
-                            showEvents(marker, oEvent.regionId)
+                            showEvents(marker, oEvent.regionId);
                             //showInfo(marker, oEvent.regionName);
                             //closeInfo(marker);
                             $scope.m_oController.eventMarkers.push(marker);
@@ -129,6 +139,41 @@ var MapController = (function() {
 
                 });
 
+                $scope.m_oController.m_bLoadingFlag = true;
+
+                $scope.m_oController.m_oEventService.LoadEventsByCountryForList(locCountryCode).success(function (data) {
+                    if ((angular.isDefined(data) && data!=null)) {
+                        var iEventsCount = 0;
+
+                        for (iEventsCount=0; iEventsCount<data.length; iEventsCount++) {
+                            var sImageLink = 'img/event2.png';
+
+                            var oEvent  = data[iEventsCount];
+
+                            if (angular.isDefined(oEvent) && oEvent != null)
+                            {
+                                if (angular.isDefined(oEvent.media) && oEvent.media != null)
+                                {
+                                    if (oEvent.media.length>0) {
+                                        if (oEvent.media[0].thumbnail != null)
+                                            sImageLink = 'img/thumb/' + oEvent.media[0].thumbnail;
+                                    }
+                                }
+                            }
+
+                            data[iEventsCount].imagePath = sImageLink;
+                        }
+                    }
+
+                    $scope.m_oController.EventHtml = '';
+                    $scope.m_oController.m_iSelectedEventId = null;
+                    $scope.m_oController.m_oEventList = data;
+                    $scope.m_oController.clearMediaMarkers();
+                    $scope.m_oController.m_bLoadingFlag = false;
+                }).error(function(data,status){
+                    $scope.m_oController.m_bLoadingFlag = false;
+                });
+
 
             });
 
@@ -136,11 +181,41 @@ var MapController = (function() {
 
         function showEvents(marker, regionId) {
             google.maps.event.addListener(marker, 'click', function () {
+
+                $scope.m_oController.m_bLoadingFlag = true;
+
                 $scope.m_oController.m_oEventService.LoadEventsByRegionForMap(regionId).success(function (data) {
+
+                    if ((angular.isDefined(data) && data!=null)) {
+                        var iEventsCount = 0;
+
+                        for (iEventsCount=0; iEventsCount<data.length; iEventsCount++) {
+                            var sImageLink = 'img/event2.png';
+
+                            var oEvent  = data[iEventsCount];
+
+                            if (angular.isDefined(oEvent) && oEvent != null)
+                            {
+                                if (angular.isDefined(oEvent.media) && oEvent.media != null)
+                                {
+                                    if (oEvent.media.length>0) {
+                                        if (oEvent.media[0].thumbnail != null)
+                                            sImageLink = 'img/thumb/' + oEvent.media[0].thumbnail;
+                                    }
+                                }
+                            }
+
+                            data[iEventsCount].imagePath = sImageLink;
+                        }
+                    }
+
                     $scope.m_oController.EventHtml = '';
                     $scope.m_oController.m_iSelectedEventId = null;
                     $scope.m_oController.m_oEventList = data;
                     $scope.m_oController.clearMediaMarkers();
+                    $scope.m_oController.m_bLoadingFlag = false;
+                }).error(function(data,status){
+                    $scope.m_oController.m_bLoadingFlag = false;
                 });
             });
         }
@@ -195,6 +270,7 @@ var MapController = (function() {
 
     }
 
+
     MapController.prototype.DownloadMedia = function (mediaMarker, media)
     {
         var localMedia = media;
@@ -205,8 +281,8 @@ var MapController = (function() {
             oScope.m_oController.m_oMediaService.PreviewMedia(localMedia.id).success(function(data){
                 if (data != null && data != "") {
 
-                    var templ = "<div class='modal-body'>" +
-                        "<img src= 'img/thumb/temp/" + data + "'>" +
+                    var templ = "<div class='modal-body' style='display: flex'>" +
+                        "<img src= 'img/thumb/temp/" + data + "' style='max-height: 500px;'>" +
                         "</div>" +
                         "<div class='modal-footer'>" +
                         "<button class='col-xs-2 btn btn-warning' ng-click='m_oController.close()'>Close</button>" +
@@ -412,6 +488,13 @@ var MapController = (function() {
 
     };
 
+    MapController.prototype.ShowPleaseClickRow = function() {
+        if (angular.isDefined(this.m_oEventList) == false) return true;
+        if (this.m_oEventList == null) return true;
+        if (this.m_oEventList.length == 0) return true;
+
+        return false;
+    }
 
     MapController.prototype.ShowMedia = function(event) {
 

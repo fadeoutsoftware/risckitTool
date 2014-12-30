@@ -169,19 +169,19 @@ var EventsListController = (function() {
 
     EventsListController.prototype.clearFilterYear = function() {
         this.m_bShowClearFilterYear = false;
-        this.m_oScope.search.year = null;
+        this.m_oScope.search.year = "";
 
     };
 
     EventsListController.prototype.clearFilterMonth = function() {
         this.m_bShowClearFilterMonth = false;
-        this.m_oScope.search.month = null;
+        this.m_oScope.search.month = "";
 
     };
 
     EventsListController.prototype.clearFilterDay = function() {
         this.m_bShowClearFilterDay = false;
-        this.m_oScope.search.day = null;
+        this.m_oScope.search.day = "";
 
     };
 
@@ -194,8 +194,6 @@ var EventsListController = (function() {
 
     EventsListController.prototype.YearChange = function() {
         this.m_bShowClearFilterYear = true;
-
-
     };
 
     EventsListController.prototype.MonthChange = function() {
