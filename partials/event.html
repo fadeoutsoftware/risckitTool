@@ -927,15 +927,18 @@
 
 
         <div class="form-group">
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                 <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddMedia()" ng-show="!m_oController.getIsReadOnly()">Add supplementary media</button>
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" >
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" >
                 <button type="button" class="btn btn-primary btn-lg btn-block" ng-click="m_oController.AddGIS('sm')" ng-show="!m_oController.getIsReadOnly()">Add supplementary GIS</button>
             </div>
-            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4" >
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" >
                 <div class="loading" ng-show="m_oController.m_bSaving" ><img class="loading" src="img/Spinner.gif"/></div>
-                <button type="submit" class="btn btn-primary btn-lg btn-block" tooltip-popup-delay="500" tooltip="Send" ng-click="m_oController.Save()" ng-hide="m_oController.m_bSaving || m_oController.getIsReadOnly()">Send/Close</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" tooltip-popup-delay="500" tooltip="Save" ng-click="m_oController.Save()" ng-hide="m_oController.m_bSaving || m_oController.getIsReadOnly()">Save</button>
+            </div>
+            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" >
+                <button type="button" class="btn btn-primary btn-lg btn-block" tooltip-popup-delay="500" tooltip="Close" ng-click="m_oController.Close()">Close</button>
             </div>
         </div>
 

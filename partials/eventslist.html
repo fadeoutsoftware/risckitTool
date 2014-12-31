@@ -121,13 +121,13 @@
             <thead>
                 <th></th>
                 <th></th>
-                <th>Country</th>
-                <th>Region</th>
-                <th>Start Date</th>
-                <th>Start Hour</th>
+                <th class="eventPublicListHeader" ng-click="predicate = 'countryCode'; reverse=!reverse">Country</th>
+                <th class="eventPublicListHeader" ng-click="predicate = 'regionName'; reverse=!reverse">Region</th>
+                <th class="eventPublicListHeader" ng-click="predicate = 'startDate'; reverse=!reverse">Start Date</th>
+                <th class="eventPublicListHeader" ng-click="predicate = 'startHour'; reverse=!reverse">Start Hour</th>
             </thead>
             <tbody>
-                <tr ng-repeat="oItem in m_oController.m_oEventList  | filter:search | pagination : m_oController.currentPage*m_oController.itemsPerPage | limitTo: m_oController.itemsPerPage">
+                <tr ng-repeat="oItem in m_oController.m_oEventList  | orderBy:predicate:reverse | filter:search | pagination : m_oController.currentPage*m_oController.itemsPerPage | limitTo: m_oController.itemsPerPage ">
                     <td><button ng-show="oItem.editMode || m_oController.m_oLoginService.isAdmin()" type="button" class="btn btn-danger" ng-click="m_oController.deleteEvent(oItem.id)">Del</button></td>
                     <td ng-show="oItem.editMode || m_oController.m_oLoginService.isAdmin()"><button type="button" class="btn btn-primary" ng-click="m_oController.openEvent(oItem.id)">Edit</button></td>
                     <td ng-show="!oItem.editMode && !m_oController.m_oLoginService.isAdmin()"><button type="button" class="btn btn-warning" ng-click="m_oController.openEvent(oItem.id)">View</button></td>

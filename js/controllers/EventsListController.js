@@ -33,6 +33,42 @@ var EventsListController = (function() {
         //Load countries
         this.m_oEventService.LoadCountries();
 
+        //set filters
+        var oScope = this.m_oScope;
+        if (oScope.m_oController.m_oSharedService.getFilters() != null) {
+            oScope.search = new Object();
+            if (oScope.m_oController.m_oSharedService.getFilters().countryCode != null)
+                oScope.search.countryCode = oScope.m_oController.m_oSharedService.getFilters().countryCode;
+            if (oScope.m_oController.m_oSharedService.getFilters().year != null) {
+                oScope.search.year = oScope.m_oController.m_oSharedService.getFilters().year;
+                this.m_bShowClearFilterYear = true;
+            }
+            if (oScope.m_oController.m_oSharedService.getFilters().month != null) {
+                oScope.search.month = oScope.m_oController.m_oSharedService.getFilters().month;
+                this.m_bShowClearFilterMonth = true;
+            }
+            if (oScope.m_oController.m_oSharedService.getFilters().day != null) {
+                oScope.search.day = oScope.m_oController.m_oSharedService.getFilters().day;
+                this.m_bShowClearFilterDay = true;
+            }
+            if (oScope.m_oController.m_oSharedService.getFilters().hasSocioImpacts != null) {
+                oScope.search.hasSocioImpacts = oScope.m_oController.m_oSharedService.getFilters().hasSocioImpacts;
+            }
+        }
+
+        $scope.$on('$locationChangeStart', function (event, next, current) {
+            //Save filters on shared
+            $scope.m_oController.m_oSharedService.setFilters($scope.search);
+        });
+
+        //listen on country
+        oScope.$watch("m_oScope.search.countryCode", function (event, args) {
+            if (oScope.search != null) {
+                if (oScope.search.countryCode != null)
+                    oScope.m_oController.LoadRegion();
+            }
+        });
+
     };
 
     EventsListController.prototype.getEvents = function () {
@@ -47,6 +83,14 @@ var EventsListController = (function() {
         if (oScope.search.countryCode != null || oScope.search.countryCode != "") {
             oScope.m_oController.m_oEventService.GetAllRegions(oScope.search.countryCode).success(function (data, status) {
                 oScope.m_oController.m_oRegions = data;
+                //set filters if present
+                if (oScope.m_oController.m_oSharedService.getFilters() != null) {
+                    if (oScope.m_oController.m_oSharedService.getFilters().regionName != null) {
+                        oScope.search.regionName = oScope.m_oController.m_oSharedService.getFilters().regionName;
+                        this.m_bShowClearFilterRegion = true;
+                    }
+
+                }
 
             });
         }

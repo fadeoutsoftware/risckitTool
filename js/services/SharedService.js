@@ -14,6 +14,14 @@ angular.module('risckit.sharedService', [])
             return $rootScope.Event;
         };
 
+        service.setFilters = function (oSearch) {
+            $rootScope.Search = oSearch;
+        };
+
+        service.getFilters = function () {
+            return $rootScope.Search;
+        };
+
 
         return service;
     });

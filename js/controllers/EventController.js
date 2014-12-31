@@ -485,6 +485,17 @@ var EventController = (function() {
 
         };
 
+        $scope.$on('$locationChangeStart', function (event, next, current) {
+            if ($scope.m_oController.m_oEventService.isModified()) {
+                var bAnswer = confirm("Are you sure you want to quit without save?")
+                if (!bAnswer) {
+                    event.preventDefault();
+                }
+                else
+                    $scope.m_oController.m_oEventService.setUnchanged();
+            }
+        });
+
     }
 
 
@@ -624,6 +635,10 @@ var EventController = (function() {
             });
         }
 
+    };
+
+    EventController.prototype.Close = function() {
+        this.m_oScope.m_oController.m_oLocation.path('eventslist');
     };
 
     EventController.prototype.Save = function() {
