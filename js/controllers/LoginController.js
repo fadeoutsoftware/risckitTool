@@ -2,11 +2,12 @@
  * Created by s.adamo on 14/07/2014.
  */
 var LoginController = (function() {
-    function LoginController($scope, $modalInstance, oLoginServicee) {
+    function LoginController($scope, $modalInstance, oLoginServicee, oLocation) {
         this.m_oScope = $scope;
         this.m_oScope.m_oController = this;
         this.m_oModalInstance = $modalInstance;
         this.m_oLoginService = oLoginServicee;
+        this.m_oLocation = oLocation;
         this.m_oLoginService.setLogDialogOn(true);
 
     }
@@ -40,11 +41,20 @@ var LoginController = (function() {
         });
     };
 
+    LoginController.prototype.Cancel = function()
+    {
+        var oModalService = this.m_oModalInstance;
+        oModalService.close('cancel');
+        this.m_oScope.m_oController.m_oLoginService.m_bIsLogged = false;
+        this.m_oScope.m_oController.m_oLoginService.setLogDialogOn(false);
+    };
+
 
     LoginController.$inject = [
         '$scope',
         '$modalInstance',
-        'LoginService'
+        'LoginService',
+        '$location'
     ];
     return LoginController;
 }) ();

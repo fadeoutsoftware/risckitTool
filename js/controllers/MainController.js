@@ -9,6 +9,9 @@ var MainController = (function() {
         this.m_oModal = $modal;
         this.m_oLoginService = oLoginService;
 
+        $scope.m_oController.m_oLocation.path('map');
+
+        /*
         if (oLoginService.isLogged() == false && !oLoginService.getLogDialogOn()) {
             var oModalLogin = this.m_oModal.open({
                 templateUrl: 'partials/login.html',
@@ -25,6 +28,7 @@ var MainController = (function() {
 
             })
         }
+        */
 
     }
 

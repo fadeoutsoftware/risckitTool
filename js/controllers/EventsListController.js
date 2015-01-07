@@ -25,51 +25,81 @@ var EventsListController = (function() {
         this.itemsPerPage = 15;
         this.currentPage = 0;
 
+        //Define load function
+        $scope.load = function() {
+
+            if ($scope.m_oController.m_oLoginService.isLogged()) {
+                $scope.m_oController.m_oEventService.LoadEvents($scope.m_oController.m_oLoginService.getUserId()).success(function (data) {
+                    $scope.m_oController.m_oEventList = data;
+                });
+
+                //Load countries
+                $scope.m_oController.m_oEventService.LoadCountries();
+
+                //set filters
+                var oScope = $scope;
+                if (oScope.m_oController.m_oSharedService.getFilters() != null) {
+                    oScope.search = new Object();
+                    if (oScope.m_oController.m_oSharedService.getFilters().countryCode != null)
+                        oScope.search.countryCode = oScope.m_oController.m_oSharedService.getFilters().countryCode;
+                    if (oScope.m_oController.m_oSharedService.getFilters().year != null) {
+                        oScope.search.year = oScope.m_oController.m_oSharedService.getFilters().year;
+                        this.m_bShowClearFilterYear = true;
+                    }
+                    if (oScope.m_oController.m_oSharedService.getFilters().month != null) {
+                        oScope.search.month = oScope.m_oController.m_oSharedService.getFilters().month;
+                        this.m_bShowClearFilterMonth = true;
+                    }
+                    if (oScope.m_oController.m_oSharedService.getFilters().day != null) {
+                        oScope.search.day = oScope.m_oController.m_oSharedService.getFilters().day;
+                        this.m_bShowClearFilterDay = true;
+                    }
+                    if (oScope.m_oController.m_oSharedService.getFilters().hasSocioImpacts != null) {
+                        oScope.search.hasSocioImpacts = oScope.m_oController.m_oSharedService.getFilters().hasSocioImpacts;
+                    }
+                    if (oScope.m_oController.m_oSharedService.getFilters().editMode != null) {
+                        oScope.search.editMode = oScope.m_oController.m_oSharedService.getFilters().editMode;
+                    }
+                }
+
+
+                $scope.$on('$locationChangeStart', function (event, next, current) {
+                    //Save filters on shared
+                    $scope.m_oController.m_oSharedService.setFilters($scope.search);
+                });
+
+                //listen on country
+                oScope.$watch("m_oScope.search.countryCode", function (event, args) {
+                    if (oScope.search != null) {
+                        if (oScope.search.countryCode != null)
+                            oScope.m_oController.LoadRegion();
+                    }
+                });
+            }
+        };
+
         if (this.m_oLoginService.isLogged())
-            this.m_oScope.m_oController.m_oEventService.LoadEvents(this.m_oLoginService.getUserId()).success(function(data){
-                $scope.m_oController.m_oEventList = data;
-            });
+            this.m_oScope.load();
+        else {
+            if (this.m_oLoginService.isLogged() == false && !this.m_oLoginService.getLogDialogOn()) {
+                var oModalLogin = this.m_oModal.open({
+                    templateUrl: 'partials/login.html',
+                    controller: LoginController,
+                    backdrop: 'static',
+                    keyboard: false
+                });
 
-        //Load countries
-        this.m_oEventService.LoadCountries();
-
-        //set filters
-        var oScope = this.m_oScope;
-        if (oScope.m_oController.m_oSharedService.getFilters() != null) {
-            oScope.search = new Object();
-            if (oScope.m_oController.m_oSharedService.getFilters().countryCode != null)
-                oScope.search.countryCode = oScope.m_oController.m_oSharedService.getFilters().countryCode;
-            if (oScope.m_oController.m_oSharedService.getFilters().year != null) {
-                oScope.search.year = oScope.m_oController.m_oSharedService.getFilters().year;
-                this.m_bShowClearFilterYear = true;
-            }
-            if (oScope.m_oController.m_oSharedService.getFilters().month != null) {
-                oScope.search.month = oScope.m_oController.m_oSharedService.getFilters().month;
-                this.m_bShowClearFilterMonth = true;
-            }
-            if (oScope.m_oController.m_oSharedService.getFilters().day != null) {
-                oScope.search.day = oScope.m_oController.m_oSharedService.getFilters().day;
-                this.m_bShowClearFilterDay = true;
-            }
-            if (oScope.m_oController.m_oSharedService.getFilters().hasSocioImpacts != null) {
-                oScope.search.hasSocioImpacts = oScope.m_oController.m_oSharedService.getFilters().hasSocioImpacts;
+                oModalLogin.result.then(function (Loginresult) {
+                    if (Loginresult == false)
+                        alert('Login Error');
+                    else if (Loginresult == 'cancel')
+                        $scope.m_oController.m_oLocation.path('map');
+                    else if (Loginresult == true)
+                        $scope.load();
+                })
             }
         }
-
-        $scope.$on('$locationChangeStart', function (event, next, current) {
-            //Save filters on shared
-            $scope.m_oController.m_oSharedService.setFilters($scope.search);
-        });
-
-        //listen on country
-        oScope.$watch("m_oScope.search.countryCode", function (event, args) {
-            if (oScope.search != null) {
-                if (oScope.search.countryCode != null)
-                    oScope.m_oController.LoadRegion();
-            }
-        });
-
-    };
+    }
 
     EventsListController.prototype.getEvents = function () {
         return this.m_oEventList;

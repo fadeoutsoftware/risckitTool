@@ -24,6 +24,10 @@ var MapController = (function() {
         this.m_bReverseOrder = false;
         this.m_bLoadingFlag = false;
 
+        //------pagination------
+        this.itemsPerPage = 10;
+        this.currentPage = 0;
+
         var infowindow = new google.maps.InfoWindow({maxWidth: 300});
 
         var map_canvas = document.getElementById('map_canvas');
@@ -56,8 +60,8 @@ var MapController = (function() {
 
         var eventmarker = 'img/marker_event.png';
 
-        if (this.m_oLoginService.isLogged())
-        {
+        //if (this.m_oLoginService.isLogged())
+        //{
             this.m_oScope.m_oController.m_oEventService.LoadEventsByCountries().success(function (data) {
                 $scope.m_oController.m_oEventCountryList = data;
                 for (var iCount = 0; iCount < data.length; iCount++) {
@@ -83,11 +87,11 @@ var MapController = (function() {
                 }
 
             });
-        }
-        else
-        {
-            $location.path('/');
-        }
+        //}
+        //else
+        //{
+        //    $location.path('/');
+        //}
 
         function clearEventsInfo()
         {
@@ -559,6 +563,64 @@ var MapController = (function() {
         */
 
         return oScope.m_oController.m_oEventService.CreatePdf2(oScope.m_oController.m_iSelectedEventId);
+
+    };
+
+    //------------------Pagination----------------------------
+    MapController.prototype.range = function () {
+        var rangeSize = 4;
+        var ps = [];
+        var start;
+        var oScope = this.m_oScope;
+        start = oScope.m_oController.currentPage;
+        if ( start > this.pageCount()-rangeSize ) {
+            start = this.pageCount()-rangeSize+1;
+            if (start < 0)
+                start = 0;
+        }
+        for (var i=start; i<start+rangeSize; i++) {
+            ps.push(i);
+        }
+        return ps;
+    };
+
+    MapController.prototype.prevPage = function() {
+        if (this.m_oScope.m_oController.currentPage > 0) {
+            this.m_oScope.m_oController.currentPage--;
+
+        }
+    };
+
+    MapController.prototype.DisablePrevPage = function() {
+
+        return this.m_oScope.m_oController.currentPage == 0 ? "disabled" : "";
+
+    };
+
+    MapController.prototype.pageCount = function() {
+
+        return Math.ceil(this.m_oEventList.length/this.m_oScope.m_oController.itemsPerPage)-1;
+
+    };
+
+    MapController.prototype.nextPage = function() {
+
+        if (this.m_oScope.m_oController.currentPage < this.m_oScope.m_oController.pageCount()) {
+
+            this.m_oScope.m_oController.currentPage++;
+
+        }
+    };
+
+    MapController.prototype.DisableNextPage = function() {
+
+        return this.m_oScope.m_oController.currentPage == this.m_oScope.m_oController.pageCount() ? "disabled" : "";
+
+    };
+
+    MapController.prototype.setPage = function(n) {
+
+        this.m_oScope.m_oController.currentPage = n;
 
     };
 
