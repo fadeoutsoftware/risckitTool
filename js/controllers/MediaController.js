@@ -87,12 +87,12 @@ var MediaController = (function() {
                     $scope.m_oController.date = data.date;
                     $scope.m_oController.NewMedia = data;
 
-                    google.maps.event.addListener($scope.m_oController.Marker, 'click', function() {
+                    google.maps.event.addListener($scope.m_oController.Marker, 'click', function () {
                         var content = 'Media';
                         if ($scope.m_oController.NewMedia != null)
                             content = '<div style="width: 100px; height: 100px"><a ng-href="{{m_oController.DownloadMedia(m_oController.NewMedia.id)}}"></div>'
                         infowindow.setContent(content);
-                        infowindow.open(map,$scope.m_oController.Marker);
+                        infowindow.open(map, $scope.m_oController.Marker);
                     });
 
                 });
@@ -106,9 +106,11 @@ var MediaController = (function() {
 
                 $scope.m_oController.m_oMediaService.setAsModified();
                 $scope.m_oController.NewMedia = new Object();
-                $scope.m_oController.NewMedia.lat = $scope.m_oController.m_oPositionMark.lat();
-                $scope.m_oController.NewMedia.lon = $scope.m_oController.m_oPositionMark.lng();
-                $scope.m_oController.NewMedia.latlon = $scope.m_oController.m_oPositionMark;
+                if ($scope.m_oController.m_oPositionMark != null) {
+                    $scope.m_oController.NewMedia.lat = $scope.m_oController.m_oPositionMark.lat();
+                    $scope.m_oController.NewMedia.lon = $scope.m_oController.m_oPositionMark.lng();
+                    $scope.m_oController.NewMedia.latlon = $scope.m_oController.m_oPositionMark;
+                }
                 //$scope.m_oController.NewMedia.downloadPath = newVal.name;
                 $scope.m_oController.NewMedia.description = $scope.m_oController.description;
                 $scope.m_oController.NewMedia.date = $scope.m_oController.date;
@@ -131,6 +133,13 @@ var MediaController = (function() {
         });
 
         $scope.onFileSelect = function ($files) {
+
+            if (!$scope.m_oController.Check())
+            {
+                //reset entity
+                $scope.m_oController.NewMedia = null;
+                return;
+            }
 
             $scope.selectedFiles = [];
             $scope.progress = [];
@@ -162,15 +171,13 @@ var MediaController = (function() {
                 if ($scope.m_oController.uploadRightAway) {
                     $scope.start(i);
                 }
-
             }
-
-
         };
 
         $scope.start = function (index) {
             $scope.progress[index] = 0;
             $scope.errorMsg = null;
+
             $scope.m_oController.m_oUploading = true;
             $scope.m_oController.m_oEventService.Save($scope.m_oController.m_oSharedService.getEvent()).success(function (data) {
                 $scope.m_oController.m_oSharedService.getEvent().id = data.id;
@@ -186,8 +193,7 @@ var MediaController = (function() {
                                 $scope.m_oController.m_oMediaService.setUnchanged();
 
                             }
-                            else
-                            {
+                            else {
                                 $scope.m_oController.NewMedia.downloadPath = null;
                                 $scope.m_oController.NewMedia.shortDownloadPath = null;
                                 $scope.m_oController.m_oSharedService.getEvent().Media.push($scope.m_oController.NewMedia);
@@ -202,37 +208,72 @@ var MediaController = (function() {
                 })
             });
 
-
-        };
+        }
 
     }
 
     MediaController.prototype.Save = function() {
 
-        if (this.m_oScope.m_oController.NewMedia == null) {
-            alert("Select attachment!");
-            return;
-        }
-
-        if (this.m_oScope.m_oController.NewMedia != null) {
-            this.m_oScope.m_oController.NewMedia.description = this.m_oScope.m_oController.description;
-            this.m_oScope.m_oController.NewMedia.date = this.m_oScope.m_oController.date;
-            this.m_oScope.m_oController.NewMedia.lat = this.m_oScope.m_oController.m_oPositionMark.lat();
-            this.m_oScope.m_oController.NewMedia.lon = this.m_oScope.m_oController.m_oPositionMark.lng();
-        }
-
         var oController = this.m_oScope.m_oController;
-        if (oController.m_oMediaService.isModified()) {
-            this.m_oMediaService.SaveMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
+        if (oController.Check()) {
 
-                if (data != null) {
-                    oController.m_oMediaService.setUnchanged();
-                    oController.m_oLocation.path('event');
-                }
-                else
-                    alert('Error during save');
-            });
+            if (oController.NewMedia == null) {
+                alert("Upload attachment! Please");
+                return;
+            }
+
+            //set media fields
+            oController.NewMedia.description = this.m_oScope.m_oController.description;
+            oController.NewMedia.date = this.m_oScope.m_oController.date;
+            oController.NewMedia.lat = this.m_oScope.m_oController.m_oPositionMark.lat();
+            oController.NewMedia.lon = this.m_oScope.m_oController.m_oPositionMark.lng();
+
+            if (oController.m_oMediaService.isModified()) {
+                this.m_oMediaService.SaveMedia(this.m_oScope.m_oController.NewMedia).success(function (data) {
+
+                    if (data != null) {
+                        oController.m_oMediaService.setUnchanged();
+                        oController.m_oLocation.path('event');
+                    }
+                    else
+                        alert('Error during save');
+                });
+            }
         }
+    };
+
+    MediaController.prototype.Check = function () {
+        var oController = this.m_oScope.m_oController;
+        var ErrorMessage = 'Insert mandatory fields! ';
+        var bResult = true;
+
+        if (oController.description == null || oController.description == '') {
+            ErrorMessage = ErrorMessage + "Description";
+            bResult = false;
+        }
+
+        if (oController.date == null) {
+            if (!bResult)
+                ErrorMessage = ErrorMessage + ", ";
+            ErrorMessage = ErrorMessage + "Date";
+            bResult = false;
+        }
+
+        if (oController.m_oPositionMark == null) {
+            if (!bResult)
+                ErrorMessage = ErrorMessage + ", ";
+            ErrorMessage = ErrorMessage + "Position";
+            bResult = false;
+        }
+
+        if (!bResult)
+            ErrorMessage = ErrorMessage + ". ";
+
+        ErrorMessage = ErrorMessage + " Please!"
+        if (!bResult) {
+            alert(ErrorMessage);
+        }
+        return bResult;
     };
 
 
