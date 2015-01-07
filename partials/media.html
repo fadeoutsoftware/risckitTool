@@ -45,7 +45,7 @@
     </div>
         <div class="row">
 
-            <div class="col-lg-offset-3 col-lg-1">
+            <div class="col-lg-offset-3 col-lg-1" ng-show="m_oController.canUpload()">
                 <div class="loading" ng-show="m_oController.m_oUploading">
                     <img src="img/Spinner.gif" class="loading"/>
                 </div>
@@ -53,7 +53,7 @@
                     <label for="media-input" tooltip-popup-delay="500" tooltip="Upload" >
                        <img src="img/upload.png"/>
                     </label>
-                    <input id="media-input" type="file" file-Model="m_oController.m_sFilePath" ng-file-select="onFileSelect($files)" ng-hide="true"/>
+                    <input id="media-input" type="file" file-Model="m_oController.m_sFilePath" ng-file-select="onFileSelect($files)"  ng-hide="true"/>
                 </div>
 
             </div>
