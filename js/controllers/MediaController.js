@@ -102,8 +102,7 @@ var MediaController = (function() {
 
 
         $scope.$watch('m_oController.m_sFilePath', function (newVal, oldVal) {
-            if (newVal !== oldVal) {
-
+            if (newVal != oldVal) {
                 $scope.m_oController.m_oMediaService.setAsModified();
                 $scope.m_oController.NewMedia = new Object();
                 if ($scope.m_oController.m_oPositionMark != null) {
@@ -118,6 +117,7 @@ var MediaController = (function() {
                     $scope.m_oController.m_oSharedService.getEvent().Media = new Array();
                 //$scope.m_oController.m_oSharedService.getEvent().Media.push($scope.m_oController.NewMedia);
                 //$scope.m_oController.Files.push(newVal);
+
             }
         });
 
@@ -134,12 +134,6 @@ var MediaController = (function() {
 
         $scope.onFileSelect = function ($files) {
 
-            if (!$scope.m_oController.Check())
-            {
-                //reset entity
-                $scope.m_oController.NewMedia = null;
-                return;
-            }
 
             $scope.selectedFiles = [];
             $scope.progress = [];
@@ -191,7 +185,7 @@ var MediaController = (function() {
                                 $scope.m_oController.m_oSharedService.getEvent().Media.push(data);
                                 // set unchanged
                                 $scope.m_oController.m_oMediaService.setUnchanged();
-
+                                alert('Media saved!');
                             }
                             else {
                                 $scope.m_oController.NewMedia.downloadPath = null;
@@ -233,13 +227,15 @@ var MediaController = (function() {
 
                     if (data != null) {
                         oController.m_oMediaService.setUnchanged();
-                        oController.m_oLocation.path('event');
+                        alert('Media saved!');
+                        //oController.m_oLocation.path('event');
                     }
                     else
                         alert('Error during save');
                 });
             }
         }
+
     };
 
     MediaController.prototype.Check = function () {
