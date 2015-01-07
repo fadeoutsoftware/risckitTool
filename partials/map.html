@@ -21,7 +21,7 @@
                         <th class="eventPublicListHeader" ng-click="m_oController.m_sOrderBy = 'startDate'; m_oController.m_bReverseOrder=!m_oController.m_bReverseOrder">Date</th>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="oItem in m_oController.m_oEventList | orderBy:m_oController.m_sOrderBy:m_oController.m_bReverseOrder" class="eventPublicListsRow" ng-click="m_oController.ShowMedia(oItem)">
+                    <tr ng-repeat="oItem in m_oController.m_oEventList | orderBy:m_oController.m_sOrderBy:m_oController.m_bReverseOrder | pagination : m_oController.currentPage*m_oController.itemsPerPage | limitTo: m_oController.itemsPerPage" class="eventPublicListsRow" ng-click="m_oController.ShowMedia(oItem)">
                         <td>
                             <img ng-src="{{oItem.imagePath}}"  class="eventPublicListMedia"/>
                         </td>
@@ -42,6 +42,21 @@
                     </tr>
                     </tbody>
                 </table>
+                <div class="row">
+                    <ul class="pagination">
+                        <li ng-class="m_oController.DisablePrevPage()">
+                            <a href ng-click="m_oController.prevPage()"> Prev</a>
+                        </li>
+                        <li ng-repeat="n in m_oController.range()"
+                            ng-class="{active: n == m_oController.currentPage}"
+                            ng-click="m_oController.setPage(n)">
+                            <a href>{{n+1}}</a>
+                        </li>
+                        <li ng-class="m_oController.DisableNextPage()">
+                            <a href ng-click="m_oController.nextPage()">Next </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
