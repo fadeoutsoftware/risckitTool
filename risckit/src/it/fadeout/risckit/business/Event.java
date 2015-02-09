@@ -1183,8 +1183,8 @@ public class Event {
 		oViewModel.setWaterLevelInspire(this.getWaterLevelInspire());
 		oViewModel.setWaterLevelTimeSeries(this.getWaterLevelTimeSeries());
 		oViewModel.setUserId(this.getUserId());
-		oViewModel.setLat(this.getLat());
-		oViewModel.setLon(this.getLon());
+		oViewModel.setLat(oRegion.getLat());
+		oViewModel.setLon(oRegion.getLon());
 		
 		return oViewModel;
 	}

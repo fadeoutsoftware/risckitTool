@@ -9,11 +9,13 @@ public class EventByCountryViewModel {
 	
 	private String countryCode;
 	
-	private Integer eventsCount;
+	private long eventsCount;
 	
 	private String lat;
 	
 	private String lon;
+	
+	private Integer impacts;
 
 	public String getCountryName() {
 		return countryName;
@@ -23,11 +25,11 @@ public class EventByCountryViewModel {
 		this.countryName = countryName;
 	}
 	
-	public Integer getEventsCount() {
+	public long getEventsCount() {
 		return eventsCount;
 	}
 
-	public void setEventsCount(Integer eventsCount) {
+	public void setEventsCount(long eventsCount) {
 		this.eventsCount = eventsCount;
 	}
 	
@@ -61,6 +63,14 @@ public class EventByCountryViewModel {
 
 	public void setCountryCode(String countryCode) {
 		this.countryCode = countryCode;
+	}
+
+	public Integer getImpacts() {
+		return impacts;
+	}
+
+	public void setImpacts(Integer impacts) {
+		this.impacts = impacts;
 	}
 	
 }

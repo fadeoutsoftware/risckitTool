@@ -1,11 +1,13 @@
 package it.fadeout.risckit.data;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.LockOptions;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -13,6 +15,7 @@ import org.tmatesoft.svn.core.SVNException;
 
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.Event;
+import it.fadeout.risckit.business.EventsByCountries;
 import it.fadeout.risckit.business.Gis;
 import it.fadeout.risckit.business.Media;
 import it.fadeout.risckit.business.SVNUtils;
@@ -334,5 +337,74 @@ public class EventRepository extends Repository<Event>{
 
 		return -1;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<EventsByCountries> Search(Class<EventsByCountries> oClass, Integer iFromYear, Integer iToYear, Boolean bHasImpacts) {
+		Session oSession = null;
+
+		List<EventsByCountries> aoList = new ArrayList<EventsByCountries>();
+
+		try {
+			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
+			String sQuery = "from " + oClass.getSimpleName();
+			if ((iToYear != null && iToYear != 0) || (iFromYear != null && iFromYear != 0) || (bHasImpacts != null && bHasImpacts))
+				sQuery += " WHERE ";
+			
+			boolean bAddAnd = false;
+			
+			if (iToYear != null && iToYear != 0)
+			{
+				sQuery += "EXTRACT(YEAR FROM startdate) <= " +  iToYear;
+				bAddAnd = true;
+			}
+			if (iFromYear != null && iFromYear != 0)
+			{
+				if (bAddAnd)
+					sQuery += " AND ";
+				else
+					bAddAnd = true;
+				sQuery += "EXTRACT(YEAR FROM startdate) >= " +  iFromYear;
+				
+			}
+			if (bHasImpacts != null)
+			{
+				if (bHasImpacts)
+				{
+					if (bAddAnd)
+						sQuery += " AND ";
+					sQuery += "impacts > 0";
+				}
+			}
+			
+			Query oQuery = oSession.createQuery(sQuery);
+			aoList = oQuery.list();
+			oSession.getTransaction().commit();			
+		}
+		catch(Throwable oEx) {
+			System.err.println(oEx.toString());
+			oEx.printStackTrace();
+
+
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Throwable oEx2) {
+				System.err.println(oEx2.toString());
+				oEx2.printStackTrace();					
+			}			
+		}
+		finally {
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
+
+		}
+		
+		return aoList;
+	}
+
 
 }

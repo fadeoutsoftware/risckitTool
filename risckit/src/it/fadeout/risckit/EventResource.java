@@ -238,7 +238,7 @@ public class EventResource {
 			{
 				sPathRepository = servletConfig.getInitParameter("SvnRepository") + sDirPath + fileDetail.getFileName();
 			}
-			
+
 			if (oEvent != null)
 			{
 				oEvent.setPathRepository(sNameProperty, sPathRepository);
@@ -326,6 +326,7 @@ public class EventResource {
 			{
 				oReturnList = new ArrayList<EventViewModel>();
 				for (Event event : oEvents) {
+					
 					EventViewModel oEventViewModel =  event.getViewModel(oCountries);
 					List<Media> oMediaList = oMediaRepo.SelectByEvent(event.getId());
 					if (oMediaList != null)
@@ -352,6 +353,11 @@ public class EventResource {
 								oEventViewModel.setSocioimpacts(new ArrayList<SocioImpactViewModel>());
 							oEventViewModel.getSocioimpacts().add(socioImpact.GetViewModel());
 						}
+						boolean bHas = false;
+						if (oImpacts.size() > 0)
+							bHas = true;
+						
+						oEventViewModel.setHasSocioImpacts(bHas);
 					}
 					oReturnList.add(oEventViewModel);
 				}
@@ -383,26 +389,37 @@ public class EventResource {
 		{
 			oReturnList = new ArrayList<EventByRegionViewModel>();
 			for (Event event : oEvents) {
-				if (!oMap.containsKey(event.getCountryId()))
+				Country oRegion = oCountryRepo.Select(event.getCountryId(), Country.class);
+				if (!oMap.containsKey(oRegion.getId()))
 				{
-					Country oCountry = oCountryRepo.Select(event.getCountryId(), Country.class);
 					EventByRegionViewModel oViewModel = new EventByRegionViewModel();
-					if (event.getLat() != null && event.getLon() != null)
+
+					if (oRegion.getLat() != null && oRegion.getLon() != null)
 					{
-						oViewModel.setLat(event.getLat());
-						oViewModel.setLon(event.getLon());
+						oViewModel.setLat(oRegion.getLat());
+						oViewModel.setLon(oRegion.getLon());
+
 					}
-					oViewModel.setRegionName(oCountry.getName());
-					oViewModel.setRegionId(oCountry.getId());
+					else
+					{
+						if (event.getLat() != null && event.getLon() != null)
+						{
+							oViewModel.setLat(event.getLat());
+							oViewModel.setLon(event.getLon());
+						}
+					}
+
+					oViewModel.setRegionName(oRegion.getName());
+					oViewModel.setRegionId(oRegion.getId());
 					oViewModel.setEventsCount(1);
 					oMap.put(event.getCountryId(), oViewModel);
 				}
 				else
 				{
-					if (event.getLat() != null && event.getLon() != null)
+					if (oRegion.getLat() != null && oRegion.getLon() != null)
 					{
-						oMap.get(event.getCountryId()).setLat(event.getLat());
-						oMap.get(event.getCountryId()).setLon(event.getLon());
+						oMap.get(oRegion.getId()).setLat(oRegion.getLat());
+						oMap.get(oRegion.getId()).setLon(oRegion.getLon());
 					}
 					oMap.get(event.getCountryId()).setEventsCount(oMap.get(event.getCountryId()).getEventsCount()+1);
 				}
@@ -464,6 +481,11 @@ public class EventResource {
 								oEventViewModel.setSocioimpacts(new ArrayList<SocioImpactViewModel>());
 							oEventViewModel.getSocioimpacts().add(socioImpact.GetViewModel());
 						}
+						boolean bHas = false;
+						if (oImpacts.size() > 0)
+							bHas = true;
+						
+						oEventViewModel.setHasSocioImpacts(bHas);
 					}
 					oReturnList.add(oEventViewModel);
 				}
@@ -480,30 +502,44 @@ public class EventResource {
 	}	
 
 	@GET
-	@Path("/groupevent")
+	@Path("/groupevent/{fromYear}/{toYear}/{impacts}")
 	@Produces({"application/json", "application/xml", "text/xml"})
-	public List<EventByCountryViewModel> getEventByCountryForMap() {
+	public List<EventByCountryViewModel> getEventByCountryForMap(@PathParam("fromYear") Integer iFromYear, @PathParam("toYear") Integer iToYear, @PathParam("impacts") Boolean bHasImpacts) {
 
 		List<EventByCountryViewModel> oReturnList = null;
-		Repository<EventsByCountries> oRepo = new Repository<EventsByCountries>();
-		List<EventsByCountries> oEvents = oRepo.SelectAll(EventsByCountries.class);
-
+		EventRepository oRepo = new EventRepository();
+		List<EventsByCountries> oEvents = oRepo.Search(EventsByCountries.class, iFromYear, iToYear, bHasImpacts);
+		HashMap<String, EventByCountryViewModel> oCountryDictionary = new HashMap<String, EventByCountryViewModel>();
 		if (oEvents != null)
 		{
 			oReturnList = new ArrayList<EventByCountryViewModel>();
 			for (EventsByCountries event : oEvents) {
-				EventByCountryViewModel oViewModel = new EventByCountryViewModel();
-				oViewModel.setId(event.getId());
-				oViewModel.setCountryName(event.getName());
-				oViewModel.setCountryCode(event.getCountryCode());
-				oViewModel.setEventsCount(event.getEventCount());
-				oViewModel.setLat(event.getLat());
-				oViewModel.setLon(event.getLon());
-				oReturnList.add(oViewModel);
+				if (!oCountryDictionary.containsKey(event.getCountryCode()))
+				{
+					EventByCountryViewModel oViewModel = new EventByCountryViewModel();
+					oViewModel.setId(event.getId());
+					oViewModel.setCountryName(event.getName());
+					oViewModel.setCountryCode(event.getCountryCode());
+					oViewModel.setEventsCount(event.getEventCount());
+					oViewModel.setLat(event.getLat());
+					oViewModel.setLon(event.getLon());
+					oCountryDictionary.put(event.getCountryCode(), oViewModel);
+					
+				}
+				else
+				{
+					long iPevCount = oCountryDictionary.get(event.getCountryCode()).getEventsCount();
+					oCountryDictionary.get(event.getCountryCode()).setEventsCount(iPevCount + event.getEventCount()); 
+				}
+				
 			}
 		}
-		
+
 		oRepo.CloseSession();
+		
+		for (String sKey : oCountryDictionary.keySet()) {
+			oReturnList.add(oCountryDictionary.get(sKey));
+		}
 
 		return oReturnList;
 	}

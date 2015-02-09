@@ -21,7 +21,7 @@ public class Repository<T> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -29,7 +29,7 @@ public class Repository<T> {
 				System.err.println(oEx2.toString());
 				oEx2.printStackTrace();					
 			}
-			
+
 			return false;
 		}
 		finally {
@@ -39,9 +39,9 @@ public class Repository<T> {
 				oSession.close();
 			}
 		}
-		
+
 	}
-	
+
 	public boolean Update(T oEntity) {
 		Session oSession = null;
 		try {		
@@ -54,8 +54,8 @@ public class Repository<T> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
-			
+
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -63,7 +63,7 @@ public class Repository<T> {
 				System.err.println(oEx2.toString());
 				oEx2.printStackTrace();					
 			}			
-			
+
 			return false;
 		}		
 		finally {
@@ -74,15 +74,15 @@ public class Repository<T> {
 			}
 		}
 
-		
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<T> SelectAll(Class<T> oClass) {
 		Session oSession = null;
-		
+
 		List<T> aoList = new ArrayList<T>();
-		
+
 		try {
 			oSession = HibernateUtils.getSessionFactory().openSession();
 			oSession.beginTransaction();
@@ -93,8 +93,8 @@ public class Repository<T> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
-			
+
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -111,19 +111,17 @@ public class Repository<T> {
 			}
 
 		}
-
-		
-		
 		return aoList;
 	}
+
 	
 	@SuppressWarnings("unchecked")
 	public T Select(int iId, Class<T> oClass) {
-		
+
 		Session oSession = null;
-		
+
 		T oEntity = null;
-		
+
 		try {				
 			oSession = HibernateUtils.getSessionFactory().openSession();
 			oSession.beginTransaction();
@@ -133,8 +131,8 @@ public class Repository<T> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
-			
+
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -151,10 +149,10 @@ public class Repository<T> {
 			}
 
 		}
-		
+
 		return oEntity;
 	}
-	
+
 	public boolean Delete(T oEntity) {
 		Session oSession = null;
 		try {				
@@ -167,8 +165,8 @@ public class Repository<T> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
-			
+
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -187,7 +185,7 @@ public class Repository<T> {
 
 		return false;
 	}
-	
+
 	public void CloseSession()
 	{
 		Session oSession = null;
@@ -202,8 +200,8 @@ public class Repository<T> {
 		catch(Throwable oEx) {
 			System.err.println(oEx.toString());
 			oEx.printStackTrace();
-			
-			
+
+
 			try {
 				oSession.getTransaction().rollback();
 			}
@@ -213,7 +211,7 @@ public class Repository<T> {
 			}			
 		}
 		finally {
-			
+
 
 		}
 	}
