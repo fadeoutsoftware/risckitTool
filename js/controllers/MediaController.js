@@ -25,8 +25,11 @@ var MediaController = (function() {
         this.Media = [];
         this.m_oRouteParams = $routeParams;
         this.m_oMediaService.setUnchanged();
+        this.m_bCanUpload = false;
         var oRootScope = this.m_oScope;
         var iIdMedia = this.m_oRouteParams.idmedia;
+
+
 
 
         var map_canvas = document.getElementById('media_map_canvas');
@@ -43,8 +46,31 @@ var MediaController = (function() {
 
             // set as modified
             $scope.m_oController.m_oMediaService.setAsModified();
+
+            $scope.$apply();
+
         });
 
+        $scope.$watch('m_oController.m_oPositionMark', function (newVal, oldVal) {
+            canUpload();
+        });
+
+        $scope.$watch('m_oController.date', function (newVal, oldVal) {
+            canUpload();
+        });
+
+        $scope.$watch('m_oController.description', function (newVal, oldVal) {
+            canUpload();
+        });
+
+        function canUpload(){
+            if ($scope.m_oController.m_oPositionMark != null &&
+                $scope.m_oController.description != null &&
+                $scope.m_oController.date != null)
+                $scope.m_oController.m_bCanUpload = true;
+            else
+                $scope.m_oController.m_bCanUpload = false;
+        }
 
         function placeMarker(location) {
 
@@ -278,12 +304,7 @@ var MediaController = (function() {
 
     };
 
-    MediaController.prototype.canUpload = function() {
-        return this.m_oScope.m_oController.m_oPositionMark != null &&
-            this.m_oScope.m_oController.description != null &&
-            this.m_oScope.m_oController.date != null;
 
-    };
 
     MediaController.prototype.DownloadMedia = function(idMedia) {
 

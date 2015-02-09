@@ -143,25 +143,35 @@ var EventController = (function() {
                                 oCountry = oCountries[iCount];
                         }
                         var oRegion = $scope.m_oController.m_oEventService.GetRegion($scope.m_oController.m_oEvent.countryId);
-                        var geocoder = new google.maps.Geocoder();
-                        geocoder.geocode({ 'address': oCountry.countryname + ' ' + oRegion.countryname}, function (results, status) {
-                            if (status == google.maps.GeocoderStatus.OK) {
-                                $scope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
-                                $scope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
+                        if (oRegion != null)
+                        {
+                            if (oRegion.lat != null && oRegion.lon != null)
+                            {
+                                $scope.m_oController.m_oEvent.lat = oRegion.lat;
+                                $scope.m_oController.m_oEvent.lon = oRegion.lon;
                             }
-                            else {
-                                //se è andata male la decodifica metto almeno le coordinate del country
-                                $scope.m_oController.m_oEvent.lat = oCountry.lat;
-                                $scope.m_oController.m_oEvent.lon = oCountry.lon;
-                            }
+                            else
+                            {
+                                var geocoder = new google.maps.Geocoder();
+                                geocoder.geocode({ 'address': oCountry.countryname + ' ' + oRegion.countryname}, function (results, status) {
+                                    if (status == google.maps.GeocoderStatus.OK) {
+                                        $scope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
+                                        $scope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
+                                    }
+                                    else {
+                                        //se è andata male la decodifica metto almeno le coordinate del country
+                                        $scope.m_oController.m_oEvent.lat = oCountry.lat;
+                                        $scope.m_oController.m_oEvent.lon = oCountry.lon;
+                                    }
 
-                            if ($scope.m_oController.m_oEvent.lat == null || $scope.m_oController.m_oEvent.lon == null ||
-                                $scope.m_oController.m_oEvent.lat == '' || $scope.m_oController.m_oEvent.lon == '') {
-                                alert('Google geocoding error!');
-                                return;
+                                    if ($scope.m_oController.m_oEvent.lat == null || $scope.m_oController.m_oEvent.lon == null ||
+                                        $scope.m_oController.m_oEvent.lat == '' || $scope.m_oController.m_oEvent.lon == '') {
+                                        alert('Google geocoding error!');
+                                        return;
+                                    }
+                                });
                             }
-                        });
-
+                        }
                     }
                 }
             }
@@ -487,7 +497,7 @@ var EventController = (function() {
 
         $scope.$on('$locationChangeStart', function (event, next, current) {
             if ($scope.m_oController.m_oEventService.isModified()) {
-                var bAnswer = confirm("Are you sure you want to quit without save?")
+                var bAnswer = confirm("Are you sure you want to leave this page without save?")
                 if (!bAnswer) {
                     event.preventDefault();
                 }
@@ -664,23 +674,17 @@ var EventController = (function() {
                     }
                     var oRegion = oScope.m_oController.m_oEventService.GetRegion(oScope.m_oController.m_oEvent.countryId);
                     if (oRegion != null) {
-                        var geocoder = new google.maps.Geocoder();
-                        geocoder.geocode({ 'address': oCountry.countryname + ' ' + oRegion.countryname }, function (results, status) {
-                            if (status == google.maps.GeocoderStatus.OK) {
-                                oScope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
-                                oScope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
-                            }
-                            else {
-                                //se è andata male la decodifica metto almeno le coordinate del country
-                                oScope.m_oController.m_oEvent.lat = oCountry.lat;
-                                oScope.m_oController.m_oEvent.lon = oCountry.lon;
-                            }
-
+                        if (oRegion.lat != null && oRegion.lon != null)
+                        {
                             if (oScope.m_oController.m_oEvent.lat == null || oScope.m_oController.m_oEvent.lon == null||
                                 oScope.m_oController.m_oEvent.lat == '' || oScope.m_oController.m_oEvent.lon == '') {
                                 alert('Error saving event: google geocoding error. Retry!');
                                 return;
                             }
+
+                            //se è andata male la decodifica metto almeno le coordinate del country
+                            oScope.m_oController.m_oEvent.lat = oRegion.lat;
+                            oScope.m_oController.m_oEvent.lon = oRegion.lon;
 
                             //ora posso salvare
                             oScope.m_oController.m_bSaving = true;
@@ -697,7 +701,7 @@ var EventController = (function() {
                                     oScope.m_oController.m_bSaving = false;
                                     oScope.m_oController.m_oEventService.setUnchanged();
 
-                                    var answer = confirm("Do you want to insert another event?");
+                                    var answer = confirm("Saved successfully!Do you want to insert another event?");
                                     if (answer)
                                         oScope.m_oController.m_oEvent = new Object();
                                     else
@@ -711,9 +715,60 @@ var EventController = (function() {
                                 oScope.m_oController.m_bSaving = false;
                                 oScope.m_oController.m_oEventService.setUnchanged();
                             });
+                        }
+                        else {
+
+                            var geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({ 'address': oCountry.countryname + ' ' + oRegion.countryname }, function (results, status) {
+                                if (status == google.maps.GeocoderStatus.OK) {
+                                    oScope.m_oController.m_oEvent.lat = results[0].geometry.location.lat();
+                                    oScope.m_oController.m_oEvent.lon = results[0].geometry.location.lng();
+                                }
+                                else {
+                                    //se è andata male la decodifica metto almeno le coordinate del country
+                                    oScope.m_oController.m_oEvent.lat = oCountry.lat;
+                                    oScope.m_oController.m_oEvent.lon = oCountry.lon;
+                                }
+
+                                if (oScope.m_oController.m_oEvent.lat == null || oScope.m_oController.m_oEvent.lon == null ||
+                                    oScope.m_oController.m_oEvent.lat == '' || oScope.m_oController.m_oEvent.lon == '') {
+                                    alert('Error saving event: google geocoding error. Retry!');
+                                    return;
+                                }
+
+                                //ora posso salvare
+                                oScope.m_oController.m_bSaving = true;
+                                oScope.m_oController.m_oEventService.Save(oScope.m_oController.m_oEvent).success(function (data, status) {
+
+                                    //Per ora salviamo tutto in modo separato perchè non riusciamo a far funzionare la deserializzazione
+                                    //di liste contenute
+                                    if (data != null) {
+
+                                        if (data.id == null || data.id == 0) {
+                                            alert("Error saving event");
+                                            return;
+                                        }
+                                        oScope.m_oController.m_bSaving = false;
+                                        oScope.m_oController.m_oEventService.setUnchanged();
+
+                                        var answer = confirm("Saved successfully!Do you want to insert another event?");
+                                        if (answer)
+                                            oScope.m_oController.m_oEvent = new Object();
+                                        else
+                                            oScope.m_oController.m_oLocation.path('eventslist');
+                                    }
+                                    else {
+
+                                        alert("Error saving event");
+                                    }
+
+                                    oScope.m_oController.m_bSaving = false;
+                                    oScope.m_oController.m_oEventService.setUnchanged();
+                                });
 
 
-                        });
+                            });
+                        }
                     }
                     else {
 
@@ -731,7 +786,7 @@ var EventController = (function() {
 
                                 oScope.m_oController.m_bSaving = false;
                                 oScope.m_oController.m_oEventService.setUnchanged();
-                                var answer = confirm("Do you want to insert another event?");
+                                var answer = confirm("Saved successfully!Do you want to insert another event?");
                                 if (answer)
                                     oScope.m_oController.m_oEvent = new Object();
                                 else
@@ -746,9 +801,9 @@ var EventController = (function() {
                         });
                     }
                 }
-                else {
-                    oScope.m_oController.m_oLocation.path('eventslist');
-                }
+                //else {
+                //    oScope.m_oController.m_oLocation.path('eventslist');
+                //}
 
             }
         }

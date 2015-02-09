@@ -182,9 +182,8 @@ body { background-color: #333;}
     font-size: 2.5em;
     color: white;
     text-align: center;
-    margin-top: 0px;
-
-
+    margin: 0px;
+    margin-top: 15px;
 
 }
 .eventlist {
@@ -494,4 +493,14 @@ td label i,
 
 .eventPublicListHeader:hover {
     color: #fc0;
+}
+
+.rowsearch{
+    margin-bottom: 10px;
+}
+
+@media ( min-width: 768px){
+    .search{
+        margin-top: 30px;
+    }
 }

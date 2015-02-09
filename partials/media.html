@@ -45,11 +45,11 @@
     </div>
         <div class="row">
 
-            <div class="col-lg-offset-3 col-lg-1" ng-show="m_oController.canUpload()">
+            <div class="col-lg-offset-3 col-lg-1" >
                 <div class="loading" ng-show="m_oController.m_oUploading">
                     <img src="img/Spinner.gif" class="loading"/>
                 </div>
-                <div class="project-icon" ng-show="!m_oController.getIsReadOnly()">
+                <div class="project-icon" ng-show="!m_oController.getIsReadOnly() && m_oController.m_bCanUpload">
                     <label for="media-input" tooltip-popup-delay="500" tooltip="Upload" >
                        <img src="img/upload.png"/>
                     </label>

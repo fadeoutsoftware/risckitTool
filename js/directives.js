@@ -24,4 +24,21 @@ angular.module('riskitapp.directives', [])
             start = parseInt(start, 10);
             return input.slice(start);
         };
+    }).filter('Find', function()
+    {
+        return function(items, search) {
+            if (search == null)
+                return items;
+            var filtered = [];
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if (search.hasImpacts == item.hasSocioImpacts)
+                {
+                    filtered.push(item);
+                }
+
+            }
+            return filtered;
+
+        };
     });
