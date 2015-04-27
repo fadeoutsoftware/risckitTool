@@ -294,48 +294,55 @@ public class MediaResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response getFile(@PathParam("idMedia") int iIdMedia ) throws Exception {
+		
+		try {
+			MediaRepository oMediaRepository = new MediaRepository();
+			Media oMedia = oMediaRepository.Select(iIdMedia, Media.class); 
 
-		MediaRepository oMediaRepository = new MediaRepository();
-		Media oMedia = oMediaRepository.Select(iIdMedia, Media.class); 
+			EventRepository oEventRepo = new EventRepository();
+			Event oEvent =  oEventRepo.Select(oMedia.getEventId(), Event.class);
 
-		EventRepository oEventRepo = new EventRepository();
-		Event oEvent =  oEventRepo.Select(oMedia.getEventId(), Event.class);
+			UserRepository oUserRepo = new UserRepository();
+			User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
 
-		UserRepository oUserRepo = new UserRepository();
-		User oUser =  oUserRepo.Select(oEvent.getUserId(), User.class);
+			String sRepoFile = oMedia.getFile();
+			String[] sSplitString = sRepoFile.split("/");
+			final String sTemp = sSplitString[sSplitString.length - 1];
 
-		String sRepoFile = oMedia.getFile();
-		String[] sSplitString = sRepoFile.split("/");
-		final String sTemp = sSplitString[sSplitString.length - 1];
+			//Delete File if present
+			SVNUtils oSvnUtils = new SVNUtils();
+			File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
+			OutputStream oOut = new FileOutputStream(oFile);
 
-		//Delete File if present
-		SVNUtils oSvnUtils = new SVNUtils();
-		File oFile = new File(System.getProperty("java.io.tmpdir") + sTemp);
-		OutputStream oOut = new FileOutputStream(oFile);
+			try
+			{
+				oSvnUtils.GetFile(
+						oUser.getUserName(),
+						servletConfig.getInitParameter("SvnUser"), 
+						servletConfig.getInitParameter("SvnPwd"), 
+						servletConfig.getInitParameter("SvnUserDomain"), 
+						oMedia.getFile(), 
+						servletConfig.getInitParameter("SvnRepository"),
+						oOut);
+			}
+			catch (SVNException oEx)
+			{
+				oEx.printStackTrace();
+				ResponseBuilder response = Response.noContent();
+				return response.build();
+			}
 
-		try
-		{
-			oSvnUtils.GetFile(
-					oUser.getUserName(),
-					servletConfig.getInitParameter("SvnUser"), 
-					servletConfig.getInitParameter("SvnPwd"), 
-					servletConfig.getInitParameter("SvnUserDomain"), 
-					oMedia.getFile(), 
-					servletConfig.getInitParameter("SvnRepository"),
-					oOut);
+			ResponseBuilder response = Response.ok(oFile);
+			response.header("Content-Disposition", "attachment; filename=\""
+					+ sTemp + "\"");
+			return response.build();			
 		}
-		catch (SVNException oEx)
+		catch(Exception oEx)
 		{
 			oEx.printStackTrace();
 			ResponseBuilder response = Response.noContent();
-			return response.build();
+			return response.build();			
 		}
-
-		ResponseBuilder response = Response.ok(oFile);
-		response.header("Content-Disposition", "attachment; filename=\""
-				+ sTemp + "\"");
-		return response.build();
-
 	}
 
 	@GET

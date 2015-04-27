@@ -60,10 +60,13 @@
             <a class="navbar-brand" href="#"></a>
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="#/eventslist">Events</a>
+                    <a href="#/">Home</a>
                 </li>
                 <li>
                     <a href="#/map">Map</a>
+                </li>
+                <li>
+                    <a href="#/eventslist">Events</a>
                 </li>
                 <li>
                     <a href="#/links">Useful Links</a>
@@ -85,13 +88,9 @@
             <p class="rid">
                 The database contains forcing factors, observations and hindcast data, observed impacts and quantitative and qualitative socio-economic, cultural and environmental data. Links are provided on the database website to the latest IPCC climate scenarios downloadable from the IPCC website. Sources of data stored in the database include data obtained in Task 1.2 of the RISC-KIT project, deliverables from the FP7 MICORE project, scientific publications, data contained in the Marine Knowledge Gate and media analysis performed by the case study partners. To ensure its long-term continuity, the database has been designed with common data fields to those of the EU Floods Directive as well as the more-general ISDR-GAR and CRED databases, meaning that there is potential for these database efforts to be merged in the future. Links have also been provided to the EEA-Clearing Houses .
             </p>
-
-
         </div>
         <div class="clearfix visible-xs">
-    </div>
-
-
+        </div>
     </div>
 
 
@@ -113,7 +112,7 @@
                 The RISC-KIT project (grant agreement 603458) is supported by the European Commission under the Environment
                 (including climate change) Theme of the 7th Framework Programme for Research and Technological Development.
                 This database only reflects the views of the authors(s), and the European Union cannot be held responsible for any use which may be made of the information contained therein.
-                For more information, please contact RISC-Kit project coordinator Ap Van Dongeren (ap.vandongeren@deltares.nl) or work package leader Paolo Ciavola (cvp@unife.it).
+                For more information, please contact RISC-Kit project coordinator <a href="mailto:ap.vandongeren@deltares.nl">Ap Van Dongeren</a> or work package leader <a href="mailto:cvp@unife.it">Paolo Ciavola</a>.
             </p>
         </div>
         <!--<div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 social">-->
@@ -153,6 +152,16 @@
 
     <!-- /.container -->
 
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-60468592-1', 'auto');
+    ga('send', 'pageview');
+
+</script>
     <!-- JavaScript -->
     <script src="lib/jquery/jquery-1.10.2.js"></script>
     <script src="lib/bootstrap/bootstrap.js"></script>
@@ -165,6 +174,7 @@
     <script src="js/controllers/MediaController.js"></script>
     <script src="js/controllers/LoginController.js"></script>
     <script src="js/controllers/GisController.js"></script>
+    <script src="js/controllers/HomeController.js"></script>
     <script src="js/controllers/SocioimpactController.js"></script>
     <script src="js/controllers/EventsListController.js"></script>
     <script src="js/controllers/PreviewController.js"></script>

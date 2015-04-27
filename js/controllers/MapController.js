@@ -28,6 +28,9 @@ var MapController = (function() {
         this.itemsPerPage = 10;
         this.currentPage = 0;
 
+        this.m_sBaseEventListText = "Click on a country for Event List";
+        this.m_sEventListText = this.m_sBaseEventListText;
+
         var infowindow = new google.maps.InfoWindow({maxWidth: 300});
 
         var map_canvas = document.getElementById('map_canvas');
@@ -54,6 +57,10 @@ var MapController = (function() {
                 {
                     $scope.m_oController.countryEventMarkers[iCount].setMap(map);
                 }
+
+                // Reset Event List Text
+                $scope.m_oController.m_sEventListText = $scope.m_oController.m_sBaseEventListText;
+                $scope.$apply();
             }
 
         });
@@ -62,17 +69,7 @@ var MapController = (function() {
 
         //if (this.m_oLoginService.isLogged())
         //{
-
-        var fromYear = 0;
-        var toYear = 0;
-        var hasImpacts = false;
-        if ($scope.search != null) {
-            fromYear = $scope.search.fromYear;
-            toYear = $scope.search.toYear;
-            hasImpacts = $scope.search.hasImpacts;
-        }
-
-            this.m_oScope.m_oController.m_oEventService.LoadEventsByCountries(fromYear, toYear, hasImpacts).success(function (data) {
+            this.m_oScope.m_oController.m_oEventService.LoadEventsByCountries().success(function (data) {
                 $scope.m_oController.m_oEventCountryList = data;
                 for (var iCount = 0; iCount < data.length; iCount++) {
                     var oEvent = data[iCount];
@@ -91,7 +88,7 @@ var MapController = (function() {
 
                     //showInfo(marker, oEvent.countryName);
                     //closeInfo(marker);
-                    $scope.m_oController.addCountryMarker(marker, oEvent.countryCode);
+                    addCountryMarker(marker, oEvent.countryCode);
                     $scope.m_oController.countryEventMarkers.push(marker);
 
                 }
@@ -108,18 +105,18 @@ var MapController = (function() {
             $scope.m_oController.EventHtml = '';
             $scope.m_oController.m_iSelectedEventId = null;
             $scope.m_oController.m_oEventList = [];
-            //$scope.$apply();
+            $scope.$apply();
         }
 
-
-        this.addCountryMarker = function (marker, countryCode) {
+        function addCountryMarker(marker, countryCode) {
 
             var locCountryCode = countryCode;
             var localmarker = marker;
             google.maps.event.addListener(marker, 'click', function () {
                 $scope.m_oController.m_oEventService.LoadEventsByCountryForMap(locCountryCode).success(function (data) {
 
-                    $scope.m_oController.clearCountryMarkers();
+                    $scope.m_oController.m_sEventListText = localmarker.title + "  Event List";
+                    clearCountryMarkers();
 
                     map_options = {
                         zoom: 6,
@@ -191,9 +188,10 @@ var MapController = (function() {
 
             });
 
-        };
+        }
 
         function showEvents(marker, regionId) {
+
             google.maps.event.addListener(marker, 'click', function () {
 
                 $scope.m_oController.m_bLoadingFlag = true;
@@ -201,6 +199,9 @@ var MapController = (function() {
                 $scope.m_oController.m_oEventService.LoadEventsByRegionForMap(regionId).success(function (data) {
 
                     if ((angular.isDefined(data) && data!=null)) {
+
+                        $scope.m_oController.m_sEventListText = marker.title + "  Event List";
+
                         var iEventsCount = 0;
 
                         for (iEventsCount=0; iEventsCount<data.length; iEventsCount++) {
@@ -254,7 +255,7 @@ var MapController = (function() {
             });
         }
 
-        this.clearCountryMarkers = function (){
+        function clearCountryMarkers(){
 
             var bRet = true;
             //clear
@@ -298,6 +299,7 @@ var MapController = (function() {
                     var templ = "<div class='modal-body' style='display: flex'>" +
                         "<img src= 'img/thumb/temp/" + data + "' style='max-height: 500px;'>" +
                         "</div>" +
+                        "<div style=\"margin-left: 10px;\">" + localMedia.description+ "</div>" +
                         "<div class='modal-footer'>" +
                         "<button class='col-xs-2 btn btn-warning' ng-click='m_oController.close()'>Close</button>" +
                         "<a ng-href='img/thumb/temp/" + data + "' download>" +
@@ -578,7 +580,16 @@ var MapController = (function() {
 
     //------------------Pagination----------------------------
     MapController.prototype.range = function () {
-        var rangeSize = 4;
+        var rangeSize = 1;
+
+        if ( this.itemsPerPage>0){
+            rangeSize = Math.floor(this.m_oEventList.length/this.itemsPerPage)+1;
+        }
+
+        if (rangeSize == 0) rangeSize = 1;
+
+        if (rangeSize > 6) rangeSize = 6;
+
         var ps = [];
         var start;
         var oScope = this.m_oScope;
@@ -634,81 +645,10 @@ var MapController = (function() {
 
     };
 
-
-
-    MapController.prototype.FromYearChange = function() {
-        this.m_bShowClearFilterFromYear = true;
-    };
-
-    MapController.prototype.ToYearChange = function() {
-        this.m_bShowClearFilterToYear = true;
-    };
-
-    MapController.prototype.clearFilterFromYear = function() {
-        this.m_bShowClearFilterFromYear = false;
-        this.m_oScope.search.fromYear = '';
-
-    };
-
-    MapController.prototype.clearFilterToYear = function() {
-        this.m_bShowClearFilterToYear = false;
-        this.m_oScope.search.toYear = '';
-
-    };
-
-    MapController.prototype.Search = function() {
-        if (this.m_oScope.search == null)
-            return;
-
-        var oScope = this.m_oScope;
-
-        var fromYear = 0;
-        var toYear = 0;
-        var hasImpacts = false;
-        if (this.m_oScope.search.fromYear != null && this.m_oScope.search.fromYear != '')
-            fromYear = this.m_oScope.search.fromYear;
-
-        if(this.m_oScope.search.toYear != null && this.m_oScope.search.toYear != '')
-            toYear = this.m_oScope.search.hasImpacts;
-
-        if(this.m_oScope.search.hasImpacts != null)
-            hasImpacts = this.m_oScope.search.hasImpacts;
-
-        var eventmarker = 'img/marker_event.png';
-
-        oScope.m_oController.m_oMap.setZoom(3);
-
-        this.m_oScope.m_oController.clearCountryMarkers();
-
-        oScope.m_oController.countryEventMarkers = [];
-        this.m_oScope.m_oController.m_oEventService.LoadEventsByCountries(fromYear, toYear, hasImpacts).success(function (data) {
-            oScope.m_oController.m_oEventCountryList = data;
-            for (var iCount = 0; iCount < data.length; iCount++) {
-                var oEvent = data[iCount];
-
-                var Latlng = new google.maps.LatLng(oEvent.lat, oEvent.lon);
-                var marker = new MarkerWithLabel({
-                    position: Latlng,
-                    map: oScope.m_oController.m_oMap,
-                    title: oEvent.countryName,
-                    icon: eventmarker,
-                    labelContent: oEvent.eventsCount,
-                    labelAnchor: new google.maps.Point(26, 32),
-                    labelClass: "labels-map", // the CSS class for the label
-                    labelInBackground: false
-                });
-
-                //showInfo(marker, oEvent.countryName);
-                //closeInfo(marker);
-                oScope.m_oController.addCountryMarker(marker, oEvent.countryCode);
-                oScope.m_oController.countryEventMarkers.push(marker);
-
-            }
-
-        });
-
-    };
-
+    MapController.prototype.getEventListText = function()
+    {
+        return this.m_sEventListText;
+    }
 
     MapController.$inject = [
         '$scope',

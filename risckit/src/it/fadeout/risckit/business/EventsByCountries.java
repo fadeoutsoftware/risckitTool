@@ -16,11 +16,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name="risckit.eventsbycountries")
 @XmlRootElement
 public class EventsByCountries {
-
+/*
 	@Id
 	@Column(name="idrow")
 	private Integer m_RowId;
-	
+*/	
+	@Id
 	@Column(name="id")
 	private Integer m_iId;
 	
@@ -99,6 +100,7 @@ public class EventsByCountries {
 		this.m_dtStartDate = m_dtStartDate;
 	}
 
+	/*
 	public Integer getRowId() {
 		return m_RowId;
 	}
@@ -106,5 +108,5 @@ public class EventsByCountries {
 	public void setRowId(Integer m_RowId) {
 		this.m_RowId = m_RowId;
 	}
-	
+	*/
 }

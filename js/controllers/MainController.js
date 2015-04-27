@@ -9,7 +9,7 @@ var MainController = (function() {
         this.m_oModal = $modal;
         this.m_oLoginService = oLoginService;
 
-        $scope.m_oController.m_oLocation.path('map');
+        //$scope.m_oController.m_oLocation.path('map');
 
         /*
         if (oLoginService.isLogged() == false && !oLoginService.getLogDialogOn()) {

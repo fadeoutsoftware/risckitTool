@@ -18,6 +18,7 @@ var riskit = angular.module('riskitapp',[
 
 
 riskit.config(function($routeProvider) {
+        $routeProvider.when('/', {templateUrl: 'partials/home.html', controller: 'HomeController'});
         $routeProvider.when('/event', {templateUrl: 'partials/event.html', controller: 'EventController'});
         $routeProvider.when('/eventslist', {templateUrl: 'partials/eventslist.html', controller: 'EventsListController'});
         $routeProvider.when('/map', {templateUrl: 'partials/map.html', controller: 'MapController'});

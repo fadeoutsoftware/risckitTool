@@ -147,7 +147,17 @@ var EventsListController = (function() {
     };
 
     EventsListController.prototype.range = function () {
-        var rangeSize = 4;
+
+        var rangeSize = 1;
+
+        if ( this.itemsPerPage>0){
+            rangeSize = Math.floor(this.m_oEventList.length/this.itemsPerPage)+1;
+        }
+
+        if (rangeSize == 0) rangeSize = 1;
+
+        if (rangeSize > 10) rangeSize = 10;
+
         var ps = [];
         var start;
         var oScope = this.m_oScope;
