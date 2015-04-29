@@ -198,8 +198,21 @@ hr {
     background: #eee;
     margin: 2em 8em;
     border: 5px solid white;
+
+    /*background: #eee url('../img/doc.svg') 75% 30% no-repeat;*/
 }
-.link li {font-size: 1.5em;}
+.pullquote .img_bck  {
+    opacity: 0.2;
+    position: absolute;
+    overflow: hidden;
+    right: 50px;
+    bottom:50px;
+    background-size:256px ;
+    background-image: url('../img/doc.svg') ;
+    transform: rotate(-20deg) scale(0.5);
+}
+
+.link li {font-size: 1.5em; list-style: none;}
 
 /*=====================================================
                 Logo/body/custom
