@@ -113,7 +113,6 @@ hr {
 
 .partner {background:white; width: 100%; margin:0;padding:0; clear:left;}
 .partner img {box-shadow:  0px 0 8px rgba(0,0,0,0.1);}
-.partner img:hover {fill}
 .home img {width: 100%;}
 .partner li{ float: left; list-style: none; }
 .visitor  img,
@@ -125,17 +124,19 @@ hr {
     position: relative;
     float: left;
     cursor: pointer;
+    background: #fc0;
 }
 
-.partner li:hover:before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255,204,0, 0.75);
+.partner img:hover{
+    /*content: " ";*/
+    /*display: block;*/
+    /*position: absolute;*/
+    /*top: 0;*/
+    /*bottom: 0;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    opacity:0.5;
+    /*z-index: 0;*/
 
 }
 
