@@ -80,6 +80,7 @@ var EventsListController = (function() {
 
         if (this.m_oLoginService.isLogged())
             this.m_oScope.load();
+        /*
         else {
             if (this.m_oLoginService.isLogged() == false && !this.m_oLoginService.getLogDialogOn()) {
                 var oModalLogin = this.m_oModal.open({
@@ -99,6 +100,7 @@ var EventsListController = (function() {
                 })
             }
         }
+        */
     }
 
     EventsListController.prototype.getEvents = function () {
@@ -142,8 +144,26 @@ var EventsListController = (function() {
     };
 
     EventsListController.prototype.newEvent = function () {
-        this.m_oScope.m_oController.m_oSharedService.setEvent(null);
-        this.m_oLocation.path('/event');
+        if (this.m_oLoginService.isLogged()) {
+            this.m_oScope.m_oController.m_oSharedService.setEvent(null);
+            this.m_oLocation.path('/event');
+        }
+        else
+        {
+            if (this.m_oLoginService.isLogged() == false && !this.m_oLoginService.getLogDialogOn()) {
+                var oModalLogin = this.m_oModal.open({
+                    templateUrl: 'partials/login.html',
+                    controller: LoginController,
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
+                oModalLogin.result.then(function (Loginresult) {
+                    if (Loginresult == false)
+                        alert('Login Error');
+                })
+            }
+        }
     };
 
     EventsListController.prototype.range = function () {

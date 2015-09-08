@@ -74,6 +74,14 @@ var EventController = (function() {
                 backdrop: 'static',
                 keyboard: false
             });
+
+            oModalLogin.result.then(function (Loginresult) {
+                if (Loginresult == false)
+                    alert('Login Error');
+                else if (Loginresult == 'cancel')
+                    $scope.m_oController.m_oLocation.path('/map');
+
+            })
         }
 
         this.uploadRightAway = true;
