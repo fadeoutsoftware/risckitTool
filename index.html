@@ -24,14 +24,18 @@
     <script src='lib/googlemaps/angular-google-maps.min.js'></script>
     <script src='lib/markerwithlabel/markerwithlabel.js'></script>
     <script src='lib/angular/i18n/angular-locale_en.js'></script>
-    
     <link href="css/deda.css" rel="stylesheet">
-    
 
+    <script src="js/compatibility.js"></script>
+    <script>
+        if( isBrowserCompliant() == false)
+        {
+            location.href = "unsupportedbrowser.html";
+        }
+    </script>
 </head>
-<style>
+<!-- Stop if browser not compliant  -->
 
-</style>
 <body ng-app="riskitapp" ng-controller="MainController" class="bck">
 
 <div class="container">
