@@ -79,7 +79,7 @@ var EventController = (function() {
                 if (Loginresult == false)
                     alert('Login Error');
                 else if (Loginresult == 'cancel')
-                    $scope.m_oController.m_oLocation.path('/map');
+                    $scope.m_oController.m_oLocation.path('/');
 
             })
         }
