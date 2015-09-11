@@ -1,0 +1,28 @@
+@font-face {
+	font-family: 'fadeout';
+	src:url('fonts/fadeout.eot?-ruidkh');
+	src:url('fonts/fadeout.eot?#iefix-ruidkh') format('embedded-opentype'),
+		url('fonts/fadeout.ttf?-ruidkh') format('truetype'),
+		url('fonts/fadeout.woff?-ruidkh') format('woff'),
+		url('fonts/fadeout.svg?-ruidkh#fadeout') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+i {
+	font-family: 'fadeout';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.fdt-fadeout-logo:before {
+	content: "\e600";
+}
