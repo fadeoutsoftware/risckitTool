@@ -63,26 +63,27 @@ var EventController = (function() {
 
         }
 
-        if (this.m_oLoginService.isLogged()) {
+        //if (this.m_oLoginService.isLogged()) {
             this.m_oScope.m_oController.m_oEvent.login = this.m_oLoginService.getUserName();
             this.m_oScope.m_oController.m_oEvent.userId = this.m_oLoginService.getUserId();
-        }
-        else {
-            var oModalLogin = this.m_oModal.open({
-                templateUrl: 'partials/login.html',
-                controller: LoginController,
-                backdrop: 'static',
-                keyboard: false
-            });
+        //}
+        //else {
+        //    var oModalLogin = this.m_oModal.open({
+        //        templateUrl: 'partials/login.html',
+        //        controller: LoginController,
+        //        backdrop: 'static',
+        //        keyboard: false
+        //    });
 
-            oModalLogin.result.then(function (Loginresult) {
-                if (Loginresult == false)
-                    alert('Login Error');
-                else if (Loginresult == 'cancel')
-                    $scope.m_oController.m_oLocation.path('/');
 
-            })
-        }
+        //    oModalLogin.result.then(function (Loginresult) {
+        //        if (Loginresult == false)
+        //            alert('Login Error');
+        //        else if (Loginresult == 'cancel')
+        //            $scope.m_oController.m_oLocation.path('/');
+
+        //    })
+        //}
 
         this.uploadRightAway = true;
 

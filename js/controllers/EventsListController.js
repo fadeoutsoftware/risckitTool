@@ -28,7 +28,7 @@ var EventsListController = (function() {
         //Define load function
         $scope.load = function() {
 
-            if ($scope.m_oController.m_oLoginService.isLogged()) {
+            //if ($scope.m_oController.m_oLoginService.isLogged()) {
                 $scope.m_oController.m_oEventService.LoadEvents($scope.m_oController.m_oLoginService.getUserId()).success(function (data) {
                     $scope.m_oController.m_oEventList = data;
                 });
@@ -75,10 +75,10 @@ var EventsListController = (function() {
                             oScope.m_oController.LoadRegion();
                     }
                 });
-            }
+            //}
         };
 
-        if (this.m_oLoginService.isLogged())
+        //if (this.m_oLoginService.isLogged())
             this.m_oScope.load();
         /*
         else {

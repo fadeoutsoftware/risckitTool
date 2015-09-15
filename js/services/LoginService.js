@@ -50,7 +50,11 @@ angular.module('risckit.loginService', []).
 
         this.Logout = function() {
             this.m_bIsLogged = false;
-
+            this.m_iUserId = '';
+            this.m_sUserName = '';
+            this.m_sUserRole = '';
+            this.m_bLogDialogOn = false;
+            this.m_bIsAdmin = false;
         };
 
         this.getUserName = function() {
