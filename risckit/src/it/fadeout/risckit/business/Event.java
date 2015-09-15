@@ -29,8 +29,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.swing.text.DateFormatter;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.annotations.Formula;
 
 @Entity
 @Table(name="risckit.events")
@@ -190,7 +193,14 @@ public class Event {
 	@JoinColumn(name="countryid", nullable=true, insertable=false, updatable=false)
 	private Country m_oCountry;
 
-
+	@Transient
+	private Boolean HasSocioImpact;
+	//private int childCount;
+	
+	//@Formula("(select count(*) from SocioImpact s where s.idevent = id)")
+    //public int getSocioImpact() {
+    //    return childCount;
+    //}
 
 	public Integer getId() {
 		return m_iId;
@@ -1185,7 +1195,10 @@ public class Event {
 		oViewModel.setUserId(this.getUserId());
 		oViewModel.setLat(oRegion.getLat());
 		oViewModel.setLon(oRegion.getLon());
-		
+		if (this.getHasSocioImpact() != null)
+			oViewModel.setHasSocioImpacts(this.getHasSocioImpact());
+		else
+			oViewModel.setHasSocioImpacts(false);
 		return oViewModel;
 	}
 
@@ -1301,6 +1314,14 @@ public class Event {
 			oList.add(this.getDamageToBuildingsTimeSeries());
 
 		return oList;
+	}
+
+	public Boolean getHasSocioImpact() {
+		return HasSocioImpact;
+	}
+
+	public void setHasSocioImpact(Boolean hasSocioImpact) {
+		HasSocioImpact = hasSocioImpact;
 	}
 
 }

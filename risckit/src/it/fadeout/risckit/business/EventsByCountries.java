@@ -31,11 +31,11 @@ public class EventsByCountries {
 	@Column(name="name")
 	private String m_sName;
 
-	@Column(name="result")
+	@Column(name="count")
 	private Integer m_sEventCount;
 	
-	@Column(name="startdate")
-	private Date m_dtStartDate;
+	//@Column(name="startdate")
+	//private Date m_dtStartDate;
 	
 	
 	public String getName() {
@@ -56,8 +56,8 @@ public class EventsByCountries {
 		return m_sEventCount;
 	}
 
-	public void setEventCount(Integer m_sEventCount) {
-		this.m_sEventCount = m_sEventCount;
+	public void setEventCount(Integer sEventCount) {
+		this.m_sEventCount = sEventCount;
 	}
 
 	public String getLat() {
@@ -92,13 +92,13 @@ public class EventsByCountries {
 		this.m_sCountryCode = m_sCountryCode;
 	}
 
-	public Date getStartDate() {
-		return m_dtStartDate;
-	}
+	//public Date getStartDate() {
+	//	return m_dtStartDate;
+	//}
 
-	public void setStartDate(Date m_dtStartDate) {
-		this.m_dtStartDate = m_dtStartDate;
-	}
+	//public void setStartDate(Date m_dtStartDate) {
+	//	this.m_dtStartDate = m_dtStartDate;
+	//}
 
 	/*
 	public Integer getRowId() {

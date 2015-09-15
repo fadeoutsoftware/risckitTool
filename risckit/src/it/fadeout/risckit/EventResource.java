@@ -288,12 +288,12 @@ public class EventResource {
 		{
 			oReturnList = new ArrayList<EventViewModel>();
 			for (Event event : oEvents) {
-				long iCount = oSocioImpactsRepo.SelectCount(event.getId());
-				boolean bHas = false;
-				if (iCount > 0)
-					bHas = true;
+				//long iCount = oSocioImpactsRepo.SelectCount(event.getId());
+				//boolean bHas = false;
+				//if (iCount > 0)
+				//	bHas = true;
 				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
-				oEventViewModel.setHasSocioImpacts(bHas);
+				//oEventViewModel.setHasSocioImpacts(bHas);
 				if (iIdUser == event.getUserId())
 					oEventViewModel.setEditMode(true);
 				oReturnList.add(oEventViewModel);
@@ -302,6 +302,37 @@ public class EventResource {
 
 		return oReturnList;
 	}
+	
+	@GET
+	@Path("/all/")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public List<EventViewModel> getEventList() {
+
+		List<EventViewModel> oReturnList = null;
+		EventRepository oRepo = new EventRepository();
+		SocioImpactRepository oSocioImpactsRepo = new SocioImpactRepository();
+		List<Event> oEvents = oRepo.SelectAll(Event.class);
+
+		CountryRepository oCountryRepo = new CountryRepository();
+		List<Country> oCountries = oCountryRepo.SelectAll(Country.class);
+
+		if (oEvents != null)
+		{
+			oReturnList = new ArrayList<EventViewModel>();
+			for (Event event : oEvents) {
+				//long iCount = oSocioImpactsRepo.SelectCount(event.getId());
+				//boolean bHas = false;
+				//if (iCount > 0)
+				//	bHas = true;
+				EventViewModel oEventViewModel =  event.getViewModel(oCountries);
+				//oEventViewModel.setHasSocioImpacts(bHas);
+				oReturnList.add(oEventViewModel);
+			}
+		}
+
+		return oReturnList;
+	}
+
 
 	@GET
 	@Path("/byregion/{countryid}")
@@ -433,6 +464,36 @@ public class EventResource {
 
 		return oReturnList;
 	}
+	
+	@GET
+	@Path("/groupevent")
+	@Produces({"application/json", "application/xml", "text/xml"})
+	public List<EventByCountryViewModel> getEventByCountryForMap() {
+
+		List<EventByCountryViewModel> oReturnList = null;
+		Repository<EventsByCountries> oRepo = new Repository<EventsByCountries>();
+		List<EventsByCountries> oEvents = oRepo.SelectAll(EventsByCountries.class);
+
+		if (oEvents != null)
+		{
+			oReturnList = new ArrayList<EventByCountryViewModel>();
+			for (EventsByCountries event : oEvents) {
+				EventByCountryViewModel oViewModel = new EventByCountryViewModel();
+				oViewModel.setId(event.getId());
+				oViewModel.setCountryName(event.getName());
+				oViewModel.setCountryCode(event.getCountryCode());
+				oViewModel.setEventsCount((long)event.getEventCount());
+				oViewModel.setLat(event.getLat());
+				oViewModel.setLon(event.getLon());
+				oReturnList.add(oViewModel);
+			}
+		}
+		
+		oRepo.CloseSession();
+
+		return oReturnList;
+	}
+
 
 	@GET
 	@Path("/bycountrylist/{countrycode}")
@@ -501,6 +562,7 @@ public class EventResource {
 		return oReturnList;
 	}	
 
+	/*
 	@GET
 	@Path("/groupevent/{fromYear}/{toYear}/{impacts}")
 	@Produces({"application/json", "application/xml", "text/xml"})
@@ -543,6 +605,7 @@ public class EventResource {
 
 		return oReturnList;
 	}
+	*/
 
 	@GET
 	@Path("/download/{idEvent}/{parameter}")

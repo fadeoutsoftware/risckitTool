@@ -3,6 +3,7 @@ package it.fadeout.risckit.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -113,7 +114,7 @@ public class Repository<T> {
 		}
 		return aoList;
 	}
-
+	
 	
 	@SuppressWarnings("unchecked")
 	public T Select(int iId, Class<T> oClass) {

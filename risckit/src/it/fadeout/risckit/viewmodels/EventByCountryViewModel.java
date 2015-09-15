@@ -9,7 +9,7 @@ public class EventByCountryViewModel {
 	
 	private String countryCode;
 	
-	private long eventsCount;
+	private Long eventsCount;
 	
 	private String lat;
 	
@@ -25,11 +25,11 @@ public class EventByCountryViewModel {
 		this.countryName = countryName;
 	}
 	
-	public long getEventsCount() {
+	public Long getEventsCount() {
 		return eventsCount;
 	}
 
-	public void setEventsCount(long eventsCount) {
+	public void setEventsCount(Long eventsCount) {
 		this.eventsCount = eventsCount;
 	}
 	
