@@ -62,6 +62,9 @@
 
     <div class="row">
         <div class="navbar">
+            <div class="navbar-right">
+
+            </div>
             <a class="navbar-brand" href="#"></a>
             <ul class="nav navbar-nav">
                 <li class="active">
@@ -75,6 +78,20 @@
                 </li>
                 <li>
                     <a href="#/links">Useful Links</a>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">{{m_oController.getUserName()}}
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li class="divider" ng-hide="m_oController.m_oLoginService.isLogged()"></li>
+                        <li ng-hide="m_oController.m_oLoginService.isLogged()"><a href="#" ng-click="m_oController.Login()"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+                        </li>
+                        <li class="divider" ng-show="this.m_oLoginService.isLogged()"></li>
+                        <li ng-show="m_oController.m_oLoginService.isLogged()"><a href="#" ng-click="m_oController.Logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
                 </li>
             </ul>
         </div>
