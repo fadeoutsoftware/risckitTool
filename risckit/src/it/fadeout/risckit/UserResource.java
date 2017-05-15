@@ -5,6 +5,7 @@ import it.fadeout.risckit.business.User;
 import it.fadeout.risckit.data.CountryRepository;
 import it.fadeout.risckit.data.UserRepository;
 import it.fadeout.risckit.viewmodels.CountryViewModel;
+import it.fadeout.risckit.viewmodels.PrimitiveResult;
 import it.fadeout.risckit.viewmodels.UserViewModel;
 
 import java.util.ArrayList;
@@ -53,6 +54,74 @@ public class UserResource {
 			return null;
 		}
 
+	}
+	
+	@GET
+	@Path("/list")
+	public List<UserViewModel> GetUsersList() {
+		try {
+			
+			List<UserViewModel> aoRetList = new ArrayList<>();
+			
+			UserRepository oRepo = new UserRepository();
+			List<User> aoUsers = oRepo.SelectAll(User.class);
+			
+			if (aoUsers!= null) {
+				
+				for (int iUsers = 0; iUsers<aoUsers.size(); iUsers++) {
+					User oUser = aoUsers.get(iUsers);
+					if (oUser != null) {
+						UserViewModel oTempUsr = new UserViewModel();
+						oTempUsr.setId(oUser.getId());
+						oTempUsr.setUserName(oUser.getUserName());
+						oTempUsr.setPassword(oUser.getPassword());
+						oTempUsr.setIsAdmin(oUser.getIsAdmin());
+						aoRetList.add(oTempUsr);
+					}
+				}
+				
+			}
+				
+			return aoRetList;
+		}
+		catch (Exception oEx) {
+			oEx.printStackTrace();
+			return null;
+		}
+	}
+	
+	@POST
+	@Path("/update")
+	@Produces({"application/xml", "application/json", "text/xml"})
+	public PrimitiveResult Update(UserViewModel oUserViewModel) {
+		PrimitiveResult oResult = new PrimitiveResult();
+		try {
+			
+			if (oUserViewModel != null) {
+				UserRepository oRepo = new UserRepository();
+				
+				// TODO: Qui se hanno cambiato pw non lo prendo!!!
+				User oUser = oRepo.SelectUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
+				oUser.setIsAdmin(oUserViewModel.getIsAdmin());
+				// TODO: Set Pw
+				oRepo.Save(oUser);
+				
+				
+				oResult.BoolValue = true;
+			}
+			else {
+				oResult.BoolValue = false;
+			}
+			
+			
+		}
+		catch (Exception oEx) {
+			oEx.printStackTrace();
+			
+			oResult.BoolValue = false;
+		}
+		
+		return oResult;
 	}
 
 }
