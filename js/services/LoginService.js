@@ -4,8 +4,8 @@
 'use strict';
 angular.module('risckit.loginService', []).
     service('LoginService', ['$http',  function ($http) {
-        this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        //this.APIURL = 'http://localhost:8080/risckit/rest';
+        //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
+        this.APIURL = 'http://localhost:8080/risckit/rest';
 
         this.m_oHttp = $http;
         this.m_bIsLogged = null;
@@ -42,6 +42,17 @@ angular.module('risckit.loginService', []).
             fd.append('username', sUserName);
             fd.append('password', sPassword);
             return this.m_oHttp.post(this.APIURL + "/users/login", fd, {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        };
+
+        this.loginRequest = function(oData)
+        {
+            // var fd = new FormData();
+            // fd.append('username', sUserName);
+            // fd.append('password', sPassword);
+            return this.m_oHttp.post(this.APIURL + "/users/requestNewUser", oData, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });

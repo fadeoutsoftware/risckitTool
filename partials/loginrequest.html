@@ -1,0 +1,64 @@
+<div class="container">
+    <div class="row">
+        <!--<div class="col-xs-6 col-xs-offset-4 col-sm-5 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset4">-->
+        <h1 class="title text-center"><i class="fa fa-thumb-tack fa-fw"></i>Request access</h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 login-request-container">
+            <div class="login-request-form">
+                <fieldset>
+                    <legend>Personal data</legend>
+                    <!-- First and last name -->
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">First name</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="text" class="firstname" ng-model="$ctrl.m_oLoginRequest.firstname"></div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">Last name</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="text" class="lastname" ng-model="$ctrl.m_oLoginRequest.lastname"></div>
+                    </div>
+                    <!-- Address and state -->
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">Address</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="text" class="address" ng-model="$ctrl.m_oLoginRequest.address"></div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">State</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="text" class="state" ng-model="$ctrl.m_oLoginRequest.state"></div>
+                    </div>
+                    <!-- User contacts -->
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">Phone</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="tel" class="phone" ng-model="$ctrl.m_oLoginRequest.phone"></div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">Email</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="email" class="email" ng-model="$ctrl.m_oLoginRequest.email"></div>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend></legend>
+                    <!-- Work data -->
+                    <div class="row">
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">Foundation</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="text" class="foundation" ng-model="$ctrl.m_oLoginRequest.foundation"></div>
+                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-1 caption">Your role</div>
+                        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-2"><input type="text" class="role" ng-model="$ctrl.m_oLoginRequest.role"></div>
+                    </div>
+                </fieldset>
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+                        <label>Explain the reasons you want to contribute</label>
+                        <textarea class="reasons" ng-model="$ctrl.m_oLoginRequest.reasons"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="disclaimer-container">
+                <div class="disclaimer-text">
+                    The user has the full responsibility of any data inserted or uploaded in the Risckit platform, including clearance of copyright of images as well as data property. If data from third parties are provided, metadata information should be added using the database forms. Neither the webmaster, the Database Coordinator nor the Project Coordinator can be held responsible for release of false information nor for misusage by third parties. The data provider should be aware that data upload implies that the information is automatically transferred and made public through the Open Earth platform http://www.openearth.nl
+                </div>
+                <input type="checkbox" name="chbx-accept-disclaimer" id="chbx-accept-disclaimer" value="value" ng-model="$ctrl.m_oLoginRequest.disclaimerAccepted">
+                <label for="chbx-accept-disclaimer">ACCEPT</label>
+            </div>
+
+            <div class="col-xs-12 text-center" style="margin: 20px 0px;">
+                <button class="btn btn-default" style="width: 220px" ng-click="$ctrl.sendRequest()">SEND REQUEST</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -26,6 +26,7 @@
     <script src='lib/angular/i18n/angular-locale_en.js'></script>
     <link href="css/deda.css" rel="stylesheet">
     <link href="fontfadeout.css" rel="stylesheet">
+    <link href="css/style-addon.css" rel="stylesheet">
 
     <script src="js/compatibility.js"></script>
     <script>
@@ -77,6 +78,9 @@
                     <a href="#/eventslist">Events</a>
                 </li>
                 <li>
+                    <a href="#/architecture">Architecture</a>
+                </li>
+                <li>
                     <a href="#/links">Useful Links</a>
                 </li>
                 <li class="dropdown">
@@ -84,11 +88,16 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li class="divider" ng-hide="m_oController.m_oLoginService.isLogged()"></li>
-                        <li ng-hide="m_oController.m_oLoginService.isLogged()"><a href="#" ng-click="m_oController.Login()"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+                        <!--<li class="divider" ng-hide="m_oController.m_oLoginService.isLogged()"></li>-->
+                        <li ng-hide="m_oController.m_oLoginService.isLogged()">
+                            <a href="#" ng-click="m_oController.Login()"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+                        </li>
+                        <li ng-hide="m_oController.m_oLoginService.isLogged()">
+                            <a href="#loginrequest""><i class="fa fa-pencil-square-o fa-fw"></i>Request access</a>
                         </li>
                         <li class="divider" ng-show="this.m_oLoginService.isLogged()"></li>
-                        <li ng-show="m_oController.m_oLoginService.isLogged()"><a href="#" ng-click="m_oController.Logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li ng-show="m_oController.m_oLoginService.isLogged()">
+                            <a href="#" ng-click="m_oController.Logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -206,6 +215,7 @@
     <script src="js/controllers/SocioimpactController.js"></script>
     <script src="js/controllers/EventsListController.js"></script>
     <script src="js/controllers/PreviewController.js"></script>
+    <script src="js/controllers/LoginRequestController.js"></script>
     <script src="js/services/EventService.js"></script>
     <script src="js/services/SharedService.js"></script>
     <script src="js/services/LoginService.js"></script>

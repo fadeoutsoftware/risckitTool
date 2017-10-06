@@ -1,0 +1,66 @@
+$color-disclaimer-text: #ff6e6e;
+$color-login-request-fieldset-legend: #ccc;
+
+$size-padding-topbottom-input: 2px;
+
+
+.pdf-wrapper{
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    .pdf-embedded{
+        height: 90vh;
+        width: 100%;
+    }
+}
+
+.login-request-form{
+    fieldset{
+        legend{
+            color: $color-login-request-fieldset-legend;
+        }
+        margin-bottom: 16px;
+
+    }
+
+    input,textarea{
+        color: #1a1b1c;
+        width: 100%;
+        padding: $size-padding-topbottom-input 4px;
+    }
+
+    .caption{
+        padding-top: $size-padding-topbottom-input;
+    }
+
+    input{
+        display: block;
+        margin-bottom: 10px;
+    }
+    label{
+        display: block;
+    }
+    textarea{
+        min-height: 120px;
+    }
+}
+
+.disclaimer-container{
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0px;
+
+    .disclaimer-text{
+        color: $color-disclaimer-text;
+        padding-bottom: 8px;
+        line-height: 14px;
+    }
+
+    label{
+        margin-bottom: 0px;
+        margin-top: -5px;
+        top: -2px;
+        position: relative;
+        margin-left: 4px;
+    }
+}

@@ -1,0 +1,41 @@
+.pdf-wrapper {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+  .pdf-wrapper .pdf-embedded {
+    height: 90vh;
+    width: 100%; }
+
+.login-request-form fieldset {
+  margin-bottom: 16px; }
+  .login-request-form fieldset legend {
+    color: #ccc; }
+.login-request-form input, .login-request-form textarea {
+  color: #1a1b1c;
+  width: 100%;
+  padding: 2px 4px; }
+.login-request-form .caption {
+  padding-top: 2px; }
+.login-request-form input {
+  display: block;
+  margin-bottom: 10px; }
+.login-request-form label {
+  display: block; }
+.login-request-form textarea {
+  min-height: 120px; }
+
+.disclaimer-container {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0px; }
+  .disclaimer-container .disclaimer-text {
+    color: #ff6e6e;
+    padding-bottom: 8px;
+    line-height: 14px; }
+  .disclaimer-container label {
+    margin-bottom: 0px;
+    margin-top: -5px;
+    top: -2px;
+    position: relative;
+    margin-left: 4px; }
+
+/*# sourceMappingURL=style-addon.css.map */

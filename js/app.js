@@ -27,6 +27,10 @@ riskit.config(function($routeProvider) {
         $routeProvider.when('/socioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
         $routeProvider.when('/socioimpact/:idsocioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
         $routeProvider.when('/links', {templateUrl: 'partials/links.html'});
+
+        $routeProvider.when('/architecture', {templateUrl: 'partials/architecture.html'});
+        $routeProvider.when('/loginrequest', {templateUrl: 'partials/loginrequest.html', controller: 'LoginRequestController'});
+
         $routeProvider.otherwise({redirectTo: '/'});
     }
 );

@@ -58,6 +58,7 @@ var MainController = (function() {
         }
     };
 
+
     MainController.prototype.Logout = function() {
 
         if (this.m_oLoginService.isLogged()) {
