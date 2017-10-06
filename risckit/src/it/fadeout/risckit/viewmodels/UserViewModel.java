@@ -15,7 +15,7 @@ public class UserViewModel {
 	private String userSurname;
 	private String institutionName;
 	private String role;
-	private String adresses;
+	private String address;
 	private String state;
 	private String phoneNumber;
 	private String reason;
@@ -97,11 +97,11 @@ public class UserViewModel {
 	}
 
 	public String getAdresses() {
-		return adresses;
+		return address;
 	}
 
 	public void setAdresses(String adresses) {
-		this.adresses = adresses;
+		this.address = adresses;
 	}
 
 	public String getState() {

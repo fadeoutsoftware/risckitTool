@@ -10,7 +10,7 @@ import it.fadeout.risckit.business.User;
 
 public class UserRepository extends Repository<User>{
 
-	public User requestNewUser(String sUserName, String sUserSurname, String sInstitutionName, String sRole, String sAdresses,
+	public User requestNewUser(String sUserName, String sUserSurname, String sInstitutionName, String sRole, String sAddress,
 							   String sState, String sPhoneNumber,String sReason, Boolean bIsConfirmed,  String sEmail)
 	{
 		Session oSession = null;
@@ -25,7 +25,7 @@ public class UserRepository extends Repository<User>{
 			oCriteria.add(Restrictions.eq("m_sUserSurname", sUserName));
 			oCriteria.add(Restrictions.eq("m_sInstitutionName", sUserName));
 			oCriteria.add(Restrictions.eq("m_sRole", sUserName));
-			oCriteria.add(Restrictions.eq("m_sAdresses", sUserName));
+			oCriteria.add(Restrictions.eq("m_sAddress", sUserName));
 			oCriteria.add(Restrictions.eq("m_sState", sUserName));
 			oCriteria.add(Restrictions.eq("m_sPhoneNumber", sUserName));
 			oCriteria.add(Restrictions.eq("m_sReason", sUserName));
