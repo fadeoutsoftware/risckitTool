@@ -90,6 +90,7 @@ public class UserResource {
 		}
 	}
 	
+	
 	@POST
 	@Path("/update")
 	@Produces({"application/xml", "application/json", "text/xml"})
@@ -117,7 +118,40 @@ public class UserResource {
 		}
 		catch (Exception oEx) {
 			oEx.printStackTrace();
+			oResult.BoolValue = false;
+		}
+		
+		return oResult;
+	}
+	
+
+	@POST
+	@Path("/requestNewUser")
+	@Produces({"application/xml", "application/json", "text/xml"})
+	
+	public PrimitiveResult newUserRequest(UserViewModel oUserViewModel) {
+		PrimitiveResult oResult = new PrimitiveResult();
+		try {
 			
+			if (oUserViewModel != null) {
+				//UserRepository oRepo = new UserRepository();
+				
+				//User oUser = oRepo.requestNewUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
+				//oUser.setIsAdmin(oUserViewModel.getIsAdmin());
+				//oRepo.Save(oUser);
+				//String sUserName, String sUserSurname, String sInstitutionName, String sRole, String sAdresses,
+				 //String sState, String sPhoneNumber,String sReason, Boolean bIsConfirmed,  String sEmail
+				
+				oResult.BoolValue = true;
+			}
+			else {
+				oResult.BoolValue = false;
+			}
+			
+			
+		}
+		catch (Exception oEx) {
+			oEx.printStackTrace();
 			oResult.BoolValue = false;
 		}
 		
