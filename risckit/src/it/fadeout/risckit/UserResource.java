@@ -127,15 +127,16 @@ public class UserResource {
 
 	@POST
 	@Path("/requestNewUser")
-	@Produces({"application/xml", "application/json", "text/xml"})
-	
+	//@Produces({"application/xml", "application/json", "text/xml"})
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces({"application/json"})
+
 	public PrimitiveResult newUserRequest(UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 			
 			if (oUserViewModel != null) {
 				//UserRepository oRepo = new UserRepository();
-				
 				//User oUser = oRepo.requestNewUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
 				//oUser.setIsAdmin(oUserViewModel.getIsAdmin());
 				//oRepo.Save(oUser);
