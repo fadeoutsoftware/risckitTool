@@ -386,4 +386,48 @@ public class UserResource {
 		
 	}
 	
+	@POST
+	@Path("/accept")
+	//@Produces({"application/xml", "application/json", "text/xml"})
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces({"application/json"})
+
+	public PrimitiveResult confirmNewUser(UserViewModel oUserViewModel) {
+		PrimitiveResult oResult = new PrimitiveResult();
+		try {
+
+			if (oUserViewModel != null) {
+				
+				UserRepository oRepo = new UserRepository();
+				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
+				
+				PasswordGenerator session = new PasswordGenerator();
+				if(	(oUser == null) )
+				{
+					oResult.BoolValue = false;
+				}
+				else
+				{
+					oUser.setIsConfirmed(true);
+					oUser.setPassword(session.nextString());
+					oRepo.Save(oUser);
+					oResult.BoolValue = true;
+				}
+
+				 
+				
+			}
+			else {
+				oResult.BoolValue = false;
+			}
+
+
+		}
+		catch (Exception oEx) {
+			oEx.printStackTrace();
+			oResult.BoolValue = false;
+		}
+
+		return oResult;
+	}
 }
