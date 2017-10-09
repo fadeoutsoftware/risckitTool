@@ -96,12 +96,12 @@ public class UserViewModel {
 		this.role = role;
 	}
 
-	public String getAdresses() {
+	public String getAddress() {
 		return address;
 	}
 
-	public void setAdresses(String adresses) {
-		this.address = adresses;
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getState() {
