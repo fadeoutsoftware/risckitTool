@@ -88,16 +88,22 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
+                        <!-- Not logged user menu -->
                         <!--<li class="divider" ng-hide="m_oController.m_oLoginService.isLogged()"></li>-->
                         <li ng-hide="m_oController.m_oLoginService.isLogged()">
-                            <a href="#" ng-click="m_oController.Login()"><i class="fa fa-sign-out fa-fw"></i> Login</a>
+                            <a href="#" ng-click="m_oController.Login()"><i class="fa fa-sign-out fa-fw padding-right"></i>Login</a>
                         </li>
                         <li ng-hide="m_oController.m_oLoginService.isLogged()">
-                            <a href="#loginrequest""><i class="fa fa-pencil-square-o fa-fw"></i>Request access</a>
+                            <a href="#loginrequest"><i class="fa fa-pencil-square-o fa-fw padding-right"></i>Request access</a>
                         </li>
                         <li class="divider" ng-show="this.m_oLoginService.isLogged()"></li>
+
+                        <!-- Logged user menu -->
+                        <li ng-show="m_oController.isUserLogged() == true">
+                            <a href="#/adminusersmanagement"><i class="fa fa-users fa-fw padding-right"></i>Users manager</a>
+                        </li>
                         <li ng-show="m_oController.m_oLoginService.isLogged()">
-                            <a href="#" ng-click="m_oController.Logout()"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            <a href="#" ng-click="m_oController.Logout()"><i class="fa fa-sign-out fa-fw padding-right"></i>Logout</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -216,12 +222,15 @@
     <script src="js/controllers/EventsListController.js"></script>
     <script src="js/controllers/PreviewController.js"></script>
     <script src="js/controllers/LoginRequestController.js"></script>
+    <script src="js/controllers/AdminUsersManagement.js"></script>
+
     <script src="js/services/EventService.js"></script>
     <script src="js/services/SharedService.js"></script>
     <script src="js/services/LoginService.js"></script>
     <script src="js/services/MediaService.js"></script>
     <script src="js/services/GisService.js"></script>
     <script src="js/services/SocioimpactService.js"></script>
+    <script src="js/services/UsersService.js"></script>
     <script src="js/directives.js"></script>
     <script src="js/app.js"></script>
     <!-- Script to Activate the Carousel -->

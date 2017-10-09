@@ -6,6 +6,7 @@ angular.module('risckit.eventService', []).
         //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
         this.APIURL = 'http://localhost:8080/risckit/rest';
 
+
         this.m_oHttp = $http;
         this.m_oCountries = null;
         this.m_oCategories = null;

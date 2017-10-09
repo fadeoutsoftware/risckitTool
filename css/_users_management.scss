@@ -1,0 +1,105 @@
+.filters-container{
+    $size-filters-toolbar-tools-height: 36px;
+    margin: 10px 0px;
+    .free-search{
+        padding: 6px 8px;
+        width: 320px;
+        height: $size-filters-toolbar-tools-height;
+        color: $color-input-text;
+
+        @include placeholder{
+            color: $color-input-text-placeholder;
+        };
+    }
+
+
+    .btn{
+        height: $size-filters-toolbar-tools-height;
+        position: relative;
+        top: -1px;
+        margin-left: 10px;
+        width: 120px;
+    }
+}
+
+.users-list-container{
+    ul{
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+        li{
+            $size-user-list-item-margin: 6px;
+            $size-user-toolbar: 260px;
+
+            border: 1px solid #666;
+            margin: $size-user-list-item-margin 0px;
+            padding: 6px 10px;
+
+            & > div{
+                position: relative;
+            }
+
+
+            .pull-left{  width: calc(100% - #{$size-user-toolbar});  }
+
+            .user-first-and-last-name{
+                margin: 0px;
+                padding: 0px;
+                margin-bottom: 6px;
+            }
+
+            .user-reason{
+                $color-user-reason: #ffcc00;
+                color: $color-user-reason;
+                &:hover{
+                    cursor: pointer;
+                    color: darken($color-user-reason, 5%);
+                }
+
+                &-container{
+                    padding: 8px 10px;
+                    margin: 6px 0px;
+                    background: #333;
+                }
+            }
+
+            .user-toolbar{
+                $size-button-height: 36px;
+
+                position: absolute;
+                top: calc(50% - #{$size-button-height / 2});
+                right: $size-user-list-item-margin;
+
+                button{
+                    min-width: 130px;
+                    font-size: 1.6rem;
+
+                    &:not(:last-of-type){
+                        margin-right: 8px;
+                        //margin-bottom: 4px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+.create-edit-user-popup {
+    margin-top: 100px;
+    background-color: #333;
+    border: 1px solid #ccc;
+    padding: 20px;
+
+    h2{
+        margin-top: 0px;
+        margin-bottom: 20px;
+        font-size: 2.6rem;
+    }
+
+    .create-edit-user-form{
+        margin-bottom: 20px;
+    }
+
+}

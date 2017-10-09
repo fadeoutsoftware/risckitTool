@@ -3,9 +3,10 @@
  */
 'use strict';
 angular.module('risckit.loginService', []).
-    service('LoginService', ['$http',  function ($http) {
+    service('LoginService', ['$http','CONFIG',  function ($http, CONFIG) {
         //this.APIURL = 'http://risckit.cloudapp.net/risckit/rest';
-        this.APIURL = 'http://localhost:8080/risckit/rest';
+        //this.APIURL = 'http://localhost:8080/risckit/rest';
+        this.APIURL = CONFIG.API_ADDRESS; // in app.js
 
         this.m_oHttp = $http;
         this.m_bIsLogged = null;
@@ -99,6 +100,14 @@ angular.module('risckit.loginService', []).
         this.setSelectedMenuIndex = function(iValue) {
             this.m_iSelectedMenuIndex = iValue;
         };
+
+        this.goHomeIfNotLogged = function()
+        {
+            if (this.isLogged() == false)
+            {
+                location.href = "#/";
+            }
+        }
 
 
     }]);

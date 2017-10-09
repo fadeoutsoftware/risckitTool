@@ -1,3 +1,93 @@
+.filters-container {
+  margin: 10px 0px; }
+  .filters-container .free-search {
+    padding: 6px 8px;
+    width: 320px;
+    height: 36px;
+    color: #333; }
+    .filters-container .free-search ::-webkit-input-placeholder {
+      color: #666; }
+    .filters-container .free-search :-moz-placeholder {
+      color: #666; }
+    .filters-container .free-search ::-moz-placeholder {
+      color: #666; }
+    .filters-container .free-search :-ms-input-placeholder {
+      color: #666; }
+  .filters-container .btn {
+    height: 36px;
+    position: relative;
+    top: -1px;
+    margin-left: 10px;
+    width: 120px; }
+
+.users-list-container ul {
+  list-style: none;
+  margin: 0px;
+  padding: 0px; }
+  .users-list-container ul li {
+    border: 1px solid #666;
+    margin: 6px 0px;
+    padding: 6px 10px; }
+    .users-list-container ul li > div {
+      position: relative; }
+    .users-list-container ul li .pull-left {
+      width: calc(100% - 260px); }
+    .users-list-container ul li .user-first-and-last-name {
+      margin: 0px;
+      padding: 0px;
+      margin-bottom: 6px; }
+    .users-list-container ul li .user-reason {
+      color: #ffcc00; }
+      .users-list-container ul li .user-reason:hover {
+        cursor: pointer;
+        color: #e6b800; }
+      .users-list-container ul li .user-reason-container {
+        padding: 8px 10px;
+        margin: 6px 0px;
+        background: #333; }
+    .users-list-container ul li .user-toolbar {
+      position: absolute;
+      top: calc(50% - 18px);
+      right: 6px; }
+      .users-list-container ul li .user-toolbar button {
+        min-width: 130px;
+        font-size: 1.6rem; }
+        .users-list-container ul li .user-toolbar button:not(:last-of-type) {
+          margin-right: 8px; }
+
+.create-edit-user-popup {
+  margin-top: 100px;
+  background-color: #333;
+  border: 1px solid #ccc;
+  padding: 20px; }
+  .create-edit-user-popup h2 {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    font-size: 2.6rem; }
+  .create-edit-user-popup .create-edit-user-form {
+    margin-bottom: 20px; }
+
+.padding-right {
+  padding-right: 8px; }
+.padding-left {
+  padding-left: 8px; }
+
+.pop-up-container {
+  position: fixed;
+  height: 100vh;
+  top: 0px;
+  left: 0px;
+  width: 70vw;
+  padding-left: 15vw;
+  background: rgba(0, 0, 0, 0.8);
+  padding-right: 15vw;
+  box-sizing: content-box; }
+  .pop-up-container .pop-up {
+    margin-top: 100px; }
+
+.btn-secondary {
+  color: #333; }
+
 .pdf-wrapper {
   padding-top: 20px;
   padding-bottom: 20px; }
@@ -5,22 +95,22 @@
     height: 90vh;
     width: 100%; }
 
-.login-request-form fieldset {
+.login-request-form fieldset, .create-edit-user-form fieldset {
   margin-bottom: 16px; }
-  .login-request-form fieldset legend {
+  .login-request-form fieldset legend, .create-edit-user-form fieldset legend {
     color: #ccc; }
-.login-request-form input, .login-request-form textarea {
+.login-request-form input, .login-request-form textarea, .create-edit-user-form input, .create-edit-user-form textarea {
   color: #1a1b1c;
   width: 100%;
   padding: 2px 4px; }
-.login-request-form .caption {
+.login-request-form .caption, .create-edit-user-form .caption {
   padding-top: 2px; }
-.login-request-form input {
+.login-request-form input, .create-edit-user-form input {
   display: block;
   margin-bottom: 10px; }
-.login-request-form label {
+.login-request-form label, .create-edit-user-form label {
   display: block; }
-.login-request-form textarea {
+.login-request-form textarea, .create-edit-user-form textarea {
   min-height: 120px; }
 
 .disclaimer-container {

@@ -1,7 +1,57 @@
+//-------------------------------------------------------------------------
+// Shared variables
+//-------------------------------------------------------------------------
 $color-disclaimer-text: #ff6e6e;
 $color-login-request-fieldset-legend: #ccc;
+$color-input-text: #333;
+$color-input-text-placeholder: #666;
 
 $size-padding-topbottom-input: 2px;
+//-------------------------------------------------------------------------
+
+
+//-------------------------------------------------------------------------
+// Shared Mixins
+//-------------------------------------------------------------------------
+@mixin placeholder {
+    ::-webkit-input-placeholder {@content}
+    :-moz-placeholder           {@content}
+    ::-moz-placeholder          {@content}
+    :-ms-input-placeholder      {@content}
+}
+//-------------------------------------------------------------------------
+
+
+@import "users_management";
+
+.padding{
+    &-right{padding-right: 8px;}
+    &-left{padding-left: 8px;}
+}
+
+
+.pop-up-container{
+    position: fixed;
+    height: 100vh;
+    top: 0px;
+    left: 0px;
+    width: 70vw;
+    padding-left: 15vw;
+    background: rgba(0,0,0,0.8);
+    padding-right: 15vw;
+    box-sizing: content-box;
+
+    .pop-up{
+        margin-top: 100px;
+    }
+}
+
+
+.btn-secondary{
+    color: #333;
+}
+
+
 
 
 .pdf-wrapper{
@@ -14,7 +64,7 @@ $size-padding-topbottom-input: 2px;
     }
 }
 
-.login-request-form{
+.login-request-form, .create-edit-user-form{
     fieldset{
         legend{
             color: $color-login-request-fieldset-legend;

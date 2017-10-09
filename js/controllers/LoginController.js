@@ -50,6 +50,8 @@ var LoginController = (function() {
     };
 
 
+
+
     LoginController.$inject = [
         '$scope',
         '$modalInstance',

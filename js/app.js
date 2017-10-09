@@ -1,6 +1,7 @@
 /**
  * Created by s.adamo on 01/07/2014.
  */
+
 var riskit = angular.module('riskitapp',[
     'ngRoute',
     'ui.bootstrap',
@@ -11,11 +12,21 @@ var riskit = angular.module('riskitapp',[
     'risckit.mediaService',
     'risckit.gisService',
     'risckit.socioimpactService',
+    'risckit.usersService',
     'angularFileUpload',
     'riskitapp.directives',
     'ngSanitize']);
 
 
+//---------------------------------------------------------------------------
+//- Set app configuration variables (API url, etc)
+//---------------------------------------------------------------------------
+var oConfig = {
+    //API_ADDRESS : 'http://risckit.cloudapp.net/risckit/rest'
+    API_ADDRESS : 'http://localhost:8080/risckit/rest'
+}
+riskit.constant("CONFIG", oConfig);
+//---------------------------------------------------------------------------
 
 riskit.config(function($routeProvider) {
         $routeProvider.when('/', {templateUrl: 'partials/home.html', controller: 'HomeController'});
@@ -30,6 +41,8 @@ riskit.config(function($routeProvider) {
 
         $routeProvider.when('/architecture', {templateUrl: 'partials/architecture.html'});
         $routeProvider.when('/loginrequest', {templateUrl: 'partials/loginrequest.html', controller: 'LoginRequestController'});
+        $routeProvider.when('/adminusersmanagement', {templateUrl: 'partials/admin_users_management.html', controller: 'AdminUsersManagement'});
+
 
         $routeProvider.otherwise({redirectTo: '/'});
     }
