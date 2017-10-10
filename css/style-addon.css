@@ -88,9 +88,11 @@
 .btn-secondary {
   color: #333; }
 
-.nav.navbar-nav li a:hover {
+.nav.navbar-nav li a:hover, .nav.navbar-nav li a:focus {
   color: #336699; }
 .nav.navbar-nav .dropdown.open .dropdown-toggle {
+  color: #336699; }
+.nav.navbar-nav .dropdown .dropdown-toggle a:focus {
   color: #336699; }
 .nav.navbar-nav .dropdown-menu {
   margin: 0px;

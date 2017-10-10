@@ -60,7 +60,7 @@ $size-padding-topbottom-input: 2px;
     &.navbar-nav{
         li{
             a{
-                &:hover{
+                &:hover, &:focus{
                     color: $color-navbar-link-text-hover;
                 }
             }
@@ -71,6 +71,13 @@ $size-padding-topbottom-input: 2px;
             &.open{
                 .dropdown-toggle{
                     color: $color-navbar-link-text-hover;
+                }
+            }
+            .dropdown-toggle{
+                a{
+                    &:focus{
+                        color: $color-navbar-link-text-hover;
+                    }
                 }
             }
         }
