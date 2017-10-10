@@ -88,6 +88,21 @@
 .btn-secondary {
   color: #333; }
 
+.nav.navbar-nav li a:hover {
+  color: #336699; }
+.nav.navbar-nav .dropdown.open .dropdown-toggle {
+  color: #336699; }
+.nav.navbar-nav .dropdown-menu {
+  margin: 0px;
+  padding: 0px;
+  margin-top: 1px;
+  margin-left: -2px; }
+  .nav.navbar-nav .dropdown-menu li {
+    border: 0px; }
+    .nav.navbar-nav .dropdown-menu li a {
+      height: 32px;
+      padding: 6px; }
+
 .pdf-wrapper {
   padding-top: 20px;
   padding-bottom: 20px; }

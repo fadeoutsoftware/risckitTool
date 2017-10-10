@@ -7,13 +7,13 @@ var AdminUsersManagement = (function() {
         this.m_oScope = $scope;
         this.m_oScope.$ctrl = this;
 
-        //oLoginService.goHomeIfNotLogged();
+        oLoginService.goHomeIfNotLogged();
 
         this.m_oUsersService = oUsersService;
 
         this.m_aoUsersList = [];
         this.m_oUserReasonVisibility = {};
-        this.m_sPopUpMode = AdminUsersManagement.MODE_CREATE;
+        this.m_oPopUpMode = AdminUsersManagement.MODE_CREATE;
         this.m_bIsCreateEditUserPopupVisible = false;
         this.m_oUserToBeEdited = null;
         this.filters = {
@@ -153,6 +153,18 @@ var AdminUsersManagement = (function() {
     }
 
 
+
+    AdminUsersManagement.prototype.isCreateUserMode = function ()
+    {
+        return (this.m_oPopUpMode == AdminUsersManagement.MODE_CREATE);
+    }
+    AdminUsersManagement.prototype.isEditUserMode = function ()
+    {
+        return (this.m_oPopUpMode == AdminUsersManagement.MODE_EDIT);
+    }
+
+
+
     /**
      * Accept a pending user
      * @param oUser
@@ -198,7 +210,7 @@ var AdminUsersManagement = (function() {
      */
     AdminUsersManagement.prototype.editUser = function (oUser)
     {
-        this.m_sPopUpMode = AdminUsersManagement.MODE_EDIT;
+        this.m_oPopUpMode = AdminUsersManagement.MODE_EDIT;
         this.m_oUserToBeEdited = angular.copy(oUser);
 
         this.m_bIsCreateEditUserPopupVisible = true;
@@ -224,7 +236,7 @@ var AdminUsersManagement = (function() {
      */
     AdminUsersManagement.prototype.createNewUser = function ()
     {
-        this.m_sPopUpMode = AdminUsersManagement.MODE_CREATE
+        this.m_oPopUpMode = AdminUsersManagement.MODE_CREATE
         this.m_oUserToBeEdited = {};
 
         this.m_bIsCreateEditUserPopupVisible = true;
@@ -241,10 +253,10 @@ var AdminUsersManagement = (function() {
         var oThis = this;
 
         var oPromise = null;
-        if(this.m_sPopUpMode = AdminUsersManagement.MODE_CREATE){
+        if(this.m_oPopUpMode = AdminUsersManagement.MODE_CREATE){
             oPromise = this.m_oUsersService.createUser(this.m_oUserToBeEdited);
         }
-        else if(this.m_sPopUpMode = AdminUsersManagement.MODE_EDIT)
+        else if(this.m_oPopUpMode = AdminUsersManagement.MODE_EDIT)
         {
             oPromise = this.m_oUsersService.updateUser(this.m_oUserToBeEdited);
         }
@@ -270,10 +282,10 @@ var AdminUsersManagement = (function() {
      */
     AdminUsersManagement.prototype.getCreateEditUserPopupTitle = function ()
     {
-        if(this.m_sPopUpMode == AdminUsersManagement.MODE_EDIT){
+        if(this.m_oPopUpMode == AdminUsersManagement.MODE_EDIT){
             return "Edit user";
         }
-        if(this.m_sPopUpMode == AdminUsersManagement.MODE_CREATE){
+        if(this.m_oPopUpMode == AdminUsersManagement.MODE_CREATE){
             return "Create user";
         }
     }

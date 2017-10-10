@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <!--<div class="col-xs-6 col-xs-offset-4 col-sm-5 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset4">-->
-        <h1 class="title text-center"><i class="fa fa-thumb-tack fa-fw"></i>User Management</h1>
+        <h1 class="title text-center"><i class="fa fa-thumb-tack fa-fw"></i>Users Management</h1>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 users-management-container">
@@ -14,7 +14,7 @@
                     <li ng-repeat="oUser in $ctrl.getUsersList() | filter:itemFilterFn">
                         <div>
                             <div class="pull-left">
-                                <h2 class="user-first-and-last-name">{{oUser.userName}} {{oUser.userSurname}}</h2>
+                                <h2 class="user-first-and-last-name">{{oUser.userName}} -  {{oUser.firstName}} {{oUser.userSurname}}</h2>
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5"><i class="fa fa-map-marker padding-right" aria-hidden="true"></i>{{oUser.address}} - {{oUser.state}}</div>
                                     <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"><i class="fa fa-phone padding-right" aria-hidden="true"></i>{{oUser.phoneNumber}}</div>
@@ -52,29 +52,33 @@
         <div class="pop-up create-edit-user-popup">
             <h2>{{$ctrl.getCreateEditUserPopupTitle()}}</h2>
             <div class="create-edit-user-form">
-                <!-- First and last name -->
                 <div class="row">
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">First name</div>
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Username</div>
                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="firstname" ng-model="$ctrl.m_oUserToBeEdited.userName"></div>
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Last name</div>
-                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="lastname" ng-model="$ctrl.m_oUserToBeEdited.userSurname"></div>
                 </div>
-                <!-- Address and state -->
-                <div class="row">
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Address</div>
-                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="address" ng-model="$ctrl.m_oUserToBeEdited.address"></div>
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">State</div>
-                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="state" ng-model="$ctrl.m_oUserToBeEdited.state"></div>
-                </div>
+                <!--&lt;!&ndash; First and last name &ndash;&gt;-->
+                <!--<div class="row">-->
+                    <!--<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">First name</div>-->
+                    <!--<div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="firstname" ng-model="$ctrl.m_oUserToBeEdited.userName"></div>-->
+                    <!--<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Last name</div>-->
+                    <!--<div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="lastname" ng-model="$ctrl.m_oUserToBeEdited.userSurname"></div>-->
+                <!--</div>-->
+                <!--&lt;!&ndash; Address and state &ndash;&gt;-->
+                <!--<div class="row">-->
+                    <!--<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Address</div>-->
+                    <!--<div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="address" ng-model="$ctrl.m_oUserToBeEdited.address"></div>-->
+                    <!--<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">State</div>-->
+                    <!--<div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" class="state" ng-model="$ctrl.m_oUserToBeEdited.state"></div>-->
+                <!--</div>-->
                 <!-- User contacts -->
-                <div class="row">
-                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Phone</div>
-                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="tel" class="phone" ng-model="$ctrl.m_oUserToBeEdited.phoneNumber"></div>
+                <div class="row" ng-show="$ctrl.isCreateUserMode() == true">
+                    <!--<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Phone</div>-->
+                    <!--<div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="tel" class="phone" ng-model="$ctrl.m_oUserToBeEdited.phoneNumber"></div>-->
                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Email</div>
                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="email" class="email" ng-model="$ctrl.m_oUserToBeEdited.email"></div>
                 </div>
             </div>
-            <div>
+            <div ng-show="$ctrl.isEditUserMode() == true">
                 <button class="btn btn-secondary" ng-click="$ctrl.resetUserPassword()"><i class="fa fa-refresh padding-right" aria-hidden="true"></i>Reset user password</button>
             </div>
             <div class="text-right">

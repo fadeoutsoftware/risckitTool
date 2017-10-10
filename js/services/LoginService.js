@@ -105,7 +105,8 @@ angular.module('risckit.loginService', []).
         {
             if (this.isLogged() == false)
             {
-                location.href = "#/";
+                //location.href = "#/";
+                console.error("ACTIVATE USER LOGGED CHECK INTO LoginService");
             }
         }
 

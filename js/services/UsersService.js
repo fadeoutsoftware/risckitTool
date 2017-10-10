@@ -2,8 +2,8 @@
  * Created by s.adamo on 14/07/2014.
  */
 'use strict';
-angular.module('risckit.usersService', []).
-    service('UsersService', ['$http' ,'CONFIG',  function ($http, CONFIG) {
+angular.module('risckit.usersService', [])
+    .service('UsersService', ['$http' ,'CONFIG',  function ($http, CONFIG) {
         this.APIURL = CONFIG.API_ADDRESS; // in app.js
 
         this.m_oHttp = $http;
@@ -78,8 +78,20 @@ angular.module('risckit.usersService', []).
             });
         }
 
+        this.updateUsername = function(oOldUser, oNewUser)
+        {
+            return this.m_oHttp.post(this.APIURL + "/editUser", [oOldUser, oNewUser], {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        }
 
+        this.updateUserPassword = function(oOldUser, oNewUser)
+        {
+            return this.m_oHttp.post(this.APIURL + "/editUser", [oOldUser, oNewUser], {
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            });
+        }
 
-
-
-    }]);
+}]);

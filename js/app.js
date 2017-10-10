@@ -42,6 +42,7 @@ riskit.config(function($routeProvider) {
         $routeProvider.when('/architecture', {templateUrl: 'partials/architecture.html'});
         $routeProvider.when('/loginrequest', {templateUrl: 'partials/loginrequest.html', controller: 'LoginRequestController'});
         $routeProvider.when('/adminusersmanagement', {templateUrl: 'partials/admin_users_management.html', controller: 'AdminUsersManagement'});
+        $routeProvider.when('/userprofile', {templateUrl: 'partials/user_profile.html', controller: 'UserProfile'});
 
 
         $routeProvider.otherwise({redirectTo: '/'});

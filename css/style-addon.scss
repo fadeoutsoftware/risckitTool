@@ -5,6 +5,9 @@ $color-disclaimer-text: #ff6e6e;
 $color-login-request-fieldset-legend: #ccc;
 $color-input-text: #333;
 $color-input-text-placeholder: #666;
+$color-navbar-link-bg: #336699;
+$color-navbar-link-text: white;
+$color-navbar-link-text-hover: $color-navbar-link-bg;
 
 $size-padding-topbottom-input: 2px;
 //-------------------------------------------------------------------------
@@ -52,6 +55,41 @@ $size-padding-topbottom-input: 2px;
 }
 
 
+
+.nav{
+    &.navbar-nav{
+        li{
+            a{
+                &:hover{
+                    color: $color-navbar-link-text-hover;
+                }
+            }
+        }
+
+        // Keep dropdown button text highlighted when selected
+        .dropdown{
+            &.open{
+                .dropdown-toggle{
+                    color: $color-navbar-link-text-hover;
+                }
+            }
+        }
+
+        .dropdown-menu{
+            margin: 0px;
+            padding: 0px;
+            margin-top: 1px;
+            margin-left: -2px;
+            li{
+                border: 0px;
+                a{
+                    height: 32px;
+                    padding: 6px;
+                }
+            }
+        }
+    }
+}
 
 
 .pdf-wrapper{

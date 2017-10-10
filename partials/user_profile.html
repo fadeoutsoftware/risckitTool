@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row">
+        <!--<div class="col-xs-6 col-xs-offset-4 col-sm-5 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset4">-->
+        <h1 class="title text-center"><i class="fa fa-thumb-tack fa-fw"></i>Your Profile</h1>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="create-edit-user-form">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">Here you can change your Username and Password</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Username</div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3">
+                        <input type="text" class="firstname" ng-model="$ctrl.m_sUserName">
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3">
+                        <button class="btn btn-secondary btn-sm" ng-click="$ctrl.updateUsername()"><i class="fa fa-times padding-right" aria-hidden="true"></i>Update</button>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Old password</div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" ng-model="$ctrl.m_oUpdatePassword.oldPassword"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">New password</div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" ng-model="$ctrl.m_oUpdatePassword.newPassword"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Repeat new password</div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3">
+                        <input type="text" ng-model="$ctrl.m_oUpdatePassword.newPasswordRepeated" ng-style="$ctrl.getRepeatPasswordStyle()">
+                    </div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3">
+                        <button class="btn btn-secondary btn-sm" ng-click="$ctrl.updatePassword()"><i class="fa fa-times padding-right" aria-hidden="true"></i>Update</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--<div class="text-right">-->
+                <!--<button class="btn btn-danger" ng-click="$ctrl.closePopup()"><i class="fa fa-times padding-right" aria-hidden="true"></i>Cancel</button>-->
+                <!--<button class="btn btn-success" ng-click="$ctrl.saveUserChanges()"><i class="fa fa-save padding-right" aria-hidden="true"></i>Save</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <br>
+    <br>
+</div>
