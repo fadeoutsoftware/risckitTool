@@ -40,8 +40,8 @@ public class UserResource {
 			{
 				UserRepository oRepo = new UserRepository();
 				User oUser = oRepo.SelectUser(sUserName, sPassword);
-
-				if (oUser != null) {
+				
+				if ( (oUser != null) && (oUser.getIsConfirmed() == true) ) {
 					oReturnValue = new UserViewModel();
 					oReturnValue.setId(oUser.getId());
 					oReturnValue.setUserName(oUser.getUserName());
