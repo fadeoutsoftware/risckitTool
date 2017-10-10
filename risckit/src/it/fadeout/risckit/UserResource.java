@@ -474,7 +474,10 @@ public class UserResource {
 	
 	@POST
 	@Path("/editUser")
-	@Produces({"application/xml", "application/json", "text/xml"})
+	//@Produces({"application/xml", "application/json", "text/xml"})
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces({"application/json"})
+
 	public PrimitiveResult changePassword(UserViewModel oNewUser,UserViewModel oOldUser) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
