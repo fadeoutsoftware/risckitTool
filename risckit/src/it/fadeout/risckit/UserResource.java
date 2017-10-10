@@ -79,6 +79,21 @@ public class UserResource {
 						oTempUsr.setUserName(oUser.getUserName());
 						oTempUsr.setPassword(oUser.getPassword());
 						oTempUsr.setIsAdmin(oUser.getIsAdmin());
+						
+						oTempUsr.setUserSurname(oUser.getUserSurname());
+						oTempUsr.setAddress(oUser.getAddress());
+						oTempUsr.setState(oUser.getState());
+						oTempUsr.setPhoneNumber(oUser.getPhonenumber());
+						oTempUsr.setEmail(oUser.getEmail());
+						oTempUsr.setInstitutionName(oUser.getInstitutionName());
+						oTempUsr.setRole(oUser.getRole());
+						oTempUsr.setReason(oUser.getReason());
+						oTempUsr.setFirstName(oUser.getFirstName());
+						oTempUsr.setIsConfirmed(oUser.getIsConfirmed());
+						oTempUsr.setIsAdmin(oUser.getIsAdmin());
+
+						
+						oRepo.Save(oUser);
 						aoRetList.add(oTempUsr);
 					}
 				}
@@ -94,38 +109,38 @@ public class UserResource {
 	}
 
 
-	@POST
-	@Path("/update")
-	@Produces({"application/xml", "application/json", "text/xml"})
-	public PrimitiveResult Update(UserViewModel oUserViewModel) {
-		PrimitiveResult oResult = new PrimitiveResult();
-		try {
-
-			if (oUserViewModel != null) {
-				UserRepository oRepo = new UserRepository();
-
-				// TODO: Qui se hanno cambiato pw non lo prendo!!!
-				User oUser = oRepo.SelectUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
-				oUser.setIsAdmin(oUserViewModel.getIsAdmin());
-				// TODO: Set Pw
-				oRepo.Save(oUser);
-
-
-				oResult.BoolValue = true;
-			}
-			else {
-				oResult.BoolValue = false;
-			}
-
-
-		}
-		catch (Exception oEx) {
-			oEx.printStackTrace();
-			oResult.BoolValue = false;
-		}
-
-		return oResult;
-	}
+//	@POST
+//	@Path("/update")
+//	@Produces({"application/xml", "application/json", "text/xml"})
+//	public PrimitiveResult Update(UserViewModel oUserViewModel) {
+//		PrimitiveResult oResult = new PrimitiveResult();
+//		try {
+//
+//			if (oUserViewModel != null) {
+//				UserRepository oRepo = new UserRepository();
+//
+//				// TODO: Qui se hanno cambiato pw non lo prendo!!!
+//				User oUser = oRepo.SelectUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
+//				oUser.setIsAdmin(oUserViewModel.getIsAdmin());
+//				// TODO: Set Pw
+//				oRepo.Save(oUser);
+//
+//
+//				oResult.BoolValue = true;
+//			}
+//			else {
+//				oResult.BoolValue = false;
+//			}
+//
+//
+//		}
+//		catch (Exception oEx) {
+//			oEx.printStackTrace();
+//			oResult.BoolValue = false;
+//		}
+//
+//		return oResult;
+//	}
 
 
 	@POST
@@ -223,34 +238,15 @@ public class UserResource {
 
 				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) )
 					oResult.BoolValue = false;
-//				if( (oUserViewModel.getUserSurname() == null) || (oUserViewModel.getUserSurname().isEmpty()) )
-//					oResult.BoolValue = false;				
-//				if( (oUserViewModel.getAddress() == null) || (oUserViewModel.getAddress().isEmpty()) )
-//					oResult.BoolValue = false;
-//				if( (oUserViewModel.getState() == null) || (oUserViewModel.getState().isEmpty()) )
-//					oResult.BoolValue = false;
-//				if( (oUserViewModel.getPhoneNumber() == null) || (oUserViewModel.getPhoneNumber().isEmpty()) )
-//					oResult.BoolValue = false;
 				if( (oUserViewModel.getEmail() == null) || (oUserViewModel.getEmail().isEmpty()) )
 					oResult.BoolValue = false;
-//				if( (oUserViewModel.getInstitutionName() == null) || (oUserViewModel.getInstitutionName().isEmpty()) )
-//					oResult.BoolValue = false;
-//				if( (oUserViewModel.getRole() == null) || (oUserViewModel.getRole().isEmpty()) )
-//					oResult.BoolValue = false;
-//				if( (oUserViewModel.getReason() == null) || (oUserViewModel.getReason().isEmpty()) )
-//					oResult.BoolValue = false;
 
 				if(oResult.BoolValue != false)
 				{
 					oUser.setUserName(oUserViewModel.getUserName());
-//					oUser.setUserSurname(oUserViewModel.getUserSurname());
-//					oUser.setAddress(oUserViewModel.getAddress());
-//					oUser.setState(oUserViewModel.getState());
-//					oUser.setPhonenumber(oUserViewModel.getPhoneNumber());
+
 					oUser.setEmail(oUserViewModel.getEmail());
-//					oUser.setInstitutionName(oUserViewModel.getInstitutionName());
-//					oUser.setRole(oUserViewModel.getRole());
-//					oUser.setReason(oUserViewModel.getReason());
+
 					oUser.setIsConfirmed(true);
 					oUser.setIsAdmin(false);
 					PasswordGenerator session = new PasswordGenerator();
@@ -277,45 +273,45 @@ public class UserResource {
 		return oResult;
 	}
 	
-	@POST
-	@Path("/updateUserName")
-	//@Produces({"application/xml", "application/json", "text/xml"})
-	@Consumes({"application/xml", "application/json", "text/xml"})
-	@Produces({"application/json"})
-
-	public PrimitiveResult updateUserName(UserViewModel oUserViewModel) {
-		PrimitiveResult oResult = new PrimitiveResult();
-		try {
-
-			if (oUserViewModel != null) {
-				
-				UserRepository oRepo = new UserRepository();
-				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
-				if(	(oUser == null) )
-				{
-					oResult.BoolValue = false;
-				}
-				else
-				{
-					oUser.setUserName(oUserViewModel.getUserName());
-					oRepo.Save(oUser);
-					oResult.BoolValue = true;
-				}
-
-			}
-			else {
-				oResult.BoolValue = false;
-			}
-
-
-		}
-		catch (Exception oEx) {
-			oEx.printStackTrace();
-			oResult.BoolValue = false;
-		}
-
-		return oResult;
-	}
+//	@POST
+//	@Path("/updateUserName")
+//	//@Produces({"application/xml", "application/json", "text/xml"})
+//	@Consumes({"application/xml", "application/json", "text/xml"})
+//	@Produces({"application/json"})
+//
+//	public PrimitiveResult updateUserName(UserViewModel oUserViewModel) {
+//		PrimitiveResult oResult = new PrimitiveResult();
+//		try {
+//
+//			if (oUserViewModel != null) {
+//				
+//				UserRepository oRepo = new UserRepository();
+//				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
+//				if(	(oUser == null) )
+//				{
+//					oResult.BoolValue = false;
+//				}
+//				else
+//				{
+//					oUser.setUserName(oUserViewModel.getUserName());
+//					oRepo.Save(oUser);
+//					oResult.BoolValue = true;
+//				}
+//
+//			}
+//			else {
+//				oResult.BoolValue = false;
+//			}
+//
+//
+//		}
+//		catch (Exception oEx) {
+//			oEx.printStackTrace();
+//			oResult.BoolValue = false;
+//		}
+//
+//		return oResult;
+//	}
 	
 	@POST
 	@Path("/generateNewPassword")
@@ -477,24 +473,25 @@ public class UserResource {
 	}
 	
 	@POST
-	@Path("/changePassword")
+	@Path("/editUser")
 	@Produces({"application/xml", "application/json", "text/xml"})
-	public PrimitiveResult changePassword(UserViewModel oUserViewModel) {
+	public PrimitiveResult changePassword(UserViewModel oNewUser,UserViewModel oOldUser) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 
-			if (oUserViewModel != null) {
+			if (oOldUser != null) {
 				UserRepository oRepo = new UserRepository();
 
 			//	User oUser = oRepo.SelectUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
-				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
+				User oUser = oRepo.SelectUser(oOldUser.getUserName(), oOldUser.getPassword());
 				if(	(oUser == null) )
 				{
 					oResult.BoolValue = false;
 				}
 				else
 				{
-					oUser.setPassword(oUserViewModel.getPassword());
+					oUser.setPassword(oNewUser.getPassword());
+					oUser.setUserName(oNewUser.getUserName());
 					//oUser.setIsAdmin(oUserViewModel.getIsAdmin());
 					oRepo.Save(oUser);
 				}

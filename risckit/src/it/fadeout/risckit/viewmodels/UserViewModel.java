@@ -68,7 +68,7 @@ public class UserViewModel {
 		return isConfirmed;
 	}
 
-	public void setIsConfirmed(Boolean isConfirmed) {
+	public void setIsConfirmed(boolean isConfirmed) {
 		this.isConfirmed = isConfirmed;
 	}
 
