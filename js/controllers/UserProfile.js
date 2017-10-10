@@ -41,11 +41,14 @@ var UserProfile = (function() {
 
         var oOldUser = {
             id : this.m_oLoginService.getUserId(),
+            userName : this.m_oLoginService.getUserName(),
             password : this.m_oUpdatePassword.oldPassword
         }
 
         var oNewUser = {
             id : this.m_oLoginService.getUserId(),
+            userName : this.m_oLoginService.getUserName(),
+
             password : this.m_oUpdatePassword.oldPassword
         }
 
@@ -74,7 +77,8 @@ var UserProfile = (function() {
 
         var oOldUser = {
             id : this.m_oLoginService.getUserId(),
-            userName : this.m_oLoginService.getUserName()
+            userName : this.m_oLoginService.getUserName(),
+            
         }
 
         var oNewUser = {

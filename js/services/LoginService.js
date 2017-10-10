@@ -54,8 +54,8 @@ angular.module('risckit.loginService', []).
             // fd.append('username', sUserName);
             // fd.append('password', sPassword);
             return this.m_oHttp.post(this.APIURL + "/users/requestNewUser", oData, {
-                transformRequest: angular.identity,
-                headers: {'Content-Type': undefined}
+                //transformRequest: angular.identity,
+                //headers: {'Content-Type': "application/json"}
             });
         };
 

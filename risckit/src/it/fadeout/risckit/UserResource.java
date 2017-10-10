@@ -478,10 +478,12 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult changePassword(UserViewModel oNewUser,UserViewModel oOldUser) {
+	public PrimitiveResult editPassword(UserViewModel[] aoUser) {
 		PrimitiveResult oResult = new PrimitiveResult();
+		
 		try {
-
+			UserViewModel oNewUser = aoUser[0]; 
+			UserViewModel oOldUser = aoUser[1];
 			if (oOldUser != null) {
 				UserRepository oRepo = new UserRepository();
 
@@ -493,8 +495,12 @@ public class UserResource {
 				}
 				else
 				{
-					oUser.setPassword(oNewUser.getPassword());
-					oUser.setUserName(oNewUser.getUserName());
+					if( (oNewUser.getPassword() != null) || (oNewUser.getPassword().isEmpty() == false) )
+						oUser.setPassword(oNewUser.getPassword());
+
+					if( (oNewUser.getUserName() != null) || (oNewUser.getUserName().isEmpty() == false) )
+						oUser.setUserName(oNewUser.getUserName());
+					
 					//oUser.setIsAdmin(oUserViewModel.getIsAdmin());
 					oRepo.Save(oUser);
 				}
