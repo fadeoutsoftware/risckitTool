@@ -52,7 +52,9 @@ public class User {
 
 	@Column(name="email")
 	private String m_sEmail;
-
+	
+	@Column(name="firstname")
+	private String m_sFirstName;
 	
 	public Integer getId() {
 		return m_iId;
@@ -158,6 +160,14 @@ public class User {
 
 	public void setUserSurname(String m_sUserSurname) {
 		this.m_sUserSurname = m_sUserSurname;
+	}
+
+	public String getFirstName() {
+		return m_sFirstName;
+	}
+
+	public void setFirstName(String m_sFirstName) {
+		this.m_sFirstName = m_sFirstName;
 	}
 	
 }

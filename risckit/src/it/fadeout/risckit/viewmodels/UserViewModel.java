@@ -12,6 +12,7 @@ public class UserViewModel {
 	
 	//New Properties
 	private String email;
+	private String firstName;
 	private String userSurname;
 	private String institutionName;
 	private String role;
@@ -126,6 +127,14 @@ public class UserViewModel {
 
 	public void setReason(String reason) {
 		this.reason = reason;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 }

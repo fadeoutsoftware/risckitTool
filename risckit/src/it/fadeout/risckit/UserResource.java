@@ -163,7 +163,8 @@ public class UserResource {
 					oResult.BoolValue = false;
 				if( (oUserViewModel.getReason() == null) || (oUserViewModel.getReason().isEmpty()) )
 					oResult.BoolValue = false;
-				
+				if( (oUserViewModel.getFirstName() == null) || (oUserViewModel.getFirstName().isEmpty()) )
+					oResult.BoolValue = false;
 				
 				if(oResult.BoolValue != false)
 				{
@@ -176,12 +177,13 @@ public class UserResource {
 					oUser.setInstitutionName(oUserViewModel.getInstitutionName());
 					oUser.setRole(oUserViewModel.getRole());
 					oUser.setReason(oUserViewModel.getReason());
+					oUser.setFirstName(oUserViewModel.getFirstName());
 					oUser.setIsConfirmed(false);
 					oUser.setIsAdmin(false);
 					oUser.setPassword("");
 					oRepo.Save(oUser);
-					//EmailService oEmailService = new EmailService();
-					//oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "test", "test");
+					EmailService oEmailService = new EmailService("mail.smtp.host");
+					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "test", "test");
 					
 				}
 
@@ -430,4 +432,89 @@ public class UserResource {
 
 		return oResult;
 	}
+	
+	@POST
+	@Path("/newAdmin")
+	//@Produces({"application/xml", "application/json", "text/xml"})
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces({"application/json"})
+
+	public PrimitiveResult addNewAdmin(UserViewModel oUserViewModel) {
+		PrimitiveResult oResult = new PrimitiveResult();
+		try {
+
+			if (oUserViewModel != null) {
+				
+				UserRepository oRepo = new UserRepository();
+				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
+				
+				if(	(oUser == null) )
+				{
+					oResult.BoolValue = false;
+				}
+				else
+				{
+					oUser.setIsAdmin(true);
+					oRepo.Save(oUser);
+					oResult.BoolValue = true;
+				}
+
+				 
+				
+			}
+			else {
+				oResult.BoolValue = false;
+			}
+
+
+		}
+		catch (Exception oEx) {
+			oEx.printStackTrace();
+			oResult.BoolValue = false;
+		}
+
+		return oResult;
+	}
+	
+	@POST
+	@Path("/changePassword")
+	@Produces({"application/xml", "application/json", "text/xml"})
+	public PrimitiveResult changePassword(UserViewModel oUserViewModel) {
+		PrimitiveResult oResult = new PrimitiveResult();
+		try {
+
+			if (oUserViewModel != null) {
+				UserRepository oRepo = new UserRepository();
+
+			//	User oUser = oRepo.SelectUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
+				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
+				if(	(oUser == null) )
+				{
+					oResult.BoolValue = false;
+				}
+				else
+				{
+					oUser.setPassword(oUserViewModel.getPassword());
+					//oUser.setIsAdmin(oUserViewModel.getIsAdmin());
+					oRepo.Save(oUser);
+				}
+
+
+
+				oResult.BoolValue = true;
+			}
+			else {
+				oResult.BoolValue = false;
+			}
+
+
+		}
+		catch (Exception oEx) {
+			oEx.printStackTrace();
+			oResult.BoolValue = false;
+		}
+
+		return oResult;
+	}
+
 }
