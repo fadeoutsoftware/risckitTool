@@ -278,10 +278,10 @@ var AdminUsersManagement = (function() {
         var oThis = this;
 
         var oPromise = null;
-        if(this.m_oPopUpMode = AdminUsersManagement.MODE_CREATE){
+        if(this.m_oPopUpMode == AdminUsersManagement.MODE_CREATE){
             oPromise = this.m_oUsersService.createUser(this.m_oUserToBeEdited);
         }
-        else if(this.m_oPopUpMode = AdminUsersManagement.MODE_EDIT)
+        else if(this.m_oPopUpMode == AdminUsersManagement.MODE_EDIT)
         {
             oPromise = this.m_oUsersService.updateUser(this.m_oUserToBeEdited);
         }
