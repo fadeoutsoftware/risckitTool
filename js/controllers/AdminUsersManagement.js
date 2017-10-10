@@ -83,7 +83,7 @@ var AdminUsersManagement = (function() {
             return "Access Requests Manager";
         }
         else{
-            "Users Manager";
+            return "Users Manager";
         }
     }
 
