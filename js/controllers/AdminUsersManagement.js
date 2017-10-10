@@ -76,6 +76,18 @@ var AdminUsersManagement = (function() {
     }
 
 
+    AdminUsersManagement.prototype.getPageTitle = function()
+    {
+        if( this.m_oMode == AdminUsersManagement.MODE_ACCESS_REQUESTS_MANAGEMENT)
+        {
+            return "Access Requests Manager";
+        }
+        else{
+            "Users Manager";
+        }
+    }
+
+
 
     /**
      * Fetch from server the pending users list

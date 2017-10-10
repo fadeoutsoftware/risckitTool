@@ -93,7 +93,7 @@ public class UserResource {
 						oTempUsr.setIsAdmin(oUser.getIsAdmin());
 
 						
-						oRepo.Save(oUser);
+						//oRepo.Save(oUser);
 						aoRetList.add(oTempUsr);
 					}
 				}
