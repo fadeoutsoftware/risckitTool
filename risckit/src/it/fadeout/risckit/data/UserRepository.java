@@ -97,7 +97,7 @@ public class UserRepository extends Repository<User>{
 			oSession.beginTransaction();
 			Criteria oCriteria = oSession.createCriteria(User.class);
 			//oCriteria.add(Restrictions.eq("m_sUserName", sUserName));
-			oCriteria.add(Restrictions.eq("m_sId", sId));
+			oCriteria.add(Restrictions.eq("m_iId", sId));
 			oUser = (User) oCriteria.uniqueResult();
 			oSession.getTransaction().commit();
 		}

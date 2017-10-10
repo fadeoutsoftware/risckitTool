@@ -273,45 +273,45 @@ public class UserResource {
 		return oResult;
 	}
 	
-//	@POST
-//	@Path("/updateUserName")
-//	//@Produces({"application/xml", "application/json", "text/xml"})
-//	@Consumes({"application/xml", "application/json", "text/xml"})
-//	@Produces({"application/json"})
-//
-//	public PrimitiveResult updateUserName(UserViewModel oUserViewModel) {
-//		PrimitiveResult oResult = new PrimitiveResult();
-//		try {
-//
-//			if (oUserViewModel != null) {
-//				
-//				UserRepository oRepo = new UserRepository();
-//				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
-//				if(	(oUser == null) )
-//				{
-//					oResult.BoolValue = false;
-//				}
-//				else
-//				{
-//					oUser.setUserName(oUserViewModel.getUserName());
-//					oRepo.Save(oUser);
-//					oResult.BoolValue = true;
-//				}
-//
-//			}
-//			else {
-//				oResult.BoolValue = false;
-//			}
-//
-//
-//		}
-//		catch (Exception oEx) {
-//			oEx.printStackTrace();
-//			oResult.BoolValue = false;
-//		}
-//
-//		return oResult;
-//	}
+	@POST
+	@Path("/updateUserName")
+	//@Produces({"application/xml", "application/json", "text/xml"})
+	@Consumes({"application/xml", "application/json", "text/xml"})
+	@Produces({"application/json"})
+
+	public PrimitiveResult updateUserName(UserViewModel oUserViewModel) {
+		PrimitiveResult oResult = new PrimitiveResult();
+		try {
+
+			if (oUserViewModel != null) {
+				
+				UserRepository oRepo = new UserRepository();
+				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
+				if(	(oUser == null) )
+				{
+					oResult.BoolValue = false;
+				}
+				else
+				{
+					oUser.setUserName(oUserViewModel.getUserName());
+					oRepo.Save(oUser);
+					oResult.BoolValue = true;
+				}
+
+			}
+			else {
+				oResult.BoolValue = false;
+			}
+
+
+		}
+		catch (Exception oEx) {
+			oEx.printStackTrace();
+			oResult.BoolValue = false;
+		}
+
+		return oResult;
+	}
 	
 	@POST
 	@Path("/generateNewPassword")

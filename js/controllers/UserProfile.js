@@ -78,7 +78,7 @@ var UserProfile = (function() {
         var oOldUser = {
             id : this.m_oLoginService.getUserId(),
             userName : this.m_oLoginService.getUserName(),
-            
+
         }
 
         var oNewUser = {
