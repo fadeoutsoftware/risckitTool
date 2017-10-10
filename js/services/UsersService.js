@@ -43,7 +43,7 @@ angular.module('risckit.usersService', [])
         this.deleteUser = function(oUser)
         {
             // /deleteUser/{id} per ora l'ho messa come delete e non come post
-            return this.m_oHttp.delete(this.APIURL + "/deleteUser/" + oUser.id, {
+            return this.m_oHttp.delete(this.APIURL + "/users/deleteUser/" + oUser.id, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
@@ -52,7 +52,7 @@ angular.module('risckit.usersService', [])
         this.updateUser = function(oUser)
         {
             // "/updateUserName" (chiamata post mi mandi lo userViewModel con il nuovo name)
-            return this.m_oHttp.post(this.APIURL + "/updateUserName", oUser, {
+            return this.m_oHttp.post(this.APIURL + "/users/updateUserName", oUser, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
@@ -61,7 +61,7 @@ angular.module('risckit.usersService', [])
         this.createUser = function(oUser)
         {
             // "/addUserByAdmin "(chiamata post mi mandi lo userViewModel i campi da metterci sono solo username ed email come da use case, la password verrà generata autoamticamente )
-            return this.m_oHttp.post(this.APIURL + "/addUserByAdmin", oUser, {
+            return this.m_oHttp.post(this.APIURL + "/users/addUserByAdmin", oUser, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
@@ -72,7 +72,7 @@ angular.module('risckit.usersService', [])
         this.resetUserPassword = function(oUser)
         {
             // "/generateNewPassword" (chiamata post mi mandi lo userViewModel) automaticamente genera una password e manda l'email all'utente selezionato
-            return this.m_oHttp.post(this.APIURL + "/generateNewPassword", oUser, {
+            return this.m_oHttp.post(this.APIURL + "/users/generateNewPassword", oUser, {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
@@ -80,7 +80,7 @@ angular.module('risckit.usersService', [])
 
         this.updateUsername = function(oOldUser, oNewUser)
         {
-            return this.m_oHttp.post(this.APIURL + "/editUser", [oOldUser, oNewUser], {
+            return this.m_oHttp.post(this.APIURL + "/users/editUser", [oOldUser, oNewUser], {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
@@ -88,7 +88,7 @@ angular.module('risckit.usersService', [])
 
         this.updateUserPassword = function(oOldUser, oNewUser)
         {
-            return this.m_oHttp.post(this.APIURL + "/editUser", [oOldUser, oNewUser], {
+            return this.m_oHttp.post(this.APIURL + "/users/editUser", [oOldUser, oNewUser], {
                 transformRequest: angular.identity,
                 headers: {'Content-Type': undefined}
             });
