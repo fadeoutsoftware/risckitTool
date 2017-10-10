@@ -249,6 +249,7 @@ var AdminUsersManagement = (function() {
             .then(function (oResponse)
             {
                 oThis.refereshList();
+                oThis.closePopup();
             })
             .catch(function (oReason)
             {
