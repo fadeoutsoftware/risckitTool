@@ -18,18 +18,22 @@ var AdminUsersManagement = (function() {
         this.m_oUserToBeEdited = null;
         this.filters = {
             freeSearch : ""
+        };
+
+        this.m_oMode = null;
+        var sUrl = location.href;
+        if(sUrl.indexOf("/accessrequestmanagement") >= 0)
+        {
+            this.m_oMode = AdminUsersManagement.MODE_ACCESS_REQUESTS_MANAGEMENT;
+        }
+        else if(sUrl.indexOf("/adminusersmanagement") >= 0)
+        {
+            this.m_oMode = AdminUsersManagement.MODE_USERS_MANAGEMENT;
         }
 
 
+        this.refereshList();
 
-
-
-        if( 1 == 1){
-            this.fetchAllUsers()
-        }
-        else{
-            this.fetchPendingUsers();
-        }
 
         // Register some methods on 'scope' to avoid 'this' reference mismatching
         this.m_oScope.itemFilterFn = function (oItem) {
@@ -40,6 +44,9 @@ var AdminUsersManagement = (function() {
 
     AdminUsersManagement.MODE_EDIT = 0;
     AdminUsersManagement.MODE_CREATE = 1;
+
+    AdminUsersManagement.MODE_USERS_MANAGEMENT = 0;
+    AdminUsersManagement.MODE_ACCESS_REQUESTS_MANAGEMENT = 1;
 
 
     AdminUsersManagement.prototype.itemFilterFn = function(oItem)
@@ -132,7 +139,13 @@ var AdminUsersManagement = (function() {
 
     AdminUsersManagement.prototype.refereshList = function()
     {
-        this.fetchAllUsers();
+        if( this.m_oMode == AdminUsersManagement.MODE_ACCESS_REQUESTS_MANAGEMENT)
+        {
+            this.fetchPendingUsers();
+        }
+        else{
+            this.fetchAllUsers();
+        }
     }
 
 
