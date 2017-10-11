@@ -25,16 +25,16 @@
                 <br>
                 <div class="row">
                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Old password</div>
-                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" ng-model="$ctrl.m_oUpdatePassword.oldPassword"></div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="password" ng-model="$ctrl.m_oUpdatePassword.oldPassword"></div>
                 </div>
                 <div class="row">
                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">New password</div>
-                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="text" ng-model="$ctrl.m_oUpdatePassword.newPassword"></div>
+                    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3"><input type="password" ng-model="$ctrl.m_oUpdatePassword.newPassword"></div>
                 </div>
                 <div class="row">
                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 caption">Repeat new password</div>
                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3">
-                        <input type="text" ng-model="$ctrl.m_oUpdatePassword.newPasswordRepeated" ng-style="$ctrl.getRepeatPasswordStyle()">
+                        <input type="password" ng-model="$ctrl.m_oUpdatePassword.newPasswordRepeated" ng-style="$ctrl.getRepeatPasswordStyle()">
                     </div>
                     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-3">
                         <button class="btn btn-secondary btn-sm" ng-click="$ctrl.updatePassword()"><i class="fa fa-times padding-right" aria-hidden="true"></i>Update</button>

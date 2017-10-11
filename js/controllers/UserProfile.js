@@ -23,7 +23,7 @@ var UserProfile = (function() {
 
 
 
-    UserProfile.prototype.updateUserPassword = function ()
+    UserProfile.prototype.updatePassword = function ()
     {
         var oThis = this;
 
@@ -55,7 +55,7 @@ var UserProfile = (function() {
         this.m_oUsersService.updateUserPassword(oOldUser, oNewUser)
             .then(function (oResponse)
             {
-                oThis.refereshList();
+                alert("Password changed succefully.")
             })
             .catch(function (oReason)
             {
@@ -89,7 +89,7 @@ var UserProfile = (function() {
         this.m_oUsersService.updateUserPassword(oOldUser, oNewUser)
             .then(function (oResponse)
             {
-                oThis.refereshList();
+                alert("Username changed succefully.")
             })
             .catch(function (oReason)
             {
