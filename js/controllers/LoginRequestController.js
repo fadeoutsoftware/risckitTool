@@ -73,7 +73,8 @@ var LoginRequestController = (function() {
             //TODO: request data validation
 
             var httpReqData = {
-                userName        : this.m_oLoginRequest.firstname,
+                userName        : this.m_oLoginRequest.username,
+                firstName        : this.m_oLoginRequest.firstname,
                 userSurname     : this.m_oLoginRequest.lastname,
                 institutionName : this.m_oLoginRequest.foundation,
                 role            : this.m_oLoginRequest.role,
