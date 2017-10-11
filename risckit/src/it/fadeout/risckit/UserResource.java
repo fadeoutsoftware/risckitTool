@@ -48,6 +48,9 @@ public class UserResource {
 					oReturnValue.setPassword(oUser.getPassword());
 					oReturnValue.setIsAdmin(oUser.getIsAdmin());
 				}
+				else{
+					return null;
+				}
 			}
 			return oReturnValue;
 		}
@@ -197,8 +200,9 @@ public class UserResource {
 					oUser.setIsAdmin(false);
 					oUser.setPassword("");
 					oRepo.Save(oUser);
-					EmailService oEmailService = new EmailService("mail.smtp.host");
-					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "test", "test");
+					
+					EmailService oEmailService = new EmailService();
+					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "test", "<div>There are new accounts requests. </br>Risckit Server </div>");
 					
 				}
 
@@ -252,8 +256,8 @@ public class UserResource {
 					PasswordGenerator session = new PasswordGenerator();
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
-					//EmailService oEmailService = new EmailService();
-					//oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "test", "test");
+					EmailService oEmailService = new EmailService();
+					oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "test", "test");
 					
 				}
 
@@ -335,8 +339,11 @@ public class UserResource {
 				else
 				{
 					oUser.setPassword(session.nextString());
-					oRepo.Save(oUser);
+					oRepo.Save(oUser);					
+					EmailService oEmailService = new EmailService();
+					oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "test");
 					oResult.BoolValue = true;
+
 				}
 
 				 
@@ -409,6 +416,8 @@ public class UserResource {
 					oUser.setIsConfirmed(true);
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
+					EmailService oEmailService = new EmailService();
+					oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "password:" + oUser.getPassword());
 					oResult.BoolValue = true;
 				}
 
@@ -501,6 +510,8 @@ public class UserResource {
 					if( (oNewUser.getUserName() != null) || (oNewUser.getUserName().isEmpty() == false) )
 						oUser.setUserName(oNewUser.getUserName());
 					
+					EmailService oEmailService = new EmailService();
+					oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "The account was edited by admin, password:" + oUser.getPassword() + " User Name:" + oNewUser.getUserName());
 					//oUser.setIsAdmin(oUserViewModel.getIsAdmin());
 					oRepo.Save(oUser);
 				}

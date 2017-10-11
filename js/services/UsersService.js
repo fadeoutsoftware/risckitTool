@@ -34,7 +34,7 @@ angular.module('risckit.usersService', [])
 
         this.acceptUser = function(oUser)
         {
-            return this.m_oHttp.post(this.APIURL + "/users/accept", {
+            return this.m_oHttp.post(this.APIURL + "/users/accept", oUser, {
                 // transformRequest: angular.identity,
                 // headers: {'Content-Type': undefined}
             });
