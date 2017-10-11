@@ -72,6 +72,9 @@ angular.module('risckit.loginService', []).
         this.getUserName = function() {
             return this.m_sUserName;
         };
+        this.setUserName = function(sUserName) {
+            this.m_sUserName = sUserName;
+        };
 
         this.setLogDialogOn = function(bOn) {
             this.m_bLogDialogOn = bOn;

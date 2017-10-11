@@ -89,6 +89,7 @@ var UserProfile = (function() {
         this.m_oUsersService.updateUserPassword(oOldUser, oNewUser)
             .then(function (oResponse)
             {
+                oThis.m_oLoginService.setUserName(oNewUser.userName)
                 alert("Username changed succefully.")
             })
             .catch(function (oReason)
