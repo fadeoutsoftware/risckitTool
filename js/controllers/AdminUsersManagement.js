@@ -101,17 +101,6 @@ var AdminUsersManagement = (function() {
             {
                 var oUser =  oResponse.data[i];
 
-                // DEBUG (+)
-                oUser.isConfirmed = false;
-                oUser.phoneNumber = "+39 012 0123456";
-                oUser.state = "Italy";
-                oUser.address = "Via Sottoripa 1A/118";
-                oUser.email = "testuser@fadeout.it";
-                oUser.institutionName = "ANUBI";
-                oUser.role = "Top Anubi Invoker";
-                oUser.reason = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis vel libero et sodales. Sed sapien neque, aliquet ut varius eget, tincidunt quis quam. Donec sodales neque vel orci fermentum iaculis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam vehicula, ex eu accumsan fermentum, nunc nunc varius lorem, tincidunt consectetur metus eros vulputate arcu. Morbi vitae libero quis turpis laoreet fermentum ut at odio. Sed maximus dui vitae luctus consequat. Nullam sollicitudin mi vitae tortor molestie, quis bibendum orci congue. Quisque et mauris aliquet, porttitor quam eu, euismod tortor. Mauris et orci tellus.";
-                // DEBUG (-)
-
                 if(oUser.isConfirmed == false)
                 {
                     oThis.m_aoUsersList.push(oUser);
@@ -131,18 +120,6 @@ var AdminUsersManagement = (function() {
             for(var i = 0; i < oResponse.data.length; i++)
             {
                 var oUser =  oResponse.data[i];
-
-                // DEBUG (+)
-                oUser.isConfirmed = ((i % 2) == 0);
-                oUser.phoneNumber = "+39 012 0123456";
-                oUser.state = "Italy";
-                oUser.address = "Via Sottoripa 1A/118";
-                oUser.email = "testuser@fadeout.it";
-                oUser.institutionName = "ANUBI";
-                oUser.role = "Top Anubi Invoker";
-                oUser.reason = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum mattis vel libero et sodales. Sed sapien neque, aliquet ut varius eget, tincidunt quis quam. Donec sodales neque vel orci fermentum iaculis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam vehicula, ex eu accumsan fermentum, nunc nunc varius lorem, tincidunt consectetur metus eros vulputate arcu. Morbi vitae libero quis turpis laoreet fermentum ut at odio. Sed maximus dui vitae luctus consequat. Nullam sollicitudin mi vitae tortor molestie, quis bibendum orci congue. Quisque et mauris aliquet, porttitor quam eu, euismod tortor. Mauris et orci tellus.";
-                // DEBUG (-)
-
                 oThis.m_aoUsersList.push(oUser);
             }
         })
