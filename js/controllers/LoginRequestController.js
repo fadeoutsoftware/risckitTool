@@ -68,6 +68,7 @@ var LoginRequestController = (function() {
                 {
                     oThis.m_oModuleState = LoginRequestController.MODULE_STATE_IDLE;
                     alert("Request sent succesfully. It will be checked by a supervisor and if approved you will get confirm on email address you entered.")
+                    location.href = "#/";
                 })
                 .catch(function ()
                 {
