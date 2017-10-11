@@ -62,7 +62,8 @@
             </div>
 
             <div class="col-xs-12 text-center" style="margin: 20px 0px;">
-                <button class="btn btn-default" style="width: 220px" ng-click="$ctrl.sendRequest()">SEND REQUEST</button>
+                <button class="btn btn-default" style="width: 220px" ng-click="$ctrl.sendRequest()" ng-show="$ctrl.isWaiting() == false">SEND REQUEST</button>
+                <div style="height: 34px" ng-show="$ctrl.isWaiting() == true">Sending...</div>
             </div>
         </div>
     </div>

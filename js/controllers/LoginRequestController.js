@@ -22,44 +22,17 @@ var LoginRequestController = (function() {
             disclaimerAccepted : false
         }
 
+        this.m_oModuleState = LoginRequestController.MODULE_STATE_IDLE;
+
     }
 
-    // LoginRequestController.prototype.onLogin = function (sUserName, sPassword) {
-    //     if (sUserName == null) return false;
-    //     if (sPassword == null) return false;
-    //
-    //     var oLoginService = this.m_oLoginService;
-    //     var oModalService = this.m_oModalInstance;
-    //
-    //     this.m_oLoginService.login(sUserName, sPassword).success(function(data){
-    //
-    //         if (data != null && data != "") {
-    //             oLoginService.m_sUserName = data.userName;
-    //             oLoginService.m_iUserId = data.id;
-    //             oLoginService.m_sUserRole = "Administrator";
-    //             oLoginService.m_bIsLogged = true;
-    //             oLoginService.m_bIsAdmin = data.isAdmin;
-    //             oModalService.close(true);
-    //             oLoginService.setLogDialogOn(false);
-    //         }
-    //         else {
-    //             oLoginService.m_bIsLogged = false;
-    //             alert('Login Error');
-    //             //oModalService.dismiss('cancel');
-    //         }
-    //
-    //     }).error(function(data){
-    //         oLoginService.m_bIsLogged = false;
-    //     });
-    // };
-    //
-    // LoginRequestController.prototype.Cancel = function()
-    // {
-    //     var oModalService = this.m_oModalInstance;
-    //     oModalService.close('cancel');
-    //     this.m_oScope.$ctrl.m_oLoginService.m_bIsLogged = false;
-    //     this.m_oScope.$ctrl.m_oLoginService.setLogDialogOn(false);
-    // };
+    LoginRequestController.MODULE_STATE_IDLE = 0;
+    LoginRequestController.MODULE_STATE_WAITING = 1;
+
+    LoginRequestController.prototype.isWaiting = function()
+    {
+        return (this.m_oModuleState == LoginRequestController.MODULE_STATE_WAITING);
+    }
 
     LoginRequestController.prototype.sendRequest = function()
     {
@@ -71,6 +44,8 @@ var LoginRequestController = (function() {
         if(this.m_oLoginRequest.disclaimerAccepted == true)
         {
             //TODO: request data validation
+
+            this.m_oModuleState = LoginRequestController.MODULE_STATE_WAITING;
 
             var httpReqData = {
                 userName        : this.m_oLoginRequest.username,
@@ -87,7 +62,17 @@ var LoginRequestController = (function() {
 
             console.debug("I will send:", httpReqData);
 
-            this.m_oLoginService.loginRequest(httpReqData);
+            var oThis = this;
+            this.m_oLoginService.loginRequest(httpReqData)
+                .then(function ()
+                {
+                    oThis.m_oModuleState = LoginRequestController.MODULE_STATE_IDLE;
+                    alert("Request sent succesfully. It will be checked by a supervisor and if approved you will get confirm on email address you entered.")
+                })
+                .catch(function ()
+                {
+                    oThis.m_oModuleState = LoginRequestController.MODULE_STATE_IDLE;
+                })
         }
         else
         {
