@@ -48,7 +48,46 @@ public class UserRepository extends Repository<User>{
 		}
 		return oUser;
 	}
-	
+	public boolean isSavedUserName(String sUserName)
+	{
+		Session oSession = null;
+
+		User oUser = null;
+		boolean bReturn = false;
+		
+		try {
+			oSession = HibernateUtils.getSessionFactory().openSession();
+			oSession.beginTransaction();
+			Criteria oCriteria = oSession.createCriteria(User.class);
+			oCriteria.add(Restrictions.eq("m_sUserName", sUserName));
+			oUser = (User) oCriteria.uniqueResult();
+			oSession.getTransaction().commit();
+			
+			if(oUser != null)
+				bReturn = true;
+		}
+		catch(Throwable oEx) {
+			System.err.println(oEx.toString());
+			oEx.printStackTrace();
+			bReturn = true;
+			try {
+				oSession.getTransaction().rollback();
+			}
+			catch(Throwable oEx2) {
+				System.err.println(oEx2.toString());
+				oEx2.printStackTrace();					
+			}
+		}
+		finally {
+			if (oSession!=null) {
+				oSession.flush();
+				oSession.clear();
+				oSession.close();
+			}
+
+		}
+		return bReturn;
+	}
 	public User SelectUserByEmail( String sEmail)
 	{
 		Session oSession = null;

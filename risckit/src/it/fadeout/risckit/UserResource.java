@@ -80,7 +80,7 @@ public class UserResource {
 						UserViewModel oTempUsr = new UserViewModel();
 						oTempUsr.setId(oUser.getId());
 						oTempUsr.setUserName(oUser.getUserName());
-						oTempUsr.setPassword(oUser.getPassword());
+						//oTempUsr.setPassword(oUser.getPassword());
 						oTempUsr.setIsAdmin(oUser.getIsAdmin());
 						
 						oTempUsr.setUserSurname(oUser.getUserSurname());
@@ -163,7 +163,7 @@ public class UserResource {
 				oResult.BoolValue=true;
 				
 				//check all input data 
-				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) )
+				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) || oRepo.isSavedUserName(oUserViewModel.getUserName()) )
 					oResult.BoolValue = false;
 				if( (oUserViewModel.getUserSurname() == null) || (oUserViewModel.getUserSurname().isEmpty()) )
 					oResult.BoolValue = false;				
@@ -202,7 +202,7 @@ public class UserResource {
 					oRepo.Save(oUser);
 					
 					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "test", "<div>There are new accounts requests. </br>Risckit Server </div>");
+					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "New account RiscKit", "<div>There are new accounts requests. <br><br>Risckit Server </div>");
 					
 				}
 
@@ -240,15 +240,15 @@ public class UserResource {
 				
 				//check all input data 
 
-				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) )
+				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) || oRepo.isSavedUserName(oUserViewModel.getUserName()) )
 					oResult.BoolValue = false;
 				if( (oUserViewModel.getEmail() == null) || (oUserViewModel.getEmail().isEmpty()) )
 					oResult.BoolValue = false;
 
-				if(oResult.BoolValue != false)
+				if(oResult.BoolValue != false )
 				{
+					
 					oUser.setUserName(oUserViewModel.getUserName());
-
 					oUser.setEmail(oUserViewModel.getEmail());
 
 					oUser.setIsConfirmed(true);
@@ -257,8 +257,9 @@ public class UserResource {
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
 					if(oUserViewModel.getEmail() != null){
+						String sText = "<div> New account user Name: "+ oUser.getUserName() + " Password: "+ oUser.getPassword() +" Link: http://www.risckit.eu/np4/home.html <br><br>RickKit Admin </div>";
 						EmailService oEmailService = new EmailService();
-						oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "test", "New account user Name: "+oUser.getUserName() + " Password: "+oUser.getPassword() +" Link: http://www.risckit.eu/np4/home.html");
+						oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "New account RiscKit", sText );
 					}
 
 					
@@ -289,10 +290,11 @@ public class UserResource {
 	public PrimitiveResult updateUserName(UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
-
-			if (oUserViewModel != null) {
+			
+			UserRepository oRepo = new UserRepository();
+			if (oUserViewModel != null && oRepo.isSavedUserName(oUserViewModel.getUserName()) == false) {
 				
-				UserRepository oRepo = new UserRepository();
+				
 				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
 				if(	(oUser == null) )
 				{
@@ -411,8 +413,11 @@ public class UserResource {
 			if (oUserViewModel != null) {
 				
 				UserRepository oRepo = new UserRepository();
+				//if(oRepo.isSavedUserName(oUserViewModel.getUserName())) 
+					
 				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
 				
+					
 				PasswordGenerator session = new PasswordGenerator();
 				if(	(oUser == null) )
 				{
@@ -425,8 +430,9 @@ public class UserResource {
 					oRepo.Save(oUser);
 					if(oUser.getEmail() != null)
 					{
+						String sText="<div>password: " + oUser.getPassword() + " <br><br> RiscKit Admin</div>";
 						EmailService oEmailService = new EmailService();
-						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "password:" + oUser.getPassword());
+						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "RiscKit Password", sText);
 					}
 
 					oResult.BoolValue = true;
