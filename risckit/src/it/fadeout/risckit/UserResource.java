@@ -256,8 +256,11 @@ public class UserResource {
 					PasswordGenerator session = new PasswordGenerator();
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
-					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "test", "test");
+					if(oUserViewModel.getEmail() != null){
+						EmailService oEmailService = new EmailService();
+						oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "test", "New account user Name: "+oUser.getUserName() + " Password: "+oUser.getPassword() +" Link: http://www.risckit.eu/np4/home.html");
+					}
+
 					
 				}
 
@@ -340,8 +343,12 @@ public class UserResource {
 				{
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);					
-					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "test");
+					if(oUser.getEmail() != null)
+					{
+						EmailService oEmailService = new EmailService();
+						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "test");
+					}
+					
 					oResult.BoolValue = true;
 
 				}
@@ -416,8 +423,12 @@ public class UserResource {
 					oUser.setIsConfirmed(true);
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
-					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "password:" + oUser.getPassword());
+					if(oUser.getEmail() != null)
+					{
+						EmailService oEmailService = new EmailService();
+						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "password:" + oUser.getPassword());
+					}
+
 					oResult.BoolValue = true;
 				}
 
@@ -491,28 +502,29 @@ public class UserResource {
 		PrimitiveResult oResult = new PrimitiveResult();
 		
 		try {
-			UserViewModel oNewUser = aoUser[0]; 
-			UserViewModel oOldUser = aoUser[1];
+			UserViewModel oNewUser = aoUser[1]; 
+			UserViewModel oOldUser = aoUser[0];
 			if (oOldUser != null) {
 				UserRepository oRepo = new UserRepository();
 
 			//	User oUser = oRepo.SelectUser(oUserViewModel.getUserName(), oUserViewModel.getPassword());
-				User oUser = oRepo.SelectUser(oOldUser.getUserName(), oOldUser.getPassword());
+				User oUser = oRepo.SelectUserById(oOldUser.getId());
 				if(	(oUser == null) )
 				{
 					oResult.BoolValue = false;
 				}
 				else
 				{
-					if( (oNewUser.getPassword() != null) || (oNewUser.getPassword().isEmpty() == false) )
+					if( (oNewUser.getPassword() != null) && (oNewUser.getPassword().isEmpty() == false) )
 						oUser.setPassword(oNewUser.getPassword());
 
-					if( (oNewUser.getUserName() != null) || (oNewUser.getUserName().isEmpty() == false) )
+					if( (oNewUser.getUserName() != null) && (oNewUser.getUserName().isEmpty() == false) )
 						oUser.setUserName(oNewUser.getUserName());
 					
-					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "The account was edited by admin, password:" + oUser.getPassword() + " User Name:" + oNewUser.getUserName());
+					//EmailService oEmailService = new EmailService();
+					//oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "The account was edited by admin, password:" + oUser.getPassword() + " User Name:" + oNewUser.getUserName());
 					//oUser.setIsAdmin(oUserViewModel.getIsAdmin());
+					
 					oRepo.Save(oUser);
 				}
 

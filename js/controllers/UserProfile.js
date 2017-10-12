@@ -49,7 +49,7 @@ var UserProfile = (function() {
             id : this.m_oLoginService.getUserId(),
             userName : this.m_oLoginService.getUserName(),
 
-            password : this.m_oUpdatePassword.oldPassword
+            password : this.m_oUpdatePassword.newPassword
         }
 
         this.m_oUsersService.updateUserPassword(oOldUser, oNewUser)
