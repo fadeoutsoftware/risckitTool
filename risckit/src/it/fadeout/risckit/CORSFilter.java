@@ -33,10 +33,14 @@ public class CORSFilter implements Filter {
 		
 	}
 	
-	private void addHeadersFor200Response(HttpServletResponse response) {
+	private void addHeadersFor200Response(HttpServletResponse response) 
+	{
+		String sAllowedHeaders = "Cache-Control, Pragma, Origin, Authorization, content-type, X-Requested-With, accept, Content-Length";
+		sAllowedHeaders += ", Auth-Token";
+		
         response.addHeader("Access-Control-Allow-Origin", "*");
         response.addHeader("Access-Control-Allow-Methods", "GET, PUT, POST, OPTIONS,DELETE, X-XSRF-TOKEN");
-        response.addHeader("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, content-type, X-Requested-With, accept, Content-Length");
+        response.addHeader("Access-Control-Allow-Headers", sAllowedHeaders);
         //response.addHeader("Access-Control-Allow-Methods", "*");
         //response.addHeader("Access-Control-Allow-Headers", "*");
     }

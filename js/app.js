@@ -28,27 +28,43 @@ var oConfig = {
 riskit.constant("CONFIG", oConfig);
 //---------------------------------------------------------------------------
 
-riskit.config(function($routeProvider) {
-        $routeProvider.when('/', {templateUrl: 'partials/home.html', controller: 'HomeController'});
-        $routeProvider.when('/event', {templateUrl: 'partials/event.html', controller: 'EventController'});
-        $routeProvider.when('/eventslist', {templateUrl: 'partials/eventslist.html', controller: 'EventsListController'});
-        $routeProvider.when('/map', {templateUrl: 'partials/map.html', controller: 'MapController'});
-        $routeProvider.when('/media', {templateUrl: 'partials/media.html', controller: 'MediaController'});
-        $routeProvider.when('/media/:idmedia', {templateUrl: 'partials/media.html', controller: 'MediaController'});
-        $routeProvider.when('/socioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
-        $routeProvider.when('/socioimpact/:idsocioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
-        $routeProvider.when('/links', {templateUrl: 'partials/links.html'});
 
-        $routeProvider.when('/architecture', {templateUrl: 'partials/architecture.html'});
-        $routeProvider.when('/loginrequest', {templateUrl: 'partials/loginrequest.html', controller: 'LoginRequestController'});
-        $routeProvider.when('/adminusersmanagement', {templateUrl: 'partials/admin_users_management.html', controller: 'AdminUsersManagement'});
-        $routeProvider.when('/accessrequestmanagement', {templateUrl: 'partials/admin_users_management.html', controller: 'AdminUsersManagement'});
-        $routeProvider.when('/userprofile', {templateUrl: 'partials/user_profile.html', controller: 'UserProfile'});
+riskit.config(['$routeProvider', '$httpProvider',
+function ($routeProvider, $httpProvider)
+{
 
 
-        $routeProvider.otherwise({redirectTo: '/'});
-    }
-);
+    // Configure HTTP requests
+    $httpProvider.defaults.headers.common = {
+        //'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ==',
+        //'Accept': 'application/json;odata=verbose'
+        'Auth-Token' : function(){
+            var oAuthHelper = AuthHelper.getInstance();
+            debugger;
+            return oAuthHelper.getToken()
+        }
+    };
+
+    // Configure routes
+    $routeProvider.when('/', {templateUrl: 'partials/home.html', controller: 'HomeController'});
+    $routeProvider.when('/event', {templateUrl: 'partials/event.html', controller: 'EventController'});
+    $routeProvider.when('/eventslist', {templateUrl: 'partials/eventslist.html', controller: 'EventsListController'});
+    $routeProvider.when('/map', {templateUrl: 'partials/map.html', controller: 'MapController'});
+    $routeProvider.when('/media', {templateUrl: 'partials/media.html', controller: 'MediaController'});
+    $routeProvider.when('/media/:idmedia', {templateUrl: 'partials/media.html', controller: 'MediaController'});
+    $routeProvider.when('/socioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
+    $routeProvider.when('/socioimpact/:idsocioimpact', {templateUrl: 'partials/socioimpact.html', controller: 'SocioimpactController'});
+    $routeProvider.when('/links', {templateUrl: 'partials/links.html'});
+
+    $routeProvider.when('/architecture', {templateUrl: 'partials/architecture.html'});
+    $routeProvider.when('/loginrequest', {templateUrl: 'partials/loginrequest.html', controller: 'LoginRequestController'});
+    $routeProvider.when('/adminusersmanagement', {templateUrl: 'partials/admin_users_management.html', controller: 'AdminUsersManagement'});
+    $routeProvider.when('/accessrequestmanagement', {templateUrl: 'partials/admin_users_management.html', controller: 'AdminUsersManagement'});
+    $routeProvider.when('/userprofile', {templateUrl: 'partials/user_profile.html', controller: 'UserProfile'});
+
+
+    $routeProvider.otherwise({redirectTo: '/'});
+}]);
 
 
 

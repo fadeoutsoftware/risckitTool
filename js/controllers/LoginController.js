@@ -19,26 +19,33 @@ var LoginController = (function() {
         var oLoginService = this.m_oLoginService;
         var oModalService = this.m_oModalInstance;
 
-        this.m_oLoginService.login(sUserName, sPassword).success(function(data){
+        this.m_oLoginService.login(sUserName, sPassword)
+            .success(function(data, status, headers, config)
+            {
+                if (data != null && data != "") {
+                    oLoginService.m_sUserName = data.userName;
+                    oLoginService.m_iUserId = data.id;
+                    oLoginService.m_sUserRole = "Administrator";
+                    oLoginService.m_bIsLogged = true;
+                    oLoginService.m_bIsAdmin = data.isAdmin;
+                    oModalService.close(true);
+                    oLoginService.setLogDialogOn(false);
 
-            if (data != null && data != "") {
-                oLoginService.m_sUserName = data.userName;
-                oLoginService.m_iUserId = data.id;
-                oLoginService.m_sUserRole = "Administrator";
-                oLoginService.m_bIsLogged = true;
-                oLoginService.m_bIsAdmin = data.isAdmin;
-                oModalService.close(true);
-                oLoginService.setLogDialogOn(false);
-            }
-            else {
+                    // Set auth token
+                    console.debug(headers);
+                    var oAuthHelper = AuthHelper.getInstance();
+                    oAuthHelper.setToken("ThisIsSecurityToken");
+                }
+                else {
+                    oLoginService.m_bIsLogged = false;
+                    alert('Login Error');
+                    //oModalService.dismiss('cancel');
+                }
+
+            })
+            .error(function(data){
                 oLoginService.m_bIsLogged = false;
-                alert('Login Error');
-                //oModalService.dismiss('cancel');
-            }
-
-        }).error(function(data){
-            oLoginService.m_bIsLogged = false;
-        });
+            });
     };
 
     LoginController.prototype.Cancel = function()
