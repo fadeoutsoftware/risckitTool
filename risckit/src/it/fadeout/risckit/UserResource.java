@@ -2,20 +2,26 @@ package it.fadeout.risckit;
 
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.EmailService;
-import it.fadeout.risckit.business.PasswordGenerator;
+import it.fadeout.risckit.business.StringGenerator;
+import it.fadeout.risckit.business.Token;
 import it.fadeout.risckit.business.User;
 import it.fadeout.risckit.data.CountryRepository;
+import it.fadeout.risckit.data.TokenRepository;
 import it.fadeout.risckit.data.UserRepository;
 import it.fadeout.risckit.viewmodels.CountryViewModel;
 import it.fadeout.risckit.viewmodels.PrimitiveResult;
 import it.fadeout.risckit.viewmodels.UserViewModel;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -35,17 +41,67 @@ public class UserResource {
 
 		try
 		{	
-			UserViewModel oReturnValue = null;
+			UserViewModel oReturnValue = null;				
+			UserRepository oRepo = new UserRepository();
+			StringGenerator session = new StringGenerator();
+			TokenRepository oTokenRepo = new TokenRepository();
+			Token oNewUserToken = new Token();
+			String sTokenString = session.nextString(); 
+
+			
 			if (sUserName != null && !sUserName.equals(""))
 			{
-				UserRepository oRepo = new UserRepository();
+				// CHEK USER
+
 				User oUser = oRepo.SelectUser(sUserName, sPassword);
-				
-				if ( (oUser != null) && (oUser.getIsConfirmed() == true) ) {
+				if ( (oUser != null) && (oUser.getIsConfirmed() == true) ) 
+				{
+					List<Token> aoUserToken = oTokenRepo.SelectTokensUser(oUser.getId());
+					List<Token> aoAllTokens = oTokenRepo.SelectAll(Token.class);
+					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+					
+					
+					for (Integer i = 0 ; i < aoAllTokens.size() ; i++) {
+						
+						//CHECK IF TOKEN STRING IS UNIQUE
+						if( aoAllTokens.get(i).getToken().equals(sTokenString))
+						{
+							i = 0;
+							sTokenString = session.nextString();
+						}
+					}
+					
+					/* CHECK  THE TIMESTAMP */
+					Date oDateNow = new Date();
+					for (Token oUserToken : aoUserToken) 
+					{
+						if( oUserToken.getTimestamp() > 0 )
+						{
+							long lMillisTimeStampToken =  oUserToken.getTimestamp();
+							Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
+							long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
+							long diffHours = diff / (60 * 60 * 1000);
+							//IF THE TOKEN DATE > 24 HOURS REMOVE IT
+							if(diffHours > 24 )
+							{
+								oTokenRepo.Delete(oUserToken);
+							}
+						}
+					}
+					
+					//CREATE NEW TOKEN
+					oNewUserToken.setToken(sTokenString);
+					oNewUserToken.setIdUser(oUser.getId());
+					oNewUserToken.setTimestamp(timestamp.getTime()); 
+					oTokenRepo.Save(oNewUserToken);
+					
+					
+					//RETURN USER
 					oReturnValue = new UserViewModel();
 					oReturnValue.setId(oUser.getId());
 					oReturnValue.setUserName(oUser.getUserName());
 					oReturnValue.setPassword(oUser.getPassword());
+					oReturnValue.setToken(sTokenString);
 					oReturnValue.setIsAdmin(oUser.getIsAdmin());
 				}
 				else{
@@ -64,9 +120,27 @@ public class UserResource {
 
 	@GET
 	@Path("/list")
-	public List<UserViewModel> GetUsersList() {
+	public List<UserViewModel> GetUsersList(@HeaderParam("x-session-token") String sSessionId) {
 		try {
 
+			//CHECK TIMESTAMP 
+		/*	Date oDateNow = new Date();
+			TokenRepository oTokenRepo = new TokenRepository();
+
+			if( oUserToken.getTimestamp() > 0 )
+				{
+					long lMillisTimeStampToken =  oUserToken.getTimestamp();
+					Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
+					long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
+					long diffHours = diff / (60 * 60 * 1000);
+					//IF THE TOKEN DATE > 24 HOURS REMOVE IT
+					if(diffHours > 24 )
+					{
+						oTokenRepo.Delete(oUserToken);
+					}
+				}*/
+			
+			
 			List<UserViewModel> aoRetList = new ArrayList<>();
 
 			UserRepository oRepo = new UserRepository();
@@ -152,7 +226,7 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult newUserRequest(UserViewModel oUserViewModel) {
+	public PrimitiveResult newUserRequest(@HeaderParam("x-session-token") String sSessionId, UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 
@@ -228,7 +302,7 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult addUserByAdmin(UserViewModel oUserViewModel) {
+	public PrimitiveResult addUserByAdmin(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 
@@ -253,7 +327,7 @@ public class UserResource {
 
 					oUser.setIsConfirmed(true);
 					oUser.setIsAdmin(false);
-					PasswordGenerator session = new PasswordGenerator();
+					StringGenerator session = new StringGenerator();
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
 					if(oUserViewModel.getEmail() != null){
@@ -287,7 +361,7 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult updateUserName(UserViewModel oUserViewModel) {
+	public PrimitiveResult updateUserName(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 			
@@ -328,7 +402,7 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult generateNewPassword(UserViewModel oUserViewModel) {
+	public PrimitiveResult generateNewPassword(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 
@@ -336,7 +410,7 @@ public class UserResource {
 				
 				UserRepository oRepo = new UserRepository();
 				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
-				PasswordGenerator session = new PasswordGenerator();
+				StringGenerator session = new StringGenerator();
 				if(	(oUser == null) )
 				{
 					oResult.BoolValue = false;
@@ -374,7 +448,7 @@ public class UserResource {
 	
 	@DELETE
 	@Path("/deleteUser/{id}")
-	public PrimitiveResult deleteUser(@PathParam("id") Integer iId) 
+	public PrimitiveResult deleteUser(@HeaderParam("x-session-token") String sSessionId,@PathParam("id") Integer iId) 
 	{
 		PrimitiveResult oResult = new PrimitiveResult();
 		oResult.BoolValue = true;
@@ -406,7 +480,7 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult confirmNewUser(UserViewModel oUserViewModel) {
+	public PrimitiveResult confirmNewUser(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 
@@ -418,7 +492,7 @@ public class UserResource {
 				User oUser = oRepo.SelectUserById(oUserViewModel.getId());
 				
 					
-				PasswordGenerator session = new PasswordGenerator();
+				StringGenerator session = new StringGenerator();
 				if(	(oUser == null) )
 				{
 					oResult.BoolValue = false;
@@ -461,7 +535,7 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult addNewAdmin(UserViewModel oUserViewModel) {
+	public PrimitiveResult addNewAdmin(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 
@@ -504,7 +578,7 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult editPassword(UserViewModel[] aoUser) {
+	public PrimitiveResult editPassword(@HeaderParam("x-session-token") String sSessionId,UserViewModel[] aoUser) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		
 		try {

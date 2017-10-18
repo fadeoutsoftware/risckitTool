@@ -4,7 +4,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 
-public class PasswordGenerator {
+public class StringGenerator {
 
 	    public static final String upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -26,7 +26,7 @@ public class PasswordGenerator {
 	            buf[idx] = symbols[random.nextInt(symbols.length)];
 	        return new String(buf);
 	    }
-	    public PasswordGenerator(int length, Random random, String symbols) {
+	    public StringGenerator(int length, Random random, String symbols) {
 	        if (length < 1) throw new IllegalArgumentException();
 	        if (symbols.length() < 2) throw new IllegalArgumentException();
 	        this.random = Objects.requireNonNull(random);
@@ -37,21 +37,21 @@ public class PasswordGenerator {
 	    /**
 	     * Create an alphanumeric string generator.
 	     */
-	    public PasswordGenerator(int length, Random random) {
+	    public StringGenerator(int length, Random random) {
 	        this(length, random, alphanum);
 	    }
 
 	    /**
 	     * Create an alphanumeric strings from a secure generator.
 	     */
-	    public PasswordGenerator(int length) {
+	    public StringGenerator(int length) {
 	        this(length, new SecureRandom());
 	    }
 
 	    /**
 	     * Create session identifiers.
 	     */
-	    public PasswordGenerator() {
+	    public StringGenerator() {
 	        this(12);
 	    }
 }

@@ -7,7 +7,7 @@ public class UserViewModel {
 	private String userName;
 	
 	private String password;
-	
+
 	private Boolean isAdmin;
 	
 	//New Properties
@@ -21,7 +21,7 @@ public class UserViewModel {
 	private String phoneNumber;
 	private String reason;
 	private Boolean isConfirmed;
-	
+	private String token; 
 
 	public int getId() {
 		return id;
@@ -135,6 +135,14 @@ public class UserViewModel {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
