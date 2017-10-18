@@ -88,6 +88,22 @@ var AdminUsersManagement = (function() {
     }
 
 
+    AdminUsersManagement.prototype.fixUserData = function(oUser)
+    {
+        // var sNotAvailable = "---";
+        // if(oUser.isAdmin != true && oUser.isAdmin != false) { oUser.isAdmin = true; }
+        // if(oUser.email == null || oUser.email == "") { oUser.email = sNotAvailable; }
+        // if(oUser.phoneNumber == null || oUser.phoneNumber == "") { oUser.phoneNumber = sNotAvailable; }
+        // if(oUser.role == null || oUser.role == "") { oUser.role = sNotAvailable; }
+        // if(oUser.institutionName == null || oUser.institutionName == "") { oUser.institutionName = sNotAvailable; }
+
+        return oUser;
+    }
+    
+    AdminUsersManagement.prototype.getUserPhone = function ()
+    {
+    }
+
 
     /**
      * Fetch from server the pending users list
@@ -99,7 +115,7 @@ var AdminUsersManagement = (function() {
             oThis.m_aoUsersList = [];
             for(var i = 0; i < oResponse.data.length; i++)
             {
-                var oUser =  oResponse.data[i];
+                var oUser =  oThis.fixUserData(oResponse.data[i]);
 
                 if(oUser.isConfirmed == false)
                 {
@@ -119,7 +135,8 @@ var AdminUsersManagement = (function() {
             oThis.m_aoUsersList = [];
             for(var i = 0; i < oResponse.data.length; i++)
             {
-                var oUser =  oResponse.data[i];
+                var oUser =  oThis.fixUserData(oResponse.data[i]);
+                debugger;
                 oThis.m_aoUsersList.push(oUser);
             }
         })

@@ -14,7 +14,7 @@
                     <li ng-repeat="oUser in $ctrl.getUsersList() | filter:itemFilterFn">
                         <div>
                             <div class="pull-left">
-                                <h2 class="user-first-and-last-name">{{oUser.userName}} -  {{oUser.firstName}} {{oUser.userSurname}}</h2>
+                                <h2 class="user-first-and-last-name">{{oUser.userName}} -  {{oUser.firstName}} {{oUser.userSurname}} <span ng-if="oUser.isAdmin == true">(administrator)</span></h2>
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5"><i class="fa fa-map-marker padding-right" aria-hidden="true"></i>{{oUser.address}} - {{oUser.state}}</div>
                                     <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3"><i class="fa fa-phone padding-right" aria-hidden="true"></i>{{oUser.phoneNumber}}</div>
