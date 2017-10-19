@@ -64,11 +64,20 @@ var LoginRequestController = (function() {
 
             var oThis = this;
             this.m_oLoginService.loginRequest(httpReqData)
-                .then(function ()
+                .then(function (oResponse)
                 {
+                    var oData = oResponse.data;
+                    if(oData.BoolValue == true)
+                    {
+                        
+                        alert("Request sent succesfully. It will be checked by a supervisor and if approved you will get confirm on email address you entered.")
+                        location.href = "#/";
+                    }
+                    else
+                    {
+                        alert(oData.StringValue);
+                    }
                     oThis.m_oModuleState = LoginRequestController.MODULE_STATE_IDLE;
-                    alert("Request sent succesfully. It will be checked by a supervisor and if approved you will get confirm on email address you entered.")
-                    location.href = "#/";
                 })
                 .catch(function ()
                 {

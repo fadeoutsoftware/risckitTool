@@ -9,6 +9,7 @@ import it.fadeout.risckit.data.CountryRepository;
 import it.fadeout.risckit.data.TokenRepository;
 import it.fadeout.risckit.data.UserRepository;
 import it.fadeout.risckit.viewmodels.CountryViewModel;
+import it.fadeout.risckit.viewmodels.HttpRequestResult;
 import it.fadeout.risckit.viewmodels.PrimitiveResult;
 import it.fadeout.risckit.viewmodels.UserViewModel;
 
@@ -218,8 +219,9 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult newUserRequest(@HeaderParam("Auth-Token") String sToken, UserViewModel oUserViewModel) {
-		PrimitiveResult oResult = new PrimitiveResult();
+	public HttpRequestResult newUserRequest(@HeaderParam("Auth-Token") String sToken, UserViewModel oUserViewModel)
+	{
+		HttpRequestResult oResult = new HttpRequestResult();
 		try {
 			
 //			TokenRepository oTokenRepo = new TokenRepository();
@@ -252,59 +254,47 @@ public class UserResource {
 				//check all input data 
 				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) || oRepo.isSavedUserName(oUserViewModel.getUserName()) )
 				{
-					oResult.BoolValue = false;
-					oResult.StringValue="The Username isn't free";
-				}
-				
-					
-				if( (oUserViewModel.getUserSurname() == null) || (oUserViewModel.getUserSurname().isEmpty()) )
+					oResult.setError("The Username is in user. Please enter another one");
+				}		
+				else if( (oUserViewModel.getUserSurname() == null) || (oUserViewModel.getUserSurname().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");
 				}
 							
-				if( (oUserViewModel.getAddress() == null) || (oUserViewModel.getAddress().isEmpty()) )
+				else if( (oUserViewModel.getAddress() == null) || (oUserViewModel.getAddress().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");
 				}
-				if( (oUserViewModel.getState() == null) || (oUserViewModel.getState().isEmpty()) )
+				else if( (oUserViewModel.getState() == null) || (oUserViewModel.getState().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");
 				}
-				if( (oUserViewModel.getPhoneNumber() == null) || (oUserViewModel.getPhoneNumber().isEmpty()) )
+				else if( (oUserViewModel.getPhoneNumber() == null) || (oUserViewModel.getPhoneNumber().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");	
 				}
-				if( (oUserViewModel.getEmail() == null) || (oUserViewModel.getEmail().isEmpty()) )
+				else if( (oUserViewModel.getEmail() == null) || (oUserViewModel.getEmail().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");
 				}
-				if( (oUserViewModel.getInstitutionName() == null) || (oUserViewModel.getInstitutionName().isEmpty()) )
+				else if( (oUserViewModel.getInstitutionName() == null) || (oUserViewModel.getInstitutionName().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");
 				}
-				if( (oUserViewModel.getRole() == null) || (oUserViewModel.getRole().isEmpty()) )
+				else if( (oUserViewModel.getRole() == null) || (oUserViewModel.getRole().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");	
 				}
-				if( (oUserViewModel.getReason() == null) || (oUserViewModel.getReason().isEmpty()) )
+				else if( (oUserViewModel.getReason() == null) || (oUserViewModel.getReason().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");
 				}
-				if( (oUserViewModel.getFirstName() == null) || (oUserViewModel.getFirstName().isEmpty()) )
+				else if( (oUserViewModel.getFirstName() == null) || (oUserViewModel.getFirstName().isEmpty()) )
 				{
-					oResult.StringValue="Some fields are empty";
-					oResult.BoolValue = false;	
+					oResult.setError("Some fields are empty");
 				}
 				
-				if(oResult.BoolValue != false)
+				if(oResult.hasError() == false)
 				{
 					oUser.setUserName(oUserViewModel.getUserName());
 					oUser.setUserSurname(oUserViewModel.getUserSurname());
@@ -323,20 +313,21 @@ public class UserResource {
 					
 					EmailService oEmailService = new EmailService();
 					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "New account RiscKit", "<div>There are new accounts requests. <br><br>Risckit Server News </div>");
-					oResult.BoolValue = true;
+					
+					oResult.setSuccess();;
 				}
 
 				
 			}
 			else {
-				oResult.BoolValue = false;
+				oResult.setError("Error: no registration data received");
 			}
 
 
 		}
 		catch (Exception oEx) {
 			oEx.printStackTrace();
-			oResult.BoolValue = false;
+			oResult.setError("Internal error");
 		}
 
 		return oResult;
