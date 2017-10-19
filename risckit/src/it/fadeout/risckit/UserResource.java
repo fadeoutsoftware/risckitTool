@@ -252,9 +252,9 @@ public class UserResource {
 				oResult.BoolValue = true;
 				
 				//check all input data 
-				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) || oRepo.isSavedUserName(oUserViewModel.getUserName()) )
+				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) || ( oRepo.isSavedUserName(oUserViewModel.getUserName()) == true))
 				{
-					oResult.setError("The Username is in user. Please enter another one");
+					oResult.setError("The Username is in use. Please enter another one");
 				}		
 				else if( (oUserViewModel.getUserSurname() == null) || (oUserViewModel.getUserSurname().isEmpty()) )
 				{
@@ -312,7 +312,7 @@ public class UserResource {
 					oRepo.Save(oUser);
 					
 					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "New account RiscKit", "<div>There are new accounts requests. <br><br>Risckit Server News </div>");
+					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "New account RiscKit", "<div>There are new accounts requests. <br><br>Risckit Server </div>");
 					
 					oResult.setSuccess();;
 				}
