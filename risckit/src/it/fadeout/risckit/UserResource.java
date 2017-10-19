@@ -389,15 +389,15 @@ public class UserResource {
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
 					if(oUserViewModel.getEmail() != null){
-						String sText = "<div> New account user Name: "+ oUser.getUserName() + " Password: "+ oUser.getPassword() +" Link: http://www.risckit.eu/np4/home.html <br><br> RickKit Team </div>";
+						String sText = "<div> New account user Name: "+ oUser.getUserName() + " <br>Password: "+ oUser.getPassword() +" <br>Link: http://www.risckit.eu/np4/home.html <br><br> RickKit Team </div>";
 						EmailService oEmailService = new EmailService();
 						oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "New account RiscKit", sText );
 					}
 
-					
+					oResult.BoolValue = true;
 				}
 
-				oResult.BoolValue = true;
+				
 			}
 			else {
 				oResult.BoolValue = false;
@@ -530,7 +530,6 @@ public class UserResource {
 			{
 				oResult.BoolValue = false;
 			}else{
-				//TODO: delete user
 				UserRepository oRepo = new UserRepository();
 				User oUser = oRepo.SelectUserById(iId);
 				oRepo.Delete(oUser);
