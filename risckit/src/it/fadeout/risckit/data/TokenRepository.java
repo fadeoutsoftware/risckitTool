@@ -1,5 +1,6 @@
 package it.fadeout.risckit.data;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -164,5 +165,29 @@ public class TokenRepository  extends Repository<Token>{
 
 		}
 		return oToken;
+	}
+	
+	public boolean timestampIsExpiredAndDeleted(String sToken){
+		//CHECK TIMESTAMP 
+		Date oDateNow = new Date();
+		//TokenRepository oTokenRepo = new TokenRepository();
+		Token oUserToken = this.SelectTokenByToken(sToken);
+		if( (oUserToken == null) )
+			return true;
+		
+		if((oUserToken.getTimestamp() > 0) )
+		{
+			long lMillisTimeStampToken =  oUserToken.getTimestamp();
+			Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
+			long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
+			long diffHours = diff / (60 * 60 * 1000);
+			//IF THE TOKEN DATE > 24 HOURS REMOVE IT
+			if(diffHours > 24 )
+			{
+				this.Delete(oUserToken);
+				return true;
+			}
+		}
+		return false;
 	}
 }

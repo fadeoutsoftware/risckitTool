@@ -1,5 +1,10 @@
 package it.fadeout.risckit.viewmodels;
 
+import java.util.Date;
+
+import it.fadeout.risckit.business.Token;
+import it.fadeout.risckit.data.TokenRepository;
+
 public class UserViewModel {
 	
 	private int id;
@@ -144,5 +149,6 @@ public class UserViewModel {
 	public void setToken(String token) {
 		this.token = token;
 	}
+	
 
 }

@@ -17,8 +17,8 @@ public class Token {
 	@Column(name="id")
 	private Integer m_iId;
 	
-	@Column(name="iduser")
-	private Integer m_iIdUser;
+	@Column(name="userid")
+	private Integer m_iUserId;
 	
 	@Column(name="token")
 	private String m_sToken;
@@ -34,12 +34,12 @@ public class Token {
 		this.m_iId = m_iId;
 	}
 
-	public Integer getIdUser() {
-		return m_iIdUser;
+	public Integer getUserId() {
+		return m_iUserId;
 	}
 
-	public void setIdUser(Integer m_iIdUser) {
-		this.m_iIdUser = m_iIdUser;
+	public void setUserId(Integer m_iUserId) {
+		this.m_iUserId = m_iUserId;
 	}
 
 	public String getToken() {

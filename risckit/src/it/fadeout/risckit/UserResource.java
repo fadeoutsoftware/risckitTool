@@ -43,7 +43,7 @@ public class UserResource {
 		{	
 			UserViewModel oReturnValue = null;				
 			UserRepository oRepo = new UserRepository();
-			StringGenerator session = new StringGenerator();
+			StringGenerator session = new StringGenerator(20);
 			TokenRepository oTokenRepo = new TokenRepository();
 			Token oNewUserToken = new Token();
 			String sTokenString = session.nextString(); 
@@ -56,52 +56,56 @@ public class UserResource {
 				User oUser = oRepo.SelectUser(sUserName, sPassword);
 				if ( (oUser != null) && (oUser.getIsConfirmed() == true) ) 
 				{
-					List<Token> aoUserToken = oTokenRepo.SelectTokensUser(oUser.getId());
-					List<Token> aoAllTokens = oTokenRepo.SelectAll(Token.class);
-					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-					
-					
-					for (Integer i = 0 ; i < aoAllTokens.size() ; i++) {
-						
-						//CHECK IF TOKEN STRING IS UNIQUE
-						if( aoAllTokens.get(i).getToken().equals(sTokenString))
-						{
-							i = 0;
-							sTokenString = session.nextString();
-						}
-					}
-					
-					/* CHECK  THE TIMESTAMP */
-					Date oDateNow = new Date();
-					for (Token oUserToken : aoUserToken) 
-					{
-						if( oUserToken.getTimestamp() > 0 )
-						{
-							long lMillisTimeStampToken =  oUserToken.getTimestamp();
-							Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
-							long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
-							long diffHours = diff / (60 * 60 * 1000);
-							//IF THE TOKEN DATE > 24 HOURS REMOVE IT
-							if(diffHours > 24 )
-							{
-								oTokenRepo.Delete(oUserToken);
-							}
-						}
-					}
-					
-					//CREATE NEW TOKEN
-					oNewUserToken.setToken(sTokenString);
-					oNewUserToken.setIdUser(oUser.getId());
-					oNewUserToken.setTimestamp(timestamp.getTime()); 
-					oTokenRepo.Save(oNewUserToken);
+//					List<Token> aoUserToken = oTokenRepo.SelectTokensUser(oUser.getId());
+//					List<Token> aoAllTokens = oTokenRepo.SelectAll(Token.class);
+//					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//					
+//					
+//					for (Integer i = 0 ; i < aoAllTokens.size() ; i++) {
+//						
+//						//CHECK IF TOKEN STRING IS UNIQUE
+//						if( aoAllTokens.get(i).getToken().equals(sTokenString))
+//						{
+//							i = 0;
+//							sTokenString = session.nextString();
+//						}
+//					}
+//					
+//					/* CHECK  THE TIMESTAMP */
+//					Date oDateNow = new Date();
+//					if(aoUserToken != null)
+//					{
+//						for (Token oUserToken : aoUserToken) 
+//						{
+//							if( oUserToken.getTimestamp() > 0 )
+//							{
+//								long lMillisTimeStampToken =  oUserToken.getTimestamp();
+//								Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
+//								long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
+//								long diffHours = diff / (60 * 60 * 1000);
+//								//IF THE TOKEN DATE > 24 HOURS REMOVE IT
+//								if(diffHours > 24 )
+//								{
+//									oTokenRepo.Delete(oUserToken);
+//								}
+//							}
+//						}
+//					}
+//				
+//					
+//					//CREATE NEW TOKEN
+//					oNewUserToken.setToken(sTokenString);
+//					oNewUserToken.setUserId(oUser.getId());
+//					oNewUserToken.setTimestamp(timestamp.getTime()); 
+//					oTokenRepo.Save(oNewUserToken);
 					
 					
 					//RETURN USER
 					oReturnValue = new UserViewModel();
 					oReturnValue.setId(oUser.getId());
 					oReturnValue.setUserName(oUser.getUserName());
-					oReturnValue.setPassword(oUser.getPassword());
-					oReturnValue.setToken(sTokenString);
+//					oReturnValue.setPassword(oUser.getPassword());
+					oReturnValue.setToken("Token");
 					oReturnValue.setIsAdmin(oUser.getIsAdmin());
 				}
 				else{
@@ -120,26 +124,14 @@ public class UserResource {
 
 	@GET
 	@Path("/list")
-	public List<UserViewModel> GetUsersList(@HeaderParam("x-session-token") String sSessionId) {
+	public List<UserViewModel> GetUsersList(@HeaderParam("Auth-Token") String sToken) {
 		try {
 
 			//CHECK TIMESTAMP 
-		/*	Date oDateNow = new Date();
-			TokenRepository oTokenRepo = new TokenRepository();
-
-			if( oUserToken.getTimestamp() > 0 )
-				{
-					long lMillisTimeStampToken =  oUserToken.getTimestamp();
-					Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
-					long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
-					long diffHours = diff / (60 * 60 * 1000);
-					//IF THE TOKEN DATE > 24 HOURS REMOVE IT
-					if(diffHours > 24 )
-					{
-						oTokenRepo.Delete(oUserToken);
-					}
-				}*/
 			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
 			
 			List<UserViewModel> aoRetList = new ArrayList<>();
 
@@ -226,10 +218,31 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult newUserRequest(@HeaderParam("x-session-token") String sSessionId, UserViewModel oUserViewModel) {
+	public PrimitiveResult newUserRequest(@HeaderParam("Auth-Token") String sToken, UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
-
+			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
+			
+			//CHECK TIMESTAMP 
+//			Date oDateNow = new Date();
+//			Token oUserToken = oTokenRepo.SelectTokenByToken(sToken);
+//			if( (oUserToken != null) && (oUserToken.getTimestamp() > 0) )
+//			{
+//				long lMillisTimeStampToken =  oUserToken.getTimestamp();
+//				Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
+//				long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
+//				long diffHours = diff / (60 * 60 * 1000);
+//				//IF THE TOKEN DATE > 24 HOURS REMOVE IT
+//				if(diffHours > 24 )
+//				{
+//					oTokenRepo.Delete(oUserToken);
+//					return null;
+//				}
+//			}
+			
 			if (oUserViewModel != null) {
 				
 				UserRepository oRepo = new UserRepository();
@@ -302,10 +315,31 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult addUserByAdmin(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
+	public PrimitiveResult addUserByAdmin(@HeaderParam("Auth-Token") String sToken,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
-
+			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
+			
+			//CHECK TIMESTAMP 
+//			Date oDateNow = new Date();
+//			Token oUserToken = oTokenRepo.SelectTokenByToken(sToken);
+//			if( (oUserToken != null) && (oUserToken.getTimestamp() > 0) )
+//			{
+//				long lMillisTimeStampToken =  oUserToken.getTimestamp();
+//				Date oDateTimeStamp = new Date(lMillisTimeStampToken);	        
+//				long diff = oDateNow.getTime() - oDateTimeStamp.getTime();
+//				long diffHours = diff / (60 * 60 * 1000);
+//				//IF THE TOKEN DATE > 24 HOURS REMOVE IT
+//				if(diffHours > 24 )
+//				{
+//					oTokenRepo.Delete(oUserToken);
+//					return null;
+//				}
+//			}
+			
 			if (oUserViewModel != null) {
 				
 				UserRepository oRepo = new UserRepository();
@@ -361,10 +395,14 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult updateUserName(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
+	public PrimitiveResult updateUserName(@HeaderParam("Auth-Token") String sToken,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
+//			
 			UserRepository oRepo = new UserRepository();
 			if (oUserViewModel != null && oRepo.isSavedUserName(oUserViewModel.getUserName()) == false) {
 				
@@ -402,10 +440,15 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult generateNewPassword(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
+	public PrimitiveResult generateNewPassword(@HeaderParam("Auth-Token") String sToken,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
 
+			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
+			
 			if (oUserViewModel != null) {
 				
 				UserRepository oRepo = new UserRepository();
@@ -448,10 +491,15 @@ public class UserResource {
 	
 	@DELETE
 	@Path("/deleteUser/{id}")
-	public PrimitiveResult deleteUser(@HeaderParam("x-session-token") String sSessionId,@PathParam("id") Integer iId) 
+	public PrimitiveResult deleteUser(@HeaderParam("Auth-Token") String sToken,@PathParam("id") Integer iId) 
 	{
 		PrimitiveResult oResult = new PrimitiveResult();
 		oResult.BoolValue = true;
+		
+//		TokenRepository oTokenRepo = new TokenRepository();
+//		if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//			return null;
+		
 		try {
 			
 			if(	(iId == null) ) 
@@ -480,10 +528,14 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult confirmNewUser(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
+	public PrimitiveResult confirmNewUser(@HeaderParam("Auth-Token") String sToken,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
-
+			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
+			
 			if (oUserViewModel != null) {
 				
 				UserRepository oRepo = new UserRepository();
@@ -535,10 +587,14 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult addNewAdmin(@HeaderParam("x-session-token") String sSessionId,UserViewModel oUserViewModel) {
+	public PrimitiveResult addNewAdmin(@HeaderParam("Auth-Token") String sToken,UserViewModel oUserViewModel) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		try {
-
+//			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
+			
 			if (oUserViewModel != null) {
 				
 				UserRepository oRepo = new UserRepository();
@@ -578,10 +634,15 @@ public class UserResource {
 	@Consumes({"application/xml", "application/json", "text/xml"})
 	@Produces({"application/json"})
 
-	public PrimitiveResult editPassword(@HeaderParam("x-session-token") String sSessionId,UserViewModel[] aoUser) {
+	public PrimitiveResult editPassword(@HeaderParam("Auth-Token") String sToken,UserViewModel[] aoUser) {
 		PrimitiveResult oResult = new PrimitiveResult();
 		
 		try {
+			
+//			TokenRepository oTokenRepo = new TokenRepository();
+//			if(oTokenRepo.timestampIsExpiredAndDeleted(sToken) == true)
+//				return null;
+			
 			UserViewModel oNewUser = aoUser[1]; 
 			UserViewModel oOldUser = aoUser[0];
 			if (oOldUser != null) {

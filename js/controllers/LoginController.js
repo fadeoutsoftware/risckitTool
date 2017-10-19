@@ -32,9 +32,10 @@ var LoginController = (function() {
                     oLoginService.setLogDialogOn(false);
 
                     // Set auth token
-                    console.debug(headers);
+                    //console.debug(headers);
                     var oAuthHelper = AuthHelper.getInstance();
-                    oAuthHelper.setToken("ThisIsSecurityToken");
+
+                    oAuthHelper.setToken(data.token);
                 }
                 else {
                     oLoginService.m_bIsLogged = false;

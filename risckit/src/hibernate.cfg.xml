@@ -31,5 +31,6 @@
 		<mapping class="it.fadeout.risckit.business.SubCategory" />
 		<mapping class="it.fadeout.risckit.business.SocioImpact" />
 		<mapping class="it.fadeout.risckit.business.Currency" />
+		<mapping class="it.fadeout.risckit.business.Token" />
 	</session-factory>
 </hibernate-configuration>

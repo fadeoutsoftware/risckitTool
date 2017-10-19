@@ -40,7 +40,6 @@ function ($routeProvider, $httpProvider)
         //'Accept': 'application/json;odata=verbose'
         'Auth-Token' : function(){
             var oAuthHelper = AuthHelper.getInstance();
-            debugger;
             return oAuthHelper.getToken()
         }
     };
