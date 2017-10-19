@@ -69,7 +69,7 @@ var LoginRequestController = (function() {
                     var oData = oResponse.data;
                     if(oData.BoolValue == true)
                     {
-                        
+
                         alert("Request sent succesfully. It will be checked by a supervisor and if approved you will get confirm on email address you entered.")
                         location.href = "#/";
                     }

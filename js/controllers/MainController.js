@@ -59,6 +59,7 @@ var MainController = (function() {
     };
 
     MainController.prototype.isUserLogged = function() { return this.m_oLoginService.isLogged(); }
+    MainController.prototype.isUserAdmin = function() { return this.m_oLoginService.isAdmin(); }
 
 
     MainController.prototype.Logout = function() {

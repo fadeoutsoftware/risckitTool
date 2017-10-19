@@ -27,7 +27,8 @@ angular.module('risckit.loginService', []).
             return this.m_bIsLogged;
         };
 
-        this.isAdmin = function() {
+        this.isAdmin = function()
+        {
             if (this.m_bIsAdmin == null)
                 return false;
 
