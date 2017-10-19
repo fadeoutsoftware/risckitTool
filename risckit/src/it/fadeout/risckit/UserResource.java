@@ -289,7 +289,7 @@ public class UserResource {
 					oRepo.Save(oUser);
 					
 					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "New account RiscKit", "<div>There are new accounts requests. <br><br>Risckit Server </div>");
+					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "New account RiscKit", "<div>There are new accounts requests. <br><br>Risckit Server News </div>");
 					
 				}
 
@@ -365,7 +365,7 @@ public class UserResource {
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
 					if(oUserViewModel.getEmail() != null){
-						String sText = "<div> New account user Name: "+ oUser.getUserName() + " Password: "+ oUser.getPassword() +" Link: http://www.risckit.eu/np4/home.html <br><br>RickKit Admin </div>";
+						String sText = "<div> New account user Name: "+ oUser.getUserName() + " Password: "+ oUser.getPassword() +" Link: http://www.risckit.eu/np4/home.html <br><br> RickKit Team </div>";
 						EmailService oEmailService = new EmailService();
 						oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "New account RiscKit", sText );
 					}
@@ -465,7 +465,7 @@ public class UserResource {
 					if(oUser.getEmail() != null)
 					{
 						EmailService oEmailService = new EmailService();
-						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "test", "test");
+						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "New Password", "<div>New Password was generated: "+ oUser.getPassword() + "</div> <br><br> RickKit Team </div>" );
 					}
 					
 					oResult.BoolValue = true;
@@ -556,9 +556,9 @@ public class UserResource {
 					oRepo.Save(oUser);
 					if(oUser.getEmail() != null)
 					{
-						String sText="<div>password: " + oUser.getPassword() + " <br><br> RiscKit Admin</div>";
+						String sText="<div>UserName: " + oUser.getUserName() + " Password: " + oUser.getPassword() + " <br><br> RiscKit Team</div>";
 						EmailService oEmailService = new EmailService();
-						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "RiscKit Password", sText);
+						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "RiscKit New account", sText);
 					}
 
 					oResult.BoolValue = true;
