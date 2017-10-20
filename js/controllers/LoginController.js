@@ -10,6 +10,12 @@ var LoginController = (function() {
         this.m_oLocation = oLocation;
         this.m_oLoginService.setLogDialogOn(true);
 
+
+        setTimeout(function(){
+
+            $("#userId").focus();
+        }, 500);
+
     }
 
     LoginController.prototype.onLogin = function (sUserName, sPassword) {
