@@ -1,5 +1,6 @@
 package it.fadeout.risckit;
 
+import it.fadeout.risckit.business.ConfigReader;
 import it.fadeout.risckit.business.Country;
 import it.fadeout.risckit.business.EmailService;
 import it.fadeout.risckit.business.StringGenerator;
@@ -254,7 +255,7 @@ public class UserResource {
 				//check all input data 
 				if( (oUserViewModel.getUserName() == null) || (oUserViewModel.getUserName().isEmpty()) || ( oRepo.isSavedUserName(oUserViewModel.getUserName()) == true))
 				{
-					oResult.setError("The Username is in use. Please enter another one");
+					oResult.setError("The Username is in use or it's invalid. Please enter another one");
 				}		
 				else if( (oUserViewModel.getUserSurname() == null) || (oUserViewModel.getUserSurname().isEmpty()) )
 				{
@@ -312,7 +313,8 @@ public class UserResource {
 					oRepo.Save(oUser);
 					
 					EmailService oEmailService = new EmailService();
-					oEmailService.SendHtmlEmail("a.corrado@fadeout.it", "a.corrado@fadeout.it", "New account RiscKit", "<div>There are new accounts requests. <br><br>Risckit Server </div>");
+					String sTextEmail="<div>There is new account request in Risckit server, User: "+ oUserViewModel.getUserName()+ "Email: "+ oUserViewModel.getEmail() +".<br><br> Risckit Server</div>";
+					oEmailService.SendHtmlEmail(ConfigReader.getPropValue("HOST_EMAIL"), ConfigReader.getPropValue("HOST_EMAIL"), "Pending new account",sTextEmail );
 					
 					oResult.setSuccess();;
 				}
@@ -389,9 +391,9 @@ public class UserResource {
 					oUser.setPassword(session.nextString());
 					oRepo.Save(oUser);
 					if(oUserViewModel.getEmail() != null){
-						String sText = "<div> New account user Name: "+ oUser.getUserName() + " <br>Password: "+ oUser.getPassword() +" <br>Link: http://www.risckit.eu/np4/home.html <br><br> RickKit Team </div>";
+						String sText = "<div>Welcome in Risckit,<br><br>Your new account credetials are user Name: "+ oUser.getUserName() + " <br>Password: "+ oUser.getPassword() +" Risckit Link: http://risckit.cloudapp.net/risckit/#/ <br><br> Risckit Team </div>";
 						EmailService oEmailService = new EmailService();
-						oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), "a.corrado@fadeout.it", "New account RiscKit", sText );
+						oEmailService.SendHtmlEmail(oUserViewModel.getEmail(), ConfigReader.getPropValue("HOST_EMAIL"), "New account RiscKit", sText );
 					}
 
 					oResult.BoolValue = true;
@@ -489,7 +491,7 @@ public class UserResource {
 					if(oUser.getEmail() != null)
 					{
 						EmailService oEmailService = new EmailService();
-						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "New Password", "<div>New Password was generated: "+ oUser.getPassword() + "</div> <br><br> RickKit Team </div>" );
+						oEmailService.SendHtmlEmail(oUser.getEmail(), ConfigReader.getPropValue("HOST_EMAIL"), "New Password", "<div>New Password was generated as you request, password: "+ oUser.getPassword() + "<br><br>Risckit Team</div>" );
 					}
 					
 					oResult.BoolValue = true;
@@ -579,9 +581,9 @@ public class UserResource {
 					oRepo.Save(oUser);
 					if(oUser.getEmail() != null)
 					{
-						String sText="<div>UserName: " + oUser.getUserName() + " Password: " + oUser.getPassword() + " <br><br> RiscKit Team</div>";
+						String sText="<div>Welcome in Risckit,<br> We accepted your request, your new credetials are User name: " + oUser.getUserName() + " Password: " + oUser.getPassword() + " Risckit Link: http://risckit.cloudapp.net/risckit/#/ <br><br> RiscKit Team</div>";
 						EmailService oEmailService = new EmailService();
-						oEmailService.SendHtmlEmail(oUser.getEmail(), "a.corrado@fadeout.it", "RiscKit New account", sText);
+						oEmailService.SendHtmlEmail(oUser.getEmail(), ConfigReader.getPropValue("HOST_EMAIL"), "RiscKit New account", sText);
 					}
 
 					oResult.BoolValue = true;
