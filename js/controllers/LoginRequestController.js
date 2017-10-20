@@ -81,7 +81,9 @@ var LoginRequestController = (function() {
                 })
                 .catch(function ()
                 {
+                    alert("An error occurred contacting server.");
                     oThis.m_oModuleState = LoginRequestController.MODULE_STATE_IDLE;
+
                 })
         }
         else

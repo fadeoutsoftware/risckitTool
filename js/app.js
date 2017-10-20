@@ -22,8 +22,8 @@ var riskit = angular.module('riskitapp',[
 //- Set app configuration variables (API url, etc)
 //---------------------------------------------------------------------------
 var oConfig = {
-    //API_ADDRESS : 'http://risckit.cloudapp.net/risckit/rest'
-    API_ADDRESS : 'http://localhost:8080/risckit/rest'
+    API_ADDRESS : 'http://risckit.cloudapp.net/risckit/rest'
+    //API_ADDRESS : 'http://localhost:8080/risckit/rest'
 }
 riskit.constant("CONFIG", oConfig);
 //---------------------------------------------------------------------------
@@ -37,7 +37,7 @@ function ($routeProvider, $httpProvider)
     // Configure HTTP requests
     $httpProvider.defaults.headers.common = {
         //'Authorization': 'Basic d2VudHdvcnRobWFuOkNoYW5nZV9tZQ==',
-        //'Accept': 'application/json;odata=verbose'
+        'Accept': 'application/json;',
         'Auth-Token' : function(){
             var oAuthHelper = AuthHelper.getInstance();
             return oAuthHelper.getToken()
